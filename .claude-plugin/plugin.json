@@ -1,0 +1,20 @@
+{
+  "name": "ai-tools-bridge",
+  "description": "AI工具桥接编排器 — 串联 OpenSpec（规格生成）与 Superpowers（深度细化+执行），提供阶段确认、跳过机制、质量检查点，减少心智负担",
+  "version": "0.1.0",
+  "author": {
+    "name": "AiTools"
+  },
+  "license": "MIT",
+  "homepage": "https://github.com/<your-username>/ai-tools-bridge",
+  "repository": "https://github.com/<your-username>/ai-tools-bridge",
+  "keywords": [
+    "workflow",
+    "orchestrator",
+    "openspec",
+    "superpowers",
+    "dev-tools",
+    "quality",
+    "token-optimization"
+  ]
+}
