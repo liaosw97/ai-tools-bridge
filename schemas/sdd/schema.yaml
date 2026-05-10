@@ -1,0 +1,139 @@
+# SDD Schema — Artifact 定义、依赖链、内容约束
+# 只管内容约束（产物里应该有什么），不管流程编排（谁来做、怎么做）
+
+artifacts:
+  brainstorm:
+    description: "深度探索设计的产物，记录需求探索过程和关键决策"
+    required: false
+    dependencies: []
+    file: "brainstorm.md"
+    content_constraints:
+      - field: "需求描述"
+        required: true
+        description: "用户的核心需求和动机"
+      - field: "方案探索"
+        required: true
+        description: "探索的 2+ 个候选方案及优缺点分析"
+      - field: "关键决策"
+        required: true
+        description: "每个决策的结论、理由、被否决的替代方案"
+      - field: "约束识别"
+        required: true
+        description: "技术约束和团队约束"
+
+  proposal:
+    description: "变更提案，定义意图、范围和关键决策"
+    required: true
+    dependencies: []
+    file: "proposal.md"
+    content_constraints:
+      - field: "变更意图"
+        required: true
+        description: "一句话描述这次变更要达成什么"
+      - field: "范围"
+        required: true
+        description: "包含什么、不包含什么"
+      - field: "决策追溯"
+        required: false
+        description: "如果 brainstorm.md 存在，必须引用其中的关键决策"
+        condition: "brainstorm.md 存在时必填"
+      - field: "影响分析"
+        required: true
+        description: "对现有系统的影响"
+
+  spec:
+    description: "功能规格，用 GIVEN/WHEN/THEN 描述可验证的场景"
+    required: true
+    dependencies: ["proposal"]
+    file: "specs/<domain>/spec.md"
+    content_constraints:
+      - field: "能力描述"
+        required: true
+        description: "这个 spec 描述什么能力"
+      - field: "场景 (GIVEN/WHEN/THEN)"
+        required: true
+        description: "至少一个可测试的场景"
+      - field: "Delta 标记"
+        required: true
+        description: "ADDED / MODIFIED / REMOVED 标记"
+
+  design:
+    description: "技术设计文档，描述实现方案"
+    required: false
+    dependencies: ["proposal"]
+    file: "design.md"
+    content_constraints:
+      - field: "技术方案"
+        required: true
+        description: "选择的实现方案和理由"
+      - field: "数据模型"
+        required: false
+        description: "涉及的数据结构变更"
+      - field: "接口设计"
+        required: false
+        description: "新增或修改的 API/接口"
+      - field: "决策追溯"
+        required: false
+        description: "如果 brainstorm.md 存在，引用相关决策"
+
+  tasks:
+    description: "任务清单，将 spec 拆解为可执行的任务"
+    required: true
+    dependencies: ["proposal", "spec"]
+    file: "tasks.md"
+    content_constraints:
+      - field: "任务列表"
+        required: true
+        description: "checkbox 格式，每个任务链接到 spec 场景"
+      - field: "spec 链接"
+        required: true
+        description: "格式: [spec:domain#scenario]"
+
+  plan:
+    description: "实施计划，将任务细化为 TDD 步骤"
+    required: false
+    dependencies: ["tasks"]
+    file: "plan.md"
+    content_constraints:
+      - field: "批次划分"
+        required: true
+        description: "将任务分组为可独立实施的批次"
+      - field: "TDD 步骤 (RED/GREEN)"
+        required: true
+        description: "每个任务的测试失败→最小实现循环"
+      - field: "运行命令"
+        required: true
+        description: "每个步骤的具体验证命令"
+      - field: "文件路径"
+        required: true
+        description: "涉及的文件和操作类型 (Create/Modify/Delete)"
+
+  review:
+    description: "审查报告"
+    required: false
+    dependencies: []
+    file: "reviews/<artifact>-r<N>.md"
+    content_constraints:
+      - field: "审查对象"
+        required: true
+        description: "被审查的 artifact"
+      - field: "Issues"
+        required: true
+        description: "发现的问题列表，含严重性分级"
+      - field: "结论"
+        required: true
+        description: "APPROVED 或 NEEDS_REVISION"
+
+dependency_chain:
+  description: "artifact 的生成顺序"
+  chain:
+    - brainstorm (可选)
+    - proposal (必需)
+    - spec (必需)
+    - design (可选，与 spec 并列，都依赖 proposal)
+    - tasks (必需，依赖 proposal + spec)
+    - plan (可选，依赖 tasks)
+  notes:
+    - "tasks 不硬依赖 design，简单变更可以从 specs 直接出 tasks"
+    - "plan 由 sdd-plan 单独生成（sdd-ff 不生成 plan）"
+    - "review 不在依赖链中，是独立的质量保证产物"

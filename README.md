@@ -1,164 +1,149 @@
-# AI Tools Bridge — AI 开发工作流编排器
+# AI Tools Bridge — SDD 工作流编排器
 
-统一编排 OpenSpec + Superpowers 工具链，减少心智负担，提高代码生成准确率。
+基于 Action-based 架构，串联 OpenSpec（规格层）与 Superpowers（纪律层），实现 Spec-Driven Development。
 
-## 它解决什么问题
+## 核心理念
 
-同时使用 OpenSpec 和 Superpowers 时会遇到：
+**Action Not Phases** — 每个操作是独立能力，不是必须按顺序完成的阶段。大特性走完整流程，小修复跳过不必要的步骤。
 
-- **重复加载** — 两个插件的引导指令同时注入，还没开始就消耗大量 token
-- **流程冲突** — brainstorming 和 opsx:explore 功能重叠，AI 不知道用哪个
-- **文档碎片** — 设计文档分散在 `docs/superpowers/` 和 `openspec/changes/` 两处
-- **心智负担** — 每次开发都要想"现在该用哪个工具、走哪个流程"
+**薄编排** — SDD skill 只做编排，核心工作委托给底层 skill。不修改 OpenSpec 或 Superpowers 的任何文件。
 
-AI Tools Bridge 把它们串成一个清晰的、可控制的流水线。
+**产物接力** — 每个 action 的输出是下一个 action 的输入，所有状态持久化为文件。任意步骤之间可以安全 `/clear`。
 
-## 工作流
+## 11 个 Action
 
 ```
-Phase 1: 规格生成 ──→ Phase 2: 深度细化 ──→ Phase 3: 任务执行 ──→ Phase 4: 完成收尾
- (OpenSpec)            (Brainstorming)        (Subagent-dev)       (Review+Archive)
+sdd-doctor       — 环境诊断
+sdd-brainstorm   — 深度探索设计
+sdd-propose      — 固化提案
+sdd-continue     — 逐步补充 artifact
+sdd-ff           — 快进生成所有文档
+sdd-plan         — 细化实施计划
+sdd-code         — TDD 实施
+sdd-review-spec  — Spec 审查
+sdd-review-code  — 代码审查（双阶段）
+sdd-verify       — 全面验证
+sdd-ship         — 归档合并
 ```
 
-| 阶段 | 工具 | 做什么 | 可跳过 |
-|------|------|--------|--------|
-| Phase 1 | OpenSpec | 快速生成结构化规格（proposal + specs + tasks 骨架） | 是 |
-| Phase 2 | Superpowers Brainstorming | 基于已有规格进行深度细化，补充技术细节和团队规范 | 是 |
-| Phase 3 | Superpowers Subagent-dev | 读取 tasks.md 逐一实现，双重审查（spec + quality） | 是 |
-| Phase 4 | Superpowers + OpenSpec | 代码审查、验证、分支管理、归档 | 是 |
+### 依赖关系
 
-**每个阶段执行前都会确认**，你可以选择执行、跳过或暂停。
-
-## 核心特性
-
-### 阶段确认 + 跳过
-
-启动时展示完整工作流，你决定从哪里开始：
+依赖是 enabler（前置 artifact 应存在），不是 gate（缺失则阻断）。
 
 ```
-编排器: 当前工作流:
-  Phase 1 (规格生成)    ⬜ 待执行
-  Phase 2 (深度细化)    ⬜ 待执行
-  Phase 3 (任务执行)    ⬜ 待执行
-  Phase 4 (完成收尾)    ⬜ 待执行
-
-  请选择:
-  1. 从 Phase 1 开始（完整流程）
-  2. 跳到 Phase 2（已有 OpenSpec 产出）
-  3. 跳到 Phase 3（已有设计文档，直接实现）
-  4. 自定义
+brainstorm.md → proposal.md → specs/ → tasks.md → plan.md
+  (可选)          (必需)    ↗  (必需)     (必需)
+                           proposal.md
+                              ↓
+                          design.md
+                           (可选)
 ```
 
-每个阶段完成后也会询问：继续 / 暂停 / 跳到其他阶段。
+### Next Action 引导
 
-### 质量门
+| 完成后 | 推荐下一步 |
+|-------|-----------|
+| sdd-brainstorm | sdd-propose 或 sdd-ff |
+| sdd-propose | sdd-continue 或 sdd-ff |
+| sdd-ff | sdd-review-spec 或 sdd-plan |
+| sdd-plan | sdd-code |
+| sdd-code | sdd-review-code |
+| sdd-review-code | sdd-code 或 sdd-verify |
+| sdd-verify | sdd-ship 或 sdd-code |
+| sdd-ship | 完成 |
 
-每个阶段结束自动执行检查：
-- Phase 1：规格文件完整、无空壳
-- Phase 2：无模糊描述、无占位符、需求可验证
-- Phase 3：测试通过、spec 合规、无幻觉函数
-- Phase 4：代码审查通过、变更已归档
+## 典型流程
 
-### 四个内置指南
+### 大特性（完整流程）
 
-| 指南 | 作用 |
-|------|------|
-| `quality-checkpoints.md` | AI 编码错误检查、安全检查、测试覆盖检查 |
-| `decision-strategy.md` | 何时 AI 自主决策、何时必须问用户、模糊需求处理 |
-| `token-optimization.md` | 各阶段的 token 节省策略、模型分层、按需加载 |
-| `team-standards.md` | 错误处理规范、日志规范、安全检查清单、测试规范 |
+```
+/sdd-brainstorm     → /clear
+/sdd-ff             → /clear
+/sdd-review-spec    → /clear
+/sdd-plan           → /clear
+/sdd-code           → /clear
+/sdd-review-code    → /clear
+/sdd-verify         → /clear
+/sdd-ship
+```
 
-### 可扩展
+### 小修复（最短路径）
 
-通过 `integrations/tool-template.md` 接入新工具。定义阶段映射、输入输出、质量门即可。
+```
+/sdd-propose → /clear → /sdd-ff → /clear → /sdd-plan → /clear → /sdd-code → /clear → /sdd-ship
+```
+
+## 三段式架构
+
+每个 action skill 遵循统一结构：
+
+| 阶段 | 执行方 | 职责 |
+|------|--------|------|
+| 前置逻辑 | SDD 自有 | 定位 change 目录、读取 artifact、检查前置条件 |
+| 核心执行 | invoke 底层 skill | 委托给 OpenSpec 或 Superpowers |
+| 后置逻辑 | SDD 自有 | Review 循环、产物校验、下一步引导 |
+
+### 委托关系
+
+| SDD Action | 委托给 |
+|------------|--------|
+| sdd-brainstorm | superpowers:brainstorming |
+| sdd-propose | openspec-continue-change |
+| sdd-continue | openspec-continue-change |
+| sdd-ff | openspec-ff-change |
+| sdd-plan | superpowers:writing-plans |
+| sdd-code | superpowers:TDD + worktrees + debugging |
+| sdd-review-code (Phase 2) | superpowers:requesting-code-review |
+| sdd-verify | superpowers:verification + openspec-verify |
+| sdd-ship | openspec-sync-specs + archive + superpowers:finishing-branch |
+
+## Review 机制
+
+**内嵌 Review**（action 内部）：
+- sdd-brainstorm → brainstorm-reviewer（方案完整性、YAGNI）
+- sdd-plan → plan-reviewer（任务粒度、TDD 完整性）
+
+**独立 Review**（可选 action）：
+- sdd-review-spec → spec-reviewer
+- sdd-review-code → 双阶段：spec 合规 → 代码质量
+
+## 信息防丢
+
+- 模板的"决策追溯"必填节 — proposal/design 必须引用 brainstorm 的关键决策
+- 后置逻辑自动检查 — 确保没有遗漏的决策引用
+
+## 渐进采用
+
+不需要一次性使用全部 11 个 action：
+
+| 阶段 | Action | 建立的习惯 |
+|------|--------|-----------|
+| 第一阶段 | sdd-propose → sdd-ff → sdd-plan → sdd-code → sdd-ship | spec 驱动 + TDD |
+| 第二阶段 | + sdd-review-spec + sdd-review-code | 审查纪律 |
+| 第三阶段 | + sdd-brainstorm + sdd-verify | 完整工程纪律 |
 
 ## 前置依赖
 
 | 工具 | 必需 | 作用 |
 |------|------|------|
-| [OpenSpec](https://github.com/nickmilo/OpenSpec) | 推荐 | 规格管理（Phase 1 + Phase 4 归档） |
-| [Superpowers](https://github.com/obra/superpowers) | 推荐 | 执行纪律（Phase 2 + Phase 3 + Phase 4） |
+| [OpenSpec](https://github.com/nickmilo/OpenSpec) | 推荐 | 规格管理 |
+| [Superpowers](https://github.com/obra/superpowers) | 推荐 | 执行纪律 |
 
-两个都未安装时，编排器仍可作为工作流指引使用，但功能受限。
+两者都未安装时，sdd-doctor 会报告，部分 action 会降级。
 
 ## 安装
 
-### 方式一：从 Marketplace 安装（推荐）
-
-添加 marketplace 后安装插件：
-
-```bash
-# 添加 marketplace
-claude plugin marketplace add <your-username>/ai-tools-bridge
-
-# 安装插件
-claude plugin install ai-tools-bridge
-```
-
-或在 Claude Code 中使用命令：
-```
-/plugin marketplace add <your-username>/ai-tools-bridge
-/plugin install ai-tools-bridge
-```
-
-### 方式二：直接从 GitHub 安装
+### 从 GitHub 安装
 
 ```bash
 claude plugin add https://github.com/<your-username>/ai-tools-bridge
 ```
 
-### 方式三：从本地安装
+### 从本地安装
 
 ```bash
 git clone https://github.com/<your-username>/ai-tools-bridge.git
 claude plugin add /path/to/ai-tools-bridge
-```
-
-## 使用
-
-安装后在 Claude Code 中正常对话即可。当你说"做一个 X"、"实现 Y"等开发意图时，编排器会自动启动。
-
-### 典型流程
-
-```
-你: 帮我实现用户认证功能
-
-编排器: 开发工作流已启动。
-  ✅ OpenSpec (规格管理)
-  ✅ Superpowers (执行纪律)
-
-  从 Phase 1 开始...
-
-[Phase 1: OpenSpec 生成规格]
-
-编排器: Phase 1 完成。继续 Phase 2？
-  1. 继续  2. 暂停  3. 跳过
-
-你: 1
-
-[Phase 2: Brainstorming 细化设计]
-
-编排器: Phase 2 完成。继续 Phase 3？
-你: 1
-
-[Phase 3: Subagent 逐一实现]
-
-编排器: Phase 3 完成。继续 Phase 4？
-你: 1
-
-[Phase 4: 审查 + 归档]
-
-编排器: Phase 4 完成。工作流结束。
-```
-
-### 恢复中断的工作
-
-```
-你: 继续上次的工作
-
-编排器: 找到进行中的变更: user-auth
-  Phase 1 ✅  Phase 2 ✅  Phase 3 ⬜ (进行中)
-  从 Phase 3 继续？
 ```
 
 ## 目录结构
@@ -166,24 +151,42 @@ claude plugin add /path/to/ai-tools-bridge
 ```
 ai-tools-bridge/
 ├── skills/
-│   └── workflow-orchestrator/
-│       └── SKILL.md               # 主编排器（工作流逻辑、确认机制、跳过逻辑）
-├── .claude-plugin/
-│   └── plugin.json                # Claude Code 插件元数据
+│   ├── sdd-doctor/            SKILL.md
+│   ├── sdd-brainstorm/        SKILL.md + brainstorm-reviewer-prompt.md
+│   ├── sdd-propose/           SKILL.md
+│   ├── sdd-continue/          SKILL.md
+│   ├── sdd-ff/                SKILL.md
+│   ├── sdd-plan/              SKILL.md + plan-reviewer-prompt.md
+│   ├── sdd-code/              SKILL.md
+│   ├── sdd-review-spec/       SKILL.md + spec-reviewer-prompt.md
+│   ├── sdd-review-code/       SKILL.md + spec-compliance-reviewer-prompt.md
+│   │                                  + code-quality-reviewer-prompt.md
+│   ├── sdd-verify/            SKILL.md
+│   └── sdd-ship/              SKILL.md
+├── schemas/
+│   └── sdd/
+│       ├── schema.yaml        # artifact 定义、依赖链
+│       └── templates/         # 7 个 artifact 模板
 ├── guidelines/
-│   ├── quality-checkpoints.md     # 代码质量检查点
-│   ├── decision-strategy.md       # 决策策略指引
-│   ├── token-optimization.md      # Token 优化策略
-│   └── team-standards.md          # 团队规范检查
-└── integrations/
-    └── tool-template.md           # 新工具接入模板
+│   ├── quality-checkpoints.md
+│   ├── decision-strategy.md
+│   ├── token-optimization.md
+│   └── team-standards.md
+├── integrations/
+│   └── tool-template.md
+├── .claude-plugin/
+│   ├── plugin.json
+│   └── marketplace.json
+└── README.md
 ```
 
 ## 接入新工具
 
 1. 复制 `integrations/tool-template.md` 作为模板
-2. 填写工具信息、阶段映射、输入输出
-3. 更新 `SKILL.md` 中的工具检测和阶段描述
-4. 测试验证
+2. 定义 action 映射、输入输出、Override 需求
+3. 更新对应 action 的 SKILL.md
+4. 更新 sdd-doctor 的检测逻辑
 
-详见 `integrations/tool-template.md`。
+## 核心哲学
+
+> 用结构消除歧义，用纪律保证质量，用归档积累智慧。

@@ -1,6 +1,6 @@
 # Token 优化策略
 
-在整个工作流中持续应用，减少不必要的 token 消耗。
+在整个 SDD 工作流中持续应用，减少不必要的 token 消耗。
 
 ---
 
@@ -10,70 +10,78 @@
 
 ---
 
-## 阶段级优化
+## 上下文卫生（最重要的优化）
 
-### Phase 1: 规格生成
+每个 action 完成后 `/clear` — 这是核心习惯。
 
-- **不要重复加载 skill 引导** — 编排器已描述了 Phase 1 的行为，不需要再加载 openspec skill 的完整内容
-- **精简 context 注入** — 只传递项目技术栈和约束，不传递整个 codebase 摘要
-- **使用 opsx:propose 而非逐步操作** — 一步生成所有工件，比 explore → propose → design 多步更省 token
+**理由：** 产物在文件系统中，不在对话历史里。对话历史是不可靠的状态存储。
 
-### Phase 2: 深度细化
+**安全 /clear 的时机：** 每个 action 完成并看到"产物已持久化至"提示后。
 
-- **起点是已有规格，不是空白** — 直接读取 Phase 1 产出开始细化，不从零开始提问
-- **只读取相关的 spec 文件** — 不需要读取 openspec/changes/ 下的所有历史变更
-- **增量式细化** — 只补充缺失的部分，不重写已有的内容
-- **精简确认交互** — 使用简短的确认而非长段落的总结
-
-### Phase 3: 任务执行
-
-- **subagent 只接收当前任务** — 不传递整个 tasks.md，只传当前任务的完整文本 + 必要的上下文
-- **模型分层使用：**
-  - 简单实现（1-2 文件，spec 明确）→ 快速模型
-  - 集成任务（多文件，需要协调）→ 标准模型
-  - 架构/审查任务 → 最强模型
-- **避免重复读取** — 编排器在启动时提取所有任务文本，后续 subagent 不再读源文件
-- **review subagent 使用 diff** — 不让 reviewer 读整个文件，只传变更的 diff + 相关 spec
-
-### Phase 4: 完成收尾
-
-- **归档时只传变更名称** — 不传整个变更内容给 archive 命令
-- **审查时传 diff + spec** — 不传整个代码库
+**不安全 /clear 的时机：** action 中途（sdd-brainstorm 多轮对话、sdd-plan review 循环、sdd-code TDD 循环）。
 
 ---
 
-## 跨阶段优化
+## Action 级优化
 
-### 状态持久化
+### sdd-brainstorm
+- 起点可以是已有的需求描述，不需要从零探索
+- Reviewer subagent 只传 brainstorm.md，不传整个项目上下文
 
-工作流状态保存在 `openspec/changes/<name>/.workflow-state`。恢复会话时：
-- 读取状态文件确定进度，不重新扫描
-- 只读取当前阶段需要的文件
+### sdd-propose / sdd-continue / sdd-ff
+- 不重复加载底层 skill 的引导指令
+- 只传当前 change 的已有 artifact，不传其他 change 的内容
+- 使用 /sdd-ff 一步到位比 /sdd-continue 多步更省 token
 
-### 避免重复工作
+### sdd-plan
+- 只传当前批次的 tasks + 对应 specs + design（如有）
+- Reviewer subagent 只传 plan.md
 
-- Phase 1 的产出是 Phase 2 的输入，不需要复制或转换
-- Phase 2 的产出直接在原文件上修改，不创建副本
-- Phase 3 读取的是同一个 tasks.md
+### sdd-code
+- 每个任务只传当前任务的完整文本 + 必要上下文
+- 不传整个 plan.md 给 subagent
+- 模型分层使用：
+  - 简单实现（1-2 文件，spec 明确）→ 快速模型
+  - 集成任务（多文件，需要协调）→ 标准模型
+  - 架构/审查任务 → 最强模型
+- Reviewer 使用 diff，不传整个文件
+
+### sdd-review-code
+- Phase 1 只传 spec 场景 + 代码 diff
+- Phase 2 只传代码 diff + spec 上下文
+
+### sdd-verify
+- 验证报告只输出覆盖率统计，不输出每个场景的详细结果
+
+### sdd-ship
+- 只传变更名称，不传变更内容
+
+---
+
+## 跨 Action 优化
+
+### 避免重复加载
+- 编排层（SDD skill）描述了每个 action 的概要
+- 不需要再加载底层 skill 的完整引导
 
 ### 精简指南加载
-
 四个指南文件不一次性全部加载：
-- `quality-checkpoints.md` — 只在质量门检查时加载对应阶段的部分
+- `quality-checkpoints.md` — 只在 action 质量门检查时加载对应部分
 - `decision-strategy.md` — 只在遇到决策点时加载
 - `token-optimization.md` — 编排器启动时加载一次，后续隐式遵循
-- `team-standards.md` — 只在 Phase 2 和 Phase 3 加载
+- `team-standards.md` — 只在 sdd-brainstorm、sdd-code、sdd-review-* 时加载
 
 ---
 
 ## 检查清单
 
-每次调用 subagent 或加载文件前，问自己：
+每次调用 subagent 或加载文件前：
 
 1. 这个信息接收者已经有了吗？
 2. 这是当前任务需要的吗？
 3. 有更小的版本够用吗？
 4. 可以用 diff 代替全文件吗？
 5. 这个 subagent 用快速模型够吗？
+6. 可以 /clear 释放上下文吗？
 
 如果任何一个答案是"是"，就采取对应的优化措施。

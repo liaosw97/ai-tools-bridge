@@ -1,14 +1,14 @@
 {
   "name": "ai-tools-bridge",
-  "description": "AI工具桥接编排器 — 串联 OpenSpec 与 Superpowers，统一开发工作流",
+  "description": "SDD 工作流编排器 — Action-based 架构串联 OpenSpec 与 Superpowers",
   "owner": {
     "name": "AiTools"
   },
   "plugins": [
     {
       "name": "ai-tools-bridge",
-      "description": "开发工作流编排器 — 串联 OpenSpec（规格生成）与 Superpowers（深度细化+执行），提供阶段确认、跳过机制、质量检查点，减少心智负担",
-      "version": "0.1.0",
+      "description": "SDD 工作流编排器 — 11 个独立 action skill，串联 OpenSpec（规格层）与 Superpowers（纪律层），薄编排架构，内置 review 机制、决策追溯、上下文卫生",
+      "version": "0.2.0",
       "source": "./",
       "author": {
         "name": "AiTools"

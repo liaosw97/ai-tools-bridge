@@ -1,0 +1,101 @@
+---
+name: sdd-code
+description: "TDD 实施 — 按 plan.md 中的批次执行 TDD 循环，产码代码+测试+commits"
+---
+
+# sdd-code — TDD 实施
+
+按 plan.md 中的实施计划，执行 TDD 红-绿循环，产出代码和测试。
+
+---
+
+## 前置逻辑（SDD 自有）
+
+### 1. 定位 Change 目录
+
+- 扫描 `openspec/changes/` 找到活跃变更
+
+### 2. 读取输入 artifact
+
+- **plan.md**（强烈推荐）— 实施计划和 TDD 步骤
+- **tasks.md**（必需）— 任务清单和状态
+- **specs/** — 当前批次涉及的 spec 场景
+
+### 3. 定位当前批次
+
+- 如果 plan.md 存在：读取批次划分，定位当前应实施的批次
+- 如果 plan.md 不存在：从 tasks.md 中选择未完成的任务
+- 向用户确认本次要实施的批次/任务范围
+
+### 4. Worktree 准备（推荐）
+
+- 如果当前不在 worktree 中，建议创建
+- 分支命名：`sdd/<change-name>`
+
+---
+
+## 核心执行（委托底层 skill）
+
+### 4a. Worktree（如需）
+
+**invoke `superpowers:using-git-worktrees`**
+
+Override：
+```
+分支命名: sdd/<change-name>
+```
+
+保留：安全验证、基线测试
+
+### 4b. TDD 循环
+
+**invoke `superpowers:test-driven-development`**
+
+对当前批次的每个任务，按 TDD 铁律执行：
+
+1. **RED** — 编写失败测试
+2. **运行验证** — 确认测试失败
+3. **GREEN** — 最小实现使测试通过
+4. **运行验证** — 确认测试通过
+
+每个任务完成后 commit。
+
+### 4c. 调试（如遇失败）
+
+**invoke `superpowers:systematic-debugging`**（仅在测试意外失败时）
+
+- 系统化定位根因
+- 不猜测，不盲目重试
+- 修复后重新运行验证
+
+---
+
+## 后置逻辑（SDD 自有）
+
+### 1. 更新 tasks.md
+
+将已完成任务标记为 `[x]`：
+```
+- [x] 1.1 实现主题切换 API [spec:ui-theme#toggle-theme]
+```
+
+### 2. 产物校验
+
+- 确认 commit 已创建
+- 确认 tasks.md 已更新
+- 快速检查：无幻觉函数、无硬编码敏感信息
+
+### 3. 完成引导
+
+```
+sdd-code 完成。
+
+批次 [N] 已实施并提交。
+tasks.md 已更新。
+
+如需释放上下文，可安全 /clear。
+
+推荐下一步:
+  - 审查本批次代码 → /sdd-review-code
+  - 继续下一批次 → /sdd-code
+```

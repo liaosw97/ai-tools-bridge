@@ -1,7 +1,7 @@
 {
   "name": "ai-tools-bridge",
-  "description": "AI工具桥接编排器 — 串联 OpenSpec（规格生成）与 Superpowers（深度细化+执行），提供阶段确认、跳过机制、质量检查点，减少心智负担",
-  "version": "0.1.0",
+  "description": "SDD 工作流编排器 — Action-based 架构，串联 OpenSpec（规格层）与 Superpowers（纪律层），提供 11 个独立 action、review 机制、决策追溯、上下文卫生",
+  "version": "0.2.0",
   "author": {
     "name": "AiTools"
   },
@@ -9,12 +9,15 @@
   "homepage": "https://github.com/<your-username>/ai-tools-bridge",
   "repository": "https://github.com/<your-username>/ai-tools-bridge",
   "keywords": [
+    "sdd",
+    "spec-driven-development",
     "workflow",
     "orchestrator",
     "openspec",
     "superpowers",
-    "dev-tools",
-    "quality",
+    "tdd",
+    "review",
+    "action-based",
     "token-optimization"
   ]
 }
