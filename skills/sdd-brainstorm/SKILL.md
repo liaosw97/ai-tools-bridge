@@ -11,6 +11,10 @@ description: "深度探索设计 — 苏格拉底式探索需求，生成 brains
 
 ## 前置逻辑（SDD 自有）
 
+### 0. 前置校验
+
+sdd-brainstorm 无前置依赖，校验直接通过。无需检查任何前置制品。
+
 ### 1. 定位 Change 目录
 
 - 如果用户指定了 change 名称，使用 `openspec/changes/<name>/`

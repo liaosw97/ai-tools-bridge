@@ -11,6 +11,11 @@ description: "代码审查（双阶段）— Phase 1: Spec 合规审查 → Phas
 
 ## 前置逻辑（SDD 自有）
 
+### 0. 前置校验
+
+- **阻断**：无代码变更（git 无未提交更改）或 `specs/` 不存在 → 拒绝执行，输出具体缺失项和修复建议
+- **警告**：spec 场景总数少于 tasks 数量 → 提示"spec 场景数（N）少于 tasks 数量（M），可能存在未覆盖的功能点"
+
 ### 1. 定位 Change 目录
 
 - 扫描 `openspec/changes/` 找到活跃变更

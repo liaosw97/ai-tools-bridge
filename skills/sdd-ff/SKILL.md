@@ -11,6 +11,11 @@ description: "快进生成所有文档 — 批量生成所有缺失 artifact 至
 
 ## 前置逻辑（SDD 自有）
 
+### 0. 前置校验
+
+- **阻断**：`proposal.md` 不存在 → 拒绝执行，输出"缺少 proposal.md，请先执行 /sdd-propose 生成 proposal"
+- **警告**：`proposal.md` 存在但影响分析为空或含占位符 → 提示用户补充，可强制继续
+
 ### 1. 定位 Change 目录
 
 - 扫描 `openspec/changes/` 找到活跃变更
