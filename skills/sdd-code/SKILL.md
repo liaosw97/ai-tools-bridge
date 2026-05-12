@@ -103,4 +103,7 @@ tasks.md 已更新。
 推荐下一步:
   - 审查本批次代码 → /sdd-review-code
   - 继续下一批次 → /sdd-code
+
+★ 推荐下一步: /sdd-review-code [中等/复杂] 或 /sdd-ship [简单]（根据复杂度动态选择）
+  ○ /sdd-verify — 全面验证 Spec 场景覆盖
 ```

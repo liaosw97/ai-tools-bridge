@@ -114,4 +114,8 @@ sdd-brainstorm 完成。
 推荐下一步:
   - 逐步确认细节 → /sdd-propose
   - 需求已充分明确 → /sdd-ff
+
+★ 推荐下一步: /sdd-propose — 固化提案
+  ○ /sdd-ff — 跳过 propose 直接快进
+  △ /sdd-quick — 重新走快速路径
 ```

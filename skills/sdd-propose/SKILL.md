@@ -86,4 +86,8 @@ sdd-propose 完成。
 推荐下一步:
   - 逐步确认 → /sdd-continue
   - 快进生成所有文档 → /sdd-ff
+
+★ 推荐下一步: /sdd-ff — 快进生成所有文档
+  ○ /sdd-plan — 直接生成实施计划（需先有 spec+tasks）
+  △ /sdd-brainstorm — 回退补充探索
 ```

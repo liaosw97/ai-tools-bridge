@@ -99,4 +99,7 @@ sdd-verify 完成。
 推荐下一步:
   - 通过 → /sdd-ship 归档合并
   - 未通过 → /sdd-code 补充缺失的实现
+
+★ 推荐下一步: /sdd-ship — 归档合并
+  ○ /sdd-code — 修复验证失败项
 ```

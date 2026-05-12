@@ -79,4 +79,8 @@ sdd-continue 完成。
   - 继续下一个 → /sdd-continue
   - 快进生成所有剩余 → /sdd-ff
   - 已到 tasks.md → /sdd-plan
+
+★ 推荐下一步: 根据当前进度动态推荐（下一个缺失 artifact 的生成方式）
+当前进度:
+  ✅/❌ proposal.md  ✅/❌ specs/  ✅/❌ design.md  ✅/❌ tasks.md
 ```

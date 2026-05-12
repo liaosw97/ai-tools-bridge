@@ -61,4 +61,7 @@ sdd-review-spec 完成。
 推荐下一步:
   - Approved → /sdd-plan 生成实施计划
   - Issues → 修正 spec 后重新审查
+
+★ 推荐下一步: /sdd-propose — 修正提案后重新生成
+  ○ /sdd-ff — 快进生成剩余文档
 ```

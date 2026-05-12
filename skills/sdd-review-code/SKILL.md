@@ -108,4 +108,8 @@ Phase 2 (代码质量):
   - 有更多批次 → /sdd-code 继续实施
   - 全部完成 → /sdd-verify 全面验证
   - 有 critical issues → 修复后重新 /sdd-review-code
+
+★ 推荐下一步: /sdd-test-code — TDD 循环补全缺失测试
+  ○ /sdd-code — 回退修复实现
+  △ /sdd-ship — 跳过测试补全直接归档
 ```

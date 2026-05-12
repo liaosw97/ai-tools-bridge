@@ -93,4 +93,8 @@ sdd-ff 完成。
 推荐下一步:
   - 大特性，建议先审查 spec → /sdd-review-spec
   - 小修复，直接生成计划 → /sdd-plan
+
+★ 推荐下一步: /sdd-plan [中等/复杂] 或 /sdd-code [简单]（根据复杂度动态选择）
+  ○ /sdd-review-spec — 先审查 spec 质量
+  △ /sdd-quick — 重新走快速路径
 ```
