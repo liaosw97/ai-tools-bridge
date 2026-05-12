@@ -10,6 +10,7 @@ const delegatingSkills = [
   'sdd-ff',
   'sdd-plan',
   'sdd-code',
+  'sdd-quick',
   'sdd-review-code',
   'sdd-verify',
   'sdd-ship',

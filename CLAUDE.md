@@ -6,13 +6,13 @@
 
 ## 项目概述
 
-这是一个 **Claude Code 插件** (`ai-tools-bridge` v0.2.0)，实现了 **SDD（规格驱动开发）工作流编排器**。整个项目由纯 Markdown 组成——没有可执行代码、没有构建系统、没有测试。它定义了 Claude Code 作为斜杠命令加载的技能提示词。
+这是一个 **Claude Code 插件** (`ai-tools-bridge` v0.3.0)，实现了 **SDD（规格驱动开发）工作流编排器**。项目由 Markdown 技能定义和 Vitest 结构验证测试组成。它定义了 Claude Code 作为斜杠命令加载的技能提示词。
 
 该插件编排两个外部插件生态系统：
 - **OpenSpec** — 规格/规范层（变更提案、规格、制品）
 - **Superpowers** — 纪律层（头脑风暴、TDD、代码审查、调试等）
 
-核心理念：**"行动而非阶段"** — 11 个行动各自独立。大型功能运行完整流程；小修复可跳过不必要的步骤。
+核心理念：**"行动而非阶段"** — 13 个行动各自独立。大型功能运行完整流程；小修复可跳过不必要的步骤。
 
 ## 架构
 
@@ -34,7 +34,7 @@
 3. 完成后停止——不自动链式调用其他技能
 4. SDD 自行处理审查（跳过内置审查器）
 
-### 11 个行动及其委托
+### 13 个行动及其委托
 
 | 行动 | 委托给 |
 |------|--------|
@@ -45,8 +45,10 @@
 | `sdd-ff` | `openspec-ff-change` |
 | `sdd-plan` | `superpowers:writing-plans` |
 | `sdd-code` | `superpowers:test-driven-development`、`using-git-worktrees`、`systematic-debugging` |
+| `sdd-quick` | `openspec-continue-change`、`superpowers:test-driven-development` |
 | `sdd-review-spec` | SDD 自有子代理 |
 | `sdd-review-code` | 阶段 1：SDD 子代理；阶段 2：`superpowers:requesting-code-review` |
+| `sdd-test-code` | `superpowers:test-driven-development` |
 | `sdd-verify` | `superpowers:verification-before-completion`、`openspec-verify-change` |
 | `sdd-ship` | `openspec-sync-specs`、`openspec-archive-change`、`superpowers:finishing-a-development-branch` |
 
@@ -75,7 +77,7 @@ brainstorm.md（可选）→ proposal.md（必需）→ spec（必需，位于 s
 
 - `skills/sdd-*/SKILL.md` — 技能定义（YAML 前置元数据 + 提示词内容）
 - `skills/sdd-*/*-reviewer-prompt.md` — 子代理审查提示词
-- `schemas/sdd/schema.yaml` — 制品定义、依赖链、内容约束
+- `schemas/sdd/schema.yaml` — 制品定义、行动定义、依赖链、内容约束
 - `schemas/sdd/templates/` — 7 个制品模板（brainstorm、proposal、spec、design、tasks、plan、review）
 - `guidelines/` — 决策策略、质量检查点、团队标准、Token 优化
 - `integrations/tool-template.md` — 将新 AI 工具集成到 SDD 的模板

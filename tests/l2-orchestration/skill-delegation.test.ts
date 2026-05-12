@@ -15,6 +15,10 @@ const expectedDelegations: Record<string, string[]> = {
     'superpowers:test-driven-development',
     'superpowers:systematic-debugging',
   ],
+  'sdd-quick': [
+    'openspec-continue-change',
+    'superpowers:test-driven-development',
+  ],
   'sdd-review-spec': [],
   'sdd-review-code': ['superpowers:requesting-code-review'],
   'sdd-verify': [

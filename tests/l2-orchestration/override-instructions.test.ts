@@ -41,4 +41,10 @@ describe('override instructions completeness', () => {
     expect(section, 'Missing review focus').toContain('审查焦点');
     expect(section, 'Missing skip functionality check').toContain('不需要');
   });
+
+  test('sdd-quick Override covers output redirect and no auto-chain', () => {
+    const body = readSkillBody('sdd-quick');
+    expect(body, 'Missing output redirect').toContain('openspec/changes');
+    expect(body, 'Missing no auto-chain').toContain('不自动链式调用');
+  });
 });
