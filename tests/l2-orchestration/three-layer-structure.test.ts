@@ -12,6 +12,7 @@ const delegatingSkills = [
   'sdd-code',
   'sdd-quick',
   'sdd-review-code',
+  'sdd-test-code',
   'sdd-verify',
   'sdd-ship',
 ];
@@ -22,7 +23,7 @@ describe('three-layer skill structure', () => {
     skillDirs.map((d) => [path.basename(d), d]),
   );
 
-  test('9 delegating skills have 前置逻辑 section', () => {
+  test('11 delegating skills have 前置逻辑 section', () => {
     for (const name of delegatingSkills) {
       const body = parseSkillFrontmatter(
         path.join(skillMap.get(name)!, 'SKILL.md'),
@@ -31,7 +32,7 @@ describe('three-layer skill structure', () => {
     }
   });
 
-  test('9 delegating skills have core execution section', () => {
+  test('11 delegating skills have core execution section', () => {
     for (const name of delegatingSkills) {
       const body = parseSkillFrontmatter(
         path.join(skillMap.get(name)!, 'SKILL.md'),
@@ -45,7 +46,7 @@ describe('three-layer skill structure', () => {
     }
   });
 
-  test('9 delegating skills have 后置逻辑 section', () => {
+  test('11 delegating skills have 后置逻辑 section', () => {
     for (const name of delegatingSkills) {
       const body = parseSkillFrontmatter(
         path.join(skillMap.get(name)!, 'SKILL.md'),
