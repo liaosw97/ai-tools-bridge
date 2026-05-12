@@ -27,8 +27,15 @@ export interface SchemaArtifact {
   }[];
 }
 
+export interface SchemaAction {
+  description: string;
+  requires: string[];
+  produces: string[];
+}
+
 export interface SchemaDef {
   artifacts: Record<string, SchemaArtifact>;
+  actions: Record<string, SchemaAction>;
   dependency_chain: {
     description: string;
     chain: string[];

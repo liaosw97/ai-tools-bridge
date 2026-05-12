@@ -124,6 +124,17 @@ artifacts:
         required: true
         description: "APPROVED 或 NEEDS_REVISION"
 
+actions:
+  sdd-quick:
+    description: "快速模式 — 一条命令完成简单需求的 propose → spec → tasks → code 全流程"
+    requires: []
+    produces: ["proposal.md", "specs/", "tasks.md"]
+
+  sdd-test-code:
+    description: "TDD 补全 — 基于 review 报告补全 PARTIAL/MISSING 场景的测试"
+    requires: ["reviews/"]
+    produces: ["tests"]
+
 dependency_chain:
   description: "artifact 的生成顺序"
   chain:

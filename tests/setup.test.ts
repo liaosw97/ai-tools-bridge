@@ -60,9 +60,9 @@ describe('loadSchema', () => {
 });
 
 describe('getSkillDirs', () => {
-  test('returns 11 directories matching sdd-*', () => {
+  test('returns 12 directories matching sdd-*', () => {
     const dirs = getSkillDirs();
-    expect(dirs).toHaveLength(11);
+    expect(dirs).toHaveLength(12);
     dirs.forEach((dir) => {
       expect(path.basename(dir)).toMatch(/^sdd-/);
     });

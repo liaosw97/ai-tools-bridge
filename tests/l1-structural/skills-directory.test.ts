@@ -7,7 +7,7 @@ describe('skills directory structure', () => {
     const skillsDir = resolveRoot('skills');
     const entries = fs.readdirSync(skillsDir, { withFileTypes: true });
     const sddDirs = entries.filter((e) => e.isDirectory() && e.name.startsWith('sdd-'));
-    expect(sddDirs).toHaveLength(11);
+    expect(sddDirs).toHaveLength(12);
   });
 
   test('no non-sdd-* directories exist under skills/', () => {
