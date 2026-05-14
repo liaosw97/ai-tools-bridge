@@ -49,8 +49,9 @@ brainstorm.md → proposal.md → specs/ → tasks.md → plan.md
 
 | 完成后 | ★ 推荐 | ○ 可选 | △ 跳跃 |
 |-------|--------|--------|--------|
-| sdd-brainstorm | /sdd-propose | /sdd-ff | /sdd-quick |
-| sdd-propose | /sdd-ff | /sdd-plan | /sdd-brainstorm |
+| sdd-brainstorm | /sdd-propose | /sdd-continue, /sdd-ff | /sdd-quick |
+| sdd-propose | /sdd-ff | /sdd-continue, /sdd-plan | /sdd-brainstorm |
+| sdd-continue | /sdd-continue（下一个 artifact）或 /sdd-plan（已到 tasks） | /sdd-ff | /sdd-quick |
 | sdd-ff | /sdd-plan 或 /sdd-code（按复杂度） | /sdd-review-spec | /sdd-quick |
 | sdd-plan | /sdd-code | /sdd-review-spec | — |
 | sdd-code | /sdd-review-code 或 /sdd-ship（按复杂度） | /sdd-verify | — |
