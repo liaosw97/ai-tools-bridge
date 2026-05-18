@@ -20,8 +20,8 @@ describe('schema.yaml validity', () => {
     expect(Array.isArray(schema.dependency_chain.chain)).toBe(true);
   });
 
-  test('artifacts has 7 entries', () => {
+  test('artifacts has 8 entries', () => {
     const schema = loadSchema();
-    expect(Object.keys(schema.artifacts)).toHaveLength(7);
+    expect(Object.keys(schema.artifacts)).toHaveLength(8);
   });
 });

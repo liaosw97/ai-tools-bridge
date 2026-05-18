@@ -124,6 +124,20 @@ artifacts:
         required: true
         description: "APPROVED 或 NEEDS_REVISION"
 
+  backlog:
+    description: "跨变更延后项追踪文件，归档时从 proposal 中提取未完成 P1/P2 项"
+    required: false
+    dependencies: []
+    file: "backlog.md"
+    template: "schemas/sdd/templates/backlog.md"
+    content_constraints:
+      - field: "标题"
+        required: true
+        description: "以 # Backlog 开头"
+      - field: "表格"
+        required: true
+        description: "Markdown 表格，列头: 来源变更 | 优先级 | 简述 | 状态"
+
 actions:
   sdd-quick:
     description: "快速模式 — 一条命令完成简单需求的 propose → spec → tasks → code 全流程"
