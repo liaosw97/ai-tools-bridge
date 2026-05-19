@@ -6,8 +6,8 @@ import { resolveRoot, parseSkillFrontmatter } from '../setup.js';
 const expectedPromptRefs: Record<string, string[]> = {
   'sdd-brainstorm': ['brainstorm-reviewer-prompt.md'],
   'sdd-plan': ['plan-reviewer-prompt.md'],
-  'sdd-review-spec': ['spec-reviewer-prompt.md'],
-  'sdd-review-code': ['spec-compliance-reviewer-prompt.md'],
+  'sdd-review-spec': ['spec-reviewer-prompt.md', 'scan-reviewer-prompt.md'],
+  'sdd-review-code': ['spec-compliance-reviewer-prompt.md', 'scan-reviewer-prompt.md'],
   // code-quality-reviewer-prompt.md 由 Phase 2 委托隐式使用，未在正文中直接引用
 };
 

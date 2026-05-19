@@ -6,12 +6,14 @@ const reviewerPrompts = [
   { skill: 'sdd-brainstorm', file: 'brainstorm-reviewer-prompt.md' },
   { skill: 'sdd-plan', file: 'plan-reviewer-prompt.md' },
   { skill: 'sdd-review-spec', file: 'spec-reviewer-prompt.md' },
+  { skill: 'sdd-review-spec', file: 'scan-reviewer-prompt.md' },
   { skill: 'sdd-review-code', file: 'spec-compliance-reviewer-prompt.md' },
   { skill: 'sdd-review-code', file: 'code-quality-reviewer-prompt.md' },
+  { skill: 'sdd-review-code', file: 'scan-reviewer-prompt.md' },
 ];
 
 describe('reviewer prompts', () => {
-  test('all 5 reviewer prompt files exist and are non-empty', () => {
+  test('all 7 reviewer prompt files exist and are non-empty', () => {
     for (const { skill, file } of reviewerPrompts) {
       const filePath = resolveRoot('skills', skill, file);
       expect(fs.existsSync(filePath), `Missing: ${skill}/${file}`).toBe(true);

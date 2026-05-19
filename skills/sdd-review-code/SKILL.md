@@ -1,11 +1,11 @@
 ---
 name: sdd-review-code
-description: "代码审查（双阶段）— Phase 1: 场景-代码映射验证 → Phase 2: 代码质量审查"
+description: "代码审查 — Phase 1: 场景-代码映射验证 → Phase 1.5: 规范扫描（条件执行）→ Phase 2: 代码质量审查"
 ---
 
-# sdd-review-code — 代码审查（双阶段）
+# sdd-review-code — 代码审查
 
-分两阶段审查代码：先确认"做对了"（场景-代码映射验证），再讨论"做好了"（代码质量）。
+分阶段审查代码：先确认"做对了"（场景-代码映射验证），条件执行规范扫描，最后讨论"做好了"（代码质量）。
 
 ---
 
@@ -79,6 +79,39 @@ description: "代码审查（双阶段）— Phase 1: 场景-代码映射验证 
 
 ---
 
+## Phase 1.5: 规范扫描（SDD 自有，条件执行）
+
+**仅在 Phase 1 通过后执行。**
+
+读取 `scan-reviewer-prompt.md`，dispatch subagent 进行规范扫描：
+
+### 工作类型检测
+
+通过 git diff 检查变更文件路径：
+- **skill 开发**：变更文件包含 `SKILL.md` 或 `skills/` 目录下的 Markdown 文件
+- **代码开发**：其他所有情况
+
+### 扫描调度
+
+```
+检测工作类型
+  ├── skill 开发 → 调用 skill-craft-adapter:skill-check（单文件）
+  │                或 skill-craft-adapter:skill-audit（多文件系统级）
+  ├── 代码开发 → 查询可用 skill 列表
+  │   ├── 找到描述含"代码质量""安全""质量规范"的 skill → 调用
+  │   └── 未找到 → SKIPPED
+  └── skill-craft-adapter 不可用 → SKIPPED
+```
+
+### Phase 1.5 结果
+
+- **SCANNED** — 扫描完成，结果写入 `reviews/scan-r<N>.md`
+  - 如果发现 critical/major 问题，在报告中列出问题描述和修复建议
+  - 不阻断 Phase 2 执行，问题在汇总中报告
+- **SKIPPED** — 无可用规范扫描 skill，跳过扫描阶段
+
+---
+
 ## Phase 2: 代码质量审查（委托底层 skill）
 
 **仅在 Phase 1 通过后执行。**
@@ -118,6 +151,11 @@ sdd-review-code 完成。
 
 Phase 1 (Spec 合规): ✅ PASSED — 所有场景已实现
   evidence: specs/<domain>/spec.md (N 个场景) vs 代码变更 (N 个文件)
+Phase 1.5 (规范扫描): SCANNED / SKIPPED
+  SCANNED: 已调用 <skill-name>，发现 N 个问题
+  evidence: reviews/scan-r<N>.md
+  或
+  SKIPPED: 无可用规范扫描 skill
 Phase 2 (代码质量):
   - [N] 个 critical issues
   - [N] 个 major issues
@@ -126,6 +164,7 @@ Phase 2 (代码质量):
 
 产物:
   reviews/spec-compliance-r<N>.md
+  reviews/scan-r<N>.md (如执行了扫描)
   reviews/code-quality-r<N>.md
 
 如需释放上下文，可安全 /clear。
