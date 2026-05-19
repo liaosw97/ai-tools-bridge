@@ -4,6 +4,14 @@
 
 ---
 
+## 全局约定
+
+### Review 循环上限
+
+所有内置 review 循环（brainstorm、plan 等）最多 **3 轮**。通过或用户接受后停止。该上限适用于所有含 review 子流程的 SDD action。
+
+---
+
 ## Action 级质量门
 
 ### sdd-brainstorm 质量门

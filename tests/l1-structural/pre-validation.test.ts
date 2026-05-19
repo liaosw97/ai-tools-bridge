@@ -105,15 +105,16 @@ describe('sdd-verify: pre-validation', () => {
   });
 });
 
-// ── Task 5.7: sdd-ship 前置校验（阻断：verify 未执行；警告：有未通过 review） ──
+// ── Task 5.7: sdd-ship 前置校验（警告：verify 未执行允许跳过；警告：有未通过 review） ──
 
 describe('sdd-ship: pre-validation', () => {
-  test('contains blocking check for unexecuted verify', () => {
+  test('contains warning check for unexecuted verify', () => {
     const body = getBody('sdd-ship');
     expect(body).toContain('前置校验');
     expect(body).toContain('verify');
-    expect(body).toContain('阻断');
+    expect(body).toContain('警告');
     expect(body).toContain('/sdd-verify');
+    expect(body).toContain('允许跳过');
   });
 
   test('contains warning for unpassed reviews', () => {

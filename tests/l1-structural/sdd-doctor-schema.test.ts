@@ -24,8 +24,8 @@ describe('sdd-doctor SKILL.md: complexity assessment', () => {
     expect(body).toContain('简单');
     expect(body).toContain('中等');
     expect(body).toContain('复杂');
-    expect(body).toContain('1-3');
-    expect(body).toContain('≤5');
+    expect(body).toContain('1-5');
+    expect(body).toContain('≤10');
     expect(body).toContain('4-8');
     expect(body).toContain('6-15');
     expect(body).toContain('>8');

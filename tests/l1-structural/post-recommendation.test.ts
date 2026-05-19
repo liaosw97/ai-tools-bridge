@@ -7,7 +7,7 @@ function getBody(skillDir: string): string {
   return parseSkillFrontmatter(skillPath).body;
 }
 
-// ── Task 6.1: sdd-brainstorm 后置推荐（★/sdd-propose, ○/sdd-ff, △/sdd-quick） ──
+// ── Task 6.1: sdd-brainstorm 后置推荐（★/sdd-propose, ○/sdd-ff） ──
 
 describe('sdd-brainstorm: post-recommendation', () => {
   test('contains ★ /sdd-propose recommendation', () => {
@@ -20,12 +20,6 @@ describe('sdd-brainstorm: post-recommendation', () => {
     const body = getBody('sdd-brainstorm');
     expect(body).toContain('○');
     expect(body).toContain('/sdd-ff');
-  });
-
-  test('contains △ /sdd-quick recommendation', () => {
-    const body = getBody('sdd-brainstorm');
-    expect(body).toContain('△');
-    expect(body).toContain('/sdd-quick');
   });
 });
 
@@ -51,7 +45,7 @@ describe('sdd-propose: post-recommendation', () => {
   });
 });
 
-// ── Task 6.3: sdd-ff 后置推荐（★按复杂度, ○/sdd-review-spec, △/sdd-quick） ──
+// ── Task 6.3: sdd-ff 后置推荐（★按复杂度, ○/sdd-review-spec） ──
 
 describe('sdd-ff: post-recommendation', () => {
   test('contains complexity-based dynamic recommendation', () => {
@@ -65,12 +59,6 @@ describe('sdd-ff: post-recommendation', () => {
     const body = getBody('sdd-ff');
     expect(body).toContain('○');
     expect(body).toContain('/sdd-review-spec');
-  });
-
-  test('contains △ /sdd-quick recommendation', () => {
-    const body = getBody('sdd-ff');
-    expect(body).toContain('△');
-    expect(body).toContain('/sdd-quick');
   });
 });
 
@@ -91,25 +79,19 @@ describe('sdd-code: post-recommendation', () => {
   });
 });
 
-// ── Task 6.5: sdd-review-code 后置推荐（★/sdd-test-code, ○/sdd-code, △/sdd-ship） ──
+// ── Task 6.5: sdd-review-code 后置推荐（条件式：PASSED→/sdd-verify, PARTIAL/MISSING→/sdd-test-code） ──
 
 describe('sdd-review-code: post-recommendation', () => {
-  test('contains ★ /sdd-test-code recommendation', () => {
+  test('contains conditional recommendation for PARTIAL/MISSING scenarios', () => {
     const body = getBody('sdd-review-code');
-    expect(body).toContain('★');
+    expect(body).toContain('PARTIAL/MISSING');
     expect(body).toContain('/sdd-test-code');
   });
 
-  test('contains ○ /sdd-code recommendation', () => {
+  test('contains conditional recommendation for all PASSED', () => {
     const body = getBody('sdd-review-code');
-    expect(body).toContain('○');
-    expect(body).toContain('/sdd-code');
-  });
-
-  test('contains △ /sdd-ship recommendation', () => {
-    const body = getBody('sdd-review-code');
-    expect(body).toContain('△');
-    expect(body).toContain('/sdd-ship');
+    expect(body).toContain('PASSED');
+    expect(body).toContain('/sdd-verify');
   });
 });
 

@@ -49,10 +49,10 @@ brainstorm.md → proposal.md → specs/ → tasks.md → plan.md
 
 | 完成后 | ★ 推荐 | ○ 可选 | △ 跳跃 |
 |-------|--------|--------|--------|
-| sdd-brainstorm | /sdd-propose | /sdd-continue, /sdd-ff | /sdd-quick |
+| sdd-brainstorm | /sdd-propose | /sdd-continue, /sdd-ff | — |
 | sdd-propose | /sdd-ff | /sdd-continue, /sdd-plan | /sdd-brainstorm |
-| sdd-continue | /sdd-continue（下一个 artifact）或 /sdd-plan（已到 tasks） | /sdd-ff | /sdd-quick |
-| sdd-ff | /sdd-plan 或 /sdd-code（按复杂度） | /sdd-review-spec | /sdd-quick |
+| sdd-continue | /sdd-continue（下一个 artifact）或 /sdd-plan（已到 tasks） | /sdd-ff | — |
+| sdd-ff | /sdd-plan 或 /sdd-code（按复杂度） | /sdd-review-spec | — |
 | sdd-plan | /sdd-code | /sdd-review-spec | — |
 | sdd-code | /sdd-review-code 或 /sdd-ship（按复杂度） | /sdd-verify | — |
 | sdd-review-code | /sdd-test-code | /sdd-code | /sdd-ship |
@@ -105,12 +105,16 @@ brainstorm.md → proposal.md → specs/ → tasks.md → plan.md
 | SDD Action | 委托给 |
 |------------|--------|
 | sdd-brainstorm | superpowers:brainstorming |
-| sdd-propose | openspec-continue-change |
+| sdd-propose | openspec-continue-change / openspec-propose |
 | sdd-continue | openspec-continue-change |
 | sdd-ff | openspec-ff-change |
 | sdd-plan | superpowers:writing-plans |
 | sdd-code | superpowers:TDD + worktrees + debugging |
+| sdd-quick | openspec-continue-change + superpowers:TDD |
+| sdd-review-spec | SDD 自有 subagent |
+| sdd-review-code (Phase 1) | SDD 自有 subagent |
 | sdd-review-code (Phase 2) | superpowers:requesting-code-review |
+| sdd-test-code | superpowers:TDD |
 | sdd-verify | superpowers:verification + openspec-verify |
 | sdd-ship | openspec-sync-specs + archive + superpowers:finishing-branch |
 
@@ -223,7 +227,7 @@ ai-tools-bridge/
 ├── schemas/
 │   └── sdd/
 │       ├── schema.yaml        # artifact 定义、依赖链
-│       └── templates/         # 7 个 artifact 模板
+│       └── templates/         # 8 个 artifact 模板
 ├── guidelines/
 │   ├── quality-checkpoints.md
 │   ├── decision-strategy.md

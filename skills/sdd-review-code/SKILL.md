@@ -1,11 +1,33 @@
 ---
 name: sdd-review-code
-description: "代码审查（双阶段）— Phase 1: Spec 合规审查 → Phase 2: 代码质量审查"
+description: "代码审查（双阶段）— Phase 1: 场景-代码映射验证 → Phase 2: 代码质量审查"
 ---
 
 # sdd-review-code — 代码审查（双阶段）
 
-分两阶段审查代码：先确认"做对了"（spec 合规），再讨论"做好了"（代码质量）。
+分两阶段审查代码：先确认"做对了"（场景-代码映射验证），再讨论"做好了"（代码质量）。
+
+---
+
+## 触发条件
+
+**触发**：用户执行 `/sdd-review-code`，或说"审查代码""代码 review""检查代码质量"。
+**不触发**：要审查 spec 质量（→ `/sdd-review-spec`）；要补全测试（→ `/sdd-test-code`）。
+**歧义处理**：无代码变更时建议先编码（→ `/sdd-code`）。
+
+## 输出约束
+
+禁止输出:
+- 开场白（"让我来审查..."）
+- 工具调用前后的重复描述
+- 未引用代码位置或 spec 条文的审查意见
+- 已知信息的复述
+
+## 零结果与幻觉防护
+
+- 所有审查发现必须引用 evidence 来源（spec 文件路径 + 代码文件路径）
+- 无法定位代码时标注"⚠️ 无法验证"而非跳过
+- 无代码变更时输出"无代码变更可审查"而非编造意见
 
 ---
 
@@ -35,7 +57,7 @@ description: "代码审查（双阶段）— Phase 1: Spec 合规审查 → Phas
 
 读取 `spec-compliance-reviewer-prompt.md`，dispatch subagent 审查：
 
-**审查目标：** 代码是否实现了 spec 中定义的每一个场景。
+**审查目标：** 代码是否实现了 spec 中定义的每一个场景。（代码层面的 spec 合规审查，区别于 sdd-verify 的测试层面覆盖验证）
 
 审查逻辑：
 1. 提取所有 spec 文件中的 GIVEN/WHEN/THEN 场景
@@ -53,7 +75,7 @@ description: "代码审查（双阶段）— Phase 1: Spec 合规审查 → Phas
   建议: 运行 /sdd-code 补充缺失的实现，而非继续代码质量审查。
   ```
 
-产物：`reviews/spec-compliance-batch<N>.md`
+产物：`reviews/spec-compliance-r<N>.md`
 
 ---
 
@@ -72,7 +94,7 @@ description: "代码审查（双阶段）— Phase 1: Spec 合规审查 → Phas
 
 ```
 SDD Override 指令：
-1. 输出位置：审查结果写入 openspec/changes/<name>/reviews/code-batch<N>.md
+1. 输出位置：审查结果写入 openspec/changes/<name>/reviews/code-quality-r<N>.md
 2. 审查焦点：可读性、设计模式、潜在问题、性能
 3. 已通过 spec 合规审查，不需要再检查功能正确性
 ```
@@ -89,27 +111,28 @@ SDD Override 指令：
 
 ### 1. 汇总审查结果
 
+汇总时必须引用 evidence 来源（spec 文件路径 + 代码文件路径），不可仅凭记忆声明结论。
+
 ```
 sdd-review-code 完成。
 
 Phase 1 (Spec 合规): ✅ PASSED — 所有场景已实现
+  evidence: specs/<domain>/spec.md (N 个场景) vs 代码变更 (N 个文件)
 Phase 2 (代码质量):
   - [N] 个 critical issues
   - [N] 个 major issues
   - [N] 个 minor issues
+  evidence: reviews/code-quality-r<N>.md
 
 产物:
-  reviews/spec-compliance-batch<N>.md
-  reviews/code-batch<N>.md
+  reviews/spec-compliance-r<N>.md
+  reviews/code-quality-r<N>.md
 
 如需释放上下文，可安全 /clear。
 
 推荐下一步:
-  - 有更多批次 → /sdd-code 继续实施
-  - 全部完成 → /sdd-verify 全面验证
+  - 有 PARTIAL/MISSING 场景 → ★ /sdd-test-code 补全缺失测试
+  - 全部 PASSED → ★ /sdd-verify 全面验证
   - 有 critical issues → 修复后重新 /sdd-review-code
-
-★ 推荐下一步: /sdd-test-code — TDD 循环补全缺失测试
-  ○ /sdd-code — 回退修复实现
-  △ /sdd-ship — 跳过测试补全直接归档
+  - 有更多批次 → /sdd-code 继续实施
 ```

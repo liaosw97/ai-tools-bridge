@@ -7,8 +7,8 @@
   "plugins": [
     {
       "name": "ai-tools-bridge",
-      "description": "SDD 工作流编排器 — 11 个独立 action skill，串联 OpenSpec（规格层）与 Superpowers（纪律层），薄编排架构，内置 review 机制、决策追溯、上下文卫生",
-      "version": "0.2.0",
+      "description": "SDD 工作流编排器 — 13 个独立 action skill，串联 OpenSpec（规格层）与 Superpowers（纪律层），薄编排架构，内置 review 机制、决策追溯、上下文卫生",
+      "version": "0.3.0",
       "source": "./",
       "author": {
         "name": "AiTools"

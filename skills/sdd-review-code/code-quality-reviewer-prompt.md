@@ -45,7 +45,7 @@
 ## 输出格式
 
 ```markdown
-# Code Quality Review — Batch N
+# Code Quality Review — Round N
 
 **审查对象:** 代码变更 diff
 **日期:** YYYY-MM-DD
@@ -69,6 +69,15 @@
 - **文件:** src/utils/helper.ts:15
 - **描述:** 函数名 `proc` 含义不明确
 - **建议:** 重命名为 `processUserInput`
+
+## Approved
+- [ ] 可读性
+- [ ] 设计模式
+- [ ] 潜在问题
+- [ ] 安全性
+- [ ] 测试质量
+
+> **N/A 处理**：如果某个维度不适用于当前代码（如纯配置文件无安全性问题），在该 checkbox 后标注 `[N/A]` 并说明原因，不计入 issues。
 
 ## 统计
 - Critical: N

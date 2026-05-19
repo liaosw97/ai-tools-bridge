@@ -9,6 +9,14 @@ description: "深度探索设计 — 苏格拉底式探索需求，生成 brains
 
 ---
 
+## 触发条件
+
+**触发**：用户执行 `/sdd-brainstorm`，或说"探索需求""头脑风暴""方案比较""深度设计"且需要澄清需求。
+**不触发**：需求已明确可直接提案（→ `/sdd-propose`）；要直接写代码（→ `/sdd-code`）。
+**歧义处理**：已有 brainstorm.md 时确认是继续探索还是覆盖。
+
+---
+
 ## 前置逻辑（SDD 自有）
 
 ### 0. 前置校验
@@ -123,6 +131,5 @@ sdd-brainstorm 完成。
   - 需求已充分明确 → /sdd-ff
 
 ★ 推荐下一步: /sdd-propose — 固化提案
-  ○ /sdd-ff — 跳过 propose 直接快进
-  △ /sdd-quick — 重新走快速路径
+  ○ /sdd-propose → /sdd-ff — 需求已充分明确时先提案再快进
 ```

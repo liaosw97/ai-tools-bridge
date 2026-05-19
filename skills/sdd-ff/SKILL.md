@@ -9,6 +9,14 @@ description: "快进生成所有文档 — 批量生成所有缺失 artifact 至
 
 ---
 
+## 触发条件
+
+**触发**：用户执行 `/sdd-ff`，或说"快进""批量生成""生成所有文档"。
+**不触发**：要逐步推进（→ `/sdd-continue`）；要开始编码（→ `/sdd-code`）。
+**歧义处理**：多个活跃变更时让用户选择。
+
+---
+
 ## 前置逻辑（SDD 自有）
 
 ### 0. 前置校验
@@ -51,6 +59,15 @@ description: "快进生成所有文档 — 批量生成所有缺失 artifact 至
 - change 目录路径
 - 已有 artifact 的内容（作为输入上下文）
 - 生成目标：所有缺失 artifact，截止到 tasks.md
+
+### Override 指令
+
+```
+SDD Override 指令（必须遵循）：
+
+1. 完成后停止 — 不要自动调用其他 skill 或继续下一个 action
+2. 输出位置 — 产物写入 openspec/changes/<name>/ 目录
+```
 
 **注意：** sdd-ff 不生成 plan.md。plan.md 由 sdd-plan 单独生成，确保质量由 Superpowers 的 writing-plans 纪律保障。
 
@@ -96,5 +113,4 @@ sdd-ff 完成。
 
 ★ 推荐下一步: /sdd-plan [中等/复杂] 或 /sdd-code [简单]（根据复杂度动态选择）
   ○ /sdd-review-spec — 先审查 spec 质量
-  △ /sdd-quick — 重新走快速路径
 ```

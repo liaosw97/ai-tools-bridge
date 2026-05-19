@@ -23,6 +23,8 @@
 - ⚠️ PARTIAL — 部分实现（说明缺少什么）
 - ❌ MISSING — 未实现
 
+> **注**: Spec 合规审查使用 IMPLEMENTED/PARTIAL/MISSING 状态标记（非 severity 分级），因为合规性是二元判定。代码质量审查由 Phase 2 的 code-quality-reviewer 负责，使用 severity 分级。
+
 ## 审查维度
 
 ### 1. 场景覆盖
@@ -43,7 +45,7 @@
 ## 输出格式
 
 ```markdown
-# Spec Compliance Review — Batch N
+# Spec Compliance Review — Round N
 
 **审查对象:** specs/ vs 代码变更
 **日期:** YYYY-MM-DD
@@ -61,6 +63,13 @@
 - **状态:** ✅/⚠️/❌
 - **验证:** 代码中的对应位置和逻辑
 - **问题（如有）:** 缺少什么
+
+## Approved
+- [ ] 场景覆盖
+- [ ] 行为匹配
+- [ ] 边界条件
+
+> **N/A 处理**：如果某个维度不适用于当前审查（如纯配置变更无边界条件），在该 checkbox 后标注 `[N/A]` 并说明原因，不计入 issues。
 
 ## 结论
 [PASSED / FAILED]

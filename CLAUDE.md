@@ -78,7 +78,7 @@ brainstorm.md（可选）→ proposal.md（必需）→ spec（必需，位于 s
 - `skills/sdd-*/SKILL.md` — 技能定义（YAML 前置元数据 + 提示词内容）
 - `skills/sdd-*/*-reviewer-prompt.md` — 子代理审查提示词
 - `schemas/sdd/schema.yaml` — 制品定义、行动定义、依赖链、内容约束
-- `schemas/sdd/templates/` — 7 个制品模板（brainstorm、proposal、spec、design、tasks、plan、review）
+- `schemas/sdd/templates/` — 8 个制品模板（brainstorm、proposal、spec、design、tasks、plan、review、backlog）
 - `guidelines/` — 决策策略、质量检查点、团队标准、Token 优化
 - `integrations/tool-template.md` — 将新 AI 工具集成到 SDD 的模板
 - `.claude-plugin/plugin.json` — 插件元数据

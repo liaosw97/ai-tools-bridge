@@ -139,15 +139,70 @@ artifacts:
         description: "Markdown 表格，列头: 来源变更 | 优先级 | 简述 | 状态"
 
 actions:
+  sdd-doctor:
+    description: "环境诊断 — 检查工具安装状态和变更进度"
+    requires: []
+    produces: []
+
+  sdd-brainstorm:
+    description: "深度探索设计 — 苏格拉底式探索需求，生成 brainstorm.md"
+    requires: []
+    produces: ["brainstorm.md"]
+
+  sdd-propose:
+    description: "固化提案 — 基于需求或 brainstorm.md 生成 proposal.md"
+    requires: []
+    produces: ["proposal.md"]
+
+  sdd-continue:
+    description: "逐步补充 artifact — 识别并生成依赖链中下一个缺失的 artifact"
+    requires: []
+    produces: ["proposal.md", "specs/", "design.md", "tasks.md"]
+
+  sdd-ff:
+    description: "快进生成所有文档 — 批量生成所有缺失 artifact 至 tasks.md"
+    requires: ["proposal.md"]
+    produces: ["specs/", "design.md", "tasks.md"]
+
+  sdd-plan:
+    description: "细化实施计划 — 基于 tasks.md 生成 TDD 级别的实施计划"
+    requires: ["tasks.md", "specs/"]
+    produces: ["plan.md"]
+
+  sdd-code:
+    description: "TDD 实施 — 按 plan.md 中的批次执行 TDD 循环"
+    requires: ["tasks.md"]
+    produces: ["code", "tests"]
+
   sdd-quick:
     description: "快速模式 — 一条命令完成简单需求的 propose → spec → tasks → code 全流程"
     requires: []
-    produces: ["proposal.md", "specs/", "tasks.md"]
+    produces: ["proposal.md", "specs/", "tasks.md", "code", "tests"]
+
+  sdd-review-spec:
+    description: "Spec 审查 — 独立审查 spec 质量"
+    requires: ["specs/"]
+    produces: ["reviews/spec-r<N>.md"]
+
+  sdd-review-code:
+    description: "代码审查（双阶段）— Phase 1: Spec 合规审查 → Phase 2: 代码质量审查"
+    requires: ["specs/", "code"]
+    produces: ["reviews/spec-compliance-r<N>.md", "reviews/code-quality-r<N>.md"]
 
   sdd-test-code:
     description: "TDD 补全 — 基于 review 报告补全 PARTIAL/MISSING 场景的测试"
     requires: ["reviews/"]
     produces: ["tests"]
+
+  sdd-verify:
+    description: "全面验证 — 逐条验证 spec 场景覆盖，运行所有测试"
+    requires: ["specs/", "code"]
+    produces: ["verification-report"]
+
+  sdd-ship:
+    description: "归档合并 — 同步 specs、归档变更、合并分支"
+    requires: ["verification-report"]
+    produces: []
 
 dependency_chain:
   description: "artifact 的生成顺序"

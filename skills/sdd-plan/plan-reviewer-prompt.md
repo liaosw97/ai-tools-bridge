@@ -55,6 +55,8 @@
 - [ ] 依赖顺序
 - [ ] 风险识别
 
+> **N/A 处理**：如果某个维度不适用于当前 plan（如单任务 plan 无依赖顺序），在该 checkbox 后标注 `[N/A]` 并说明原因，不计入 issues。
+
 ## 结论
 [APPROVED / NEEDS_REVISION]
 ```
