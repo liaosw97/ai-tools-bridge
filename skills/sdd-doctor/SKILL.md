@@ -103,6 +103,12 @@ SDD 环境诊断
   OpenSpec     ✅ 已安装
   Superpowers  ✅ 已安装
 
+限制配置:
+  quick-questions: 5 (默认值)
+  quick-scenarios: 5 (默认值)
+  quick-tasks: 10 (默认值)
+  review-rounds: 3 (默认值)
+
 活跃变更:
   user-auth/ [中等(M)]
     ✅ proposal.md    ✅ specs/ (2 个)
@@ -118,6 +124,12 @@ SDD 环境诊断
 无活跃变更。
 → 建议: 运行 sdd-brainstorm 开始新变更，或 sdd-propose 快速创建提案
 ```
+
+**限制配置输出说明**：
+- 读取 `openspec/config.yaml` 的 `limits` 节
+- 已配置且有效 → 显示配置值
+- 未配置或无效 → 显示默认值并标注"(默认值)"
+- 配置值无效时标注"(默认值，配置值无效)"
 
 ### 5. 路径推荐
 

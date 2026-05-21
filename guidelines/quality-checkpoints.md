@@ -8,7 +8,7 @@
 
 ### Review 循环上限
 
-所有内置 review 循环（brainstorm、plan 等）最多 **3 轮**。通过或用户接受后停止。该上限适用于所有含 review 子流程的 SDD action。
+所有内置 review 循环（brainstorm、plan 等）默认最多 **N 轮**（可在 `openspec/config.yaml` 的 `limits.review-rounds` 中配置，默认 3）。通过或用户接受后停止。该上限适用于所有含 review 子流程的 SDD action。
 
 ---
 
