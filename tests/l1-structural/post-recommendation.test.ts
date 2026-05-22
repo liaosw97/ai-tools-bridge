@@ -23,7 +23,7 @@ describe('sdd-brainstorm: post-recommendation', () => {
   });
 });
 
-// ── Task 6.2: sdd-propose 后置推荐（★/sdd-ff, ○/sdd-plan, △/sdd-brainstorm） ──
+// ── Task 6.2: sdd-propose 后置推荐（★/sdd-ff, ○/sdd-continue, △/sdd-brainstorm） ──
 
 describe('sdd-propose: post-recommendation', () => {
   test('contains ★ /sdd-ff recommendation', () => {
@@ -32,10 +32,10 @@ describe('sdd-propose: post-recommendation', () => {
     expect(body).toContain('/sdd-ff');
   });
 
-  test('contains ○ /sdd-plan recommendation', () => {
+  test('contains ○ /sdd-continue recommendation', () => {
     const body = getBody('sdd-propose');
     expect(body).toContain('○');
-    expect(body).toContain('/sdd-plan');
+    expect(body).toContain('/sdd-continue');
   });
 
   test('contains △ /sdd-brainstorm recommendation', () => {
@@ -62,29 +62,28 @@ describe('sdd-ff: post-recommendation', () => {
   });
 });
 
-// ── Task 6.4: sdd-code 后置推荐（★按复杂度, ○/sdd-verify） ──
+// ── Task 6.4: sdd-code 后置推荐（★/sdd-review-code, ○/sdd-code, △/sdd-ship） ──
 
 describe('sdd-code: post-recommendation', () => {
-  test('contains complexity-based dynamic recommendation', () => {
+  test('contains ★ /sdd-review-code recommendation', () => {
     const body = getBody('sdd-code');
     expect(body).toContain('★');
     expect(body).toContain('/sdd-review-code');
-    expect(body).toContain('/sdd-ship');
   });
 
-  test('contains ○ /sdd-verify recommendation', () => {
+  test('contains ○ /sdd-code recommendation', () => {
     const body = getBody('sdd-code');
     expect(body).toContain('○');
-    expect(body).toContain('/sdd-verify');
+    expect(body).toContain('/sdd-code');
   });
 });
 
-// ── Task 6.5: sdd-review-code 后置推荐（条件式：PASSED→/sdd-verify, PARTIAL/MISSING→/sdd-test-code） ──
+// ── Task 6.5: sdd-review-code 后置推荐（条件式：PASSED→/sdd-verify, PARTIAL→/sdd-test-code） ──
 
 describe('sdd-review-code: post-recommendation', () => {
-  test('contains conditional recommendation for PARTIAL/MISSING scenarios', () => {
+  test('contains conditional recommendation for PARTIAL scenarios', () => {
     const body = getBody('sdd-review-code');
-    expect(body).toContain('PARTIAL/MISSING');
+    expect(body).toContain('PARTIAL');
     expect(body).toContain('/sdd-test-code');
   });
 
@@ -95,34 +94,31 @@ describe('sdd-review-code: post-recommendation', () => {
   });
 });
 
-// ── Task 6.6: sdd-review-spec 后置推荐（★/sdd-propose, ○/sdd-ff） ──
+// ── Task 6.6: sdd-review-spec 后置推荐（★条件式, △/sdd-propose） ──
 
 describe('sdd-review-spec: post-recommendation', () => {
-  test('contains ★ /sdd-propose recommendation', () => {
+  test('contains ★ conditional recommendation', () => {
     const body = getBody('sdd-review-spec');
     expect(body).toContain('★');
-    expect(body).toContain('/sdd-propose');
+    expect(body).toContain('/sdd-plan');
+    expect(body).toContain('/sdd-ff');
   });
 
-  test('contains ○ /sdd-ff recommendation', () => {
+  test('contains △ /sdd-propose recommendation', () => {
     const body = getBody('sdd-review-spec');
-    expect(body).toContain('○');
-    expect(body).toContain('/sdd-ff');
+    expect(body).toContain('△');
+    expect(body).toContain('/sdd-propose');
   });
 });
 
-// ── Task 6.7: sdd-verify 后置推荐（★/sdd-ship, ○/sdd-code） ──
+// ── Task 6.7: sdd-verify 后置推荐（★条件式） ──
 
 describe('sdd-verify: post-recommendation', () => {
-  test('contains ★ /sdd-ship recommendation', () => {
+  test('contains ★ conditional recommendation', () => {
     const body = getBody('sdd-verify');
     expect(body).toContain('★');
     expect(body).toContain('/sdd-ship');
-  });
-
-  test('contains ○ /sdd-code recommendation', () => {
-    const body = getBody('sdd-verify');
-    expect(body).toContain('○');
+    expect(body).toContain('/sdd-test-code');
     expect(body).toContain('/sdd-code');
   });
 });

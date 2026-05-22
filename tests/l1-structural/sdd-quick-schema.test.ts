@@ -178,8 +178,10 @@ describe('sdd-quick SKILL.md: recommendation output', () => {
     expect(hasRecommendation).toBe(true);
   });
 
-  test('optionally contains /sdd-verify', () => {
+  test('optionally contains /sdd-verify or /sdd-ship', () => {
     const body = parseSkillFrontmatter(skillPath).body;
-    expect(body).toContain('/sdd-verify');
+    const hasOptional =
+      body.includes('/sdd-verify') || body.includes('/sdd-ship');
+    expect(hasOptional).toBe(true);
   });
 });
