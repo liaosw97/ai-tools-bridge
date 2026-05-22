@@ -114,7 +114,7 @@ sdd-review-spec 完成。
 如需释放上下文，可安全 /clear。
 
 ★ 推荐下一步（按审查结果）:
-  Approved → /sdd-plan — 生成实施计划
-  Issues → /sdd-propose — 修正提案后重新生成
-  ○ /sdd-ff — 快进生成剩余文档
+  /sdd-plan — Approved，生成实施计划
+  /sdd-ff — Issues，重新生成 spec
+  △ /sdd-propose — 回退修改提案
 ```

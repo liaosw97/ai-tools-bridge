@@ -113,10 +113,7 @@ tasks.md 已更新。
 
 如需释放上下文，可安全 /clear。
 
-推荐下一步:
-  - 审查本批次代码 → /sdd-review-code
-  - 继续下一批次 → /sdd-code
-
-★ 推荐下一步: /sdd-review-code [中等/复杂] 或 /sdd-ship [简单]（sdd-ship 会提示 verify 检查）
-  ○ /sdd-verify — 全面验证 Spec 场景覆盖
+★ 推荐下一步: /sdd-review-code — 审查本批次代码
+  ○ /sdd-code — 继续下一批次
+  △ /sdd-ship — 简单变更可直接归档
 ```

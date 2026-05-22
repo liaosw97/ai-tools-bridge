@@ -107,10 +107,6 @@ sdd-ff 完成。
 
 如需释放上下文，可安全 /clear。
 
-推荐下一步:
-  - 大特性，建议先审查 spec → /sdd-review-spec
-  - 小修复，直接生成计划 → /sdd-plan
-
-★ 推荐下一步: /sdd-plan [中等/复杂] 或 /sdd-code [简单]（根据复杂度动态选择）
+★ 推荐下一步: /sdd-plan — 生成实施计划
   ○ /sdd-review-spec — 先审查 spec 质量
 ```

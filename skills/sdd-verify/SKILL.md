@@ -118,10 +118,6 @@ Spec 覆盖率:  ⚠️ 75% (3/4 场景)
 
 未覆盖场景:
   - spec:auth#token-refresh — 需要补充测试
-
-推荐下一步:
-  - Pass → /sdd-ship 归档合并
-  - Fail → /sdd-code 补充缺失实现
 ```
 
 ### 3. 完成引导
@@ -133,10 +129,8 @@ sdd-verify 完成。
 
 如需释放上下文，可安全 /clear。
 
-推荐下一步:
-  - 通过 → /sdd-ship 归档合并
-  - 未通过 → /sdd-code 补充缺失的实现
-
-★ 推荐下一步: /sdd-ship — 归档合并
-  ○ /sdd-code — 修复验证失败项
+★ 推荐下一步（按审查结果）:
+  /sdd-ship — PASSED，归档合并
+  /sdd-test-code — FAILED，测试未覆盖场景
+  /sdd-code — FAILED，实现缺失
 ```
