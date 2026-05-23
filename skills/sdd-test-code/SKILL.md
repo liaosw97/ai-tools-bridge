@@ -15,6 +15,20 @@ description: "TDD 补全 — 基于 review 报告补全 PARTIAL/MISSING 场景�
 **不触发**：要写新功能代码（→ `/sdd-code`）；要审查代码（→ `/sdd-review-code`）。
 **歧义处理**：无 review 报告时建议先审查（→ `/sdd-review-code`）。
 
+## 输出约束
+
+禁止输出:
+- 开场白（"让我来补全测试..."）
+- 工具调用前后的重复描述
+- 未引用 review 报告的测试修复
+- 已知信息的复述
+
+## 零结果与幻觉防护
+
+- 所有测试修复必须引用来源（review 报告文件路径）
+- reviews/ 不存在时拒绝执行，输出错误提示
+- 无 PARTIAL/MISSING 场景时输出"所有场景均已覆盖"
+
 ---
 
 ## 前置逻辑（SDD 自有）

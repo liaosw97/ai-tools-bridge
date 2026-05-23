@@ -15,6 +15,20 @@ description: "固化提案 — 基于需求或 brainstorm.md 生成 proposal.md�
 **不触发**：要深度探索需求（→ `/sdd-brainstorm`）；要批量生成文档（→ `/sdd-ff`）。
 **歧义处理**：多个活跃变更时让用户选择；已有 proposal.md 时确认覆盖或修改。
 
+## 输出约束
+
+禁止输出:
+- 开场白（"让我来创建提案..."）
+- 工具调用前后的重复描述
+- 未引用 brainstorm 决策的 proposal 声明
+- 已知信息的复述
+
+## 零结果与幻觉防护
+
+- 所有决策追溯必须引用来源（brainstorm.md 文件路径）
+- brainstorm 有空决策项时输出警告
+- 无法生成 proposal 时标注"⚠️ 需求不明确"
+
 ---
 
 ## 前置逻辑（SDD 自有）

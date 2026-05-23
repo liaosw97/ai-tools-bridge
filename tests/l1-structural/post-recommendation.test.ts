@@ -123,13 +123,13 @@ describe('sdd-verify: post-recommendation', () => {
   });
 });
 
-// ── Task 6.8: sdd-ship 后置（变更已完成，无后续操作） ──
+// ── Task 6.8: sdd-ship 后置（变更完成，有后续操作建议） ──
 
 describe('sdd-ship: post-recommendation', () => {
-  test('contains completion message with no follow-up actions', () => {
+  test('contains completion message with follow-up actions', () => {
     const body = getBody('sdd-ship');
-    expect(body).toContain('变更已完成');
-    expect(body).toContain('无后续操作');
+    expect(body).toContain('本轮变更完成');
+    expect(body).toContain('后续操作');
   });
 });
 
