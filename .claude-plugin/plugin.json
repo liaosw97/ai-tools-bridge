@@ -34,5 +34,8 @@
     "./skills/sdd-ship",
     "./skills/sdd-test-code",
     "./skills/sdd-verify"
+  ],
+  "commands": [
+    "./commands/sdd-role"
   ]
 }
