@@ -39,6 +39,11 @@ description: "固化提案 — 基于需求或 brainstorm.md 生成 proposal.md�
 - 发现有空项 → 输出**警告**：列出具体缺失的决策项，建议用户补充，询问是否强制继续
 - 用户确认后可强制继续
 
+### 0.3 角色加载
+
+**默认角色**: `ceo`
+**可选角色**: `eng-manager`
+
 ### 1. 定位 Change 目录
 
 - 如果用户指定了 change 名称，使用 `openspec/changes/<name>/`

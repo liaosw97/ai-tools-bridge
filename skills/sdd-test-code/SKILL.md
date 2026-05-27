@@ -37,6 +37,11 @@ description: "TDD 补全 — 基于 review 报告补全 PARTIAL/MISSING 场景�
 
 - **阻断**：`reviews/` 不存在或为空 → 拒绝执行，输出错误提示建议先执行 `/sdd-review-code`
 
+### 0.3 角色加载
+
+**默认角色**: `qa-lead`
+**可选角色**: `staff-engineer`
+
 ### 1. 定位最新 review 报告
 
 扫描 `openspec/changes/<name>/reviews/` 目录：

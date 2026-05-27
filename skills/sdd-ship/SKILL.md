@@ -46,6 +46,11 @@ description: "归档合并 — 同步 specs、归档变更、合并分支，完�
 - **警告**：未执行 sdd-verify → 建议先运行 /sdd-verify 确认所有场景覆盖，用户确认后可强制继续（简单修复允许跳过 verify 直接归档）
 - **警告**：存在未通过的 review issues → 列出未通过项，建议修复后再归档，用户确认后可强制继续
 
+### 0.3 角色加载
+
+**默认角色**: `release-engineer`
+**可选角色**: `sre`
+
 ### 1. 定位 Change 目录
 
 - 扫描 `openspec/changes/` 找到活跃变更

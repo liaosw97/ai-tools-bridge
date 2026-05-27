@@ -38,6 +38,13 @@ description: "代码审查 — Phase 1: 场景-代码映射验证 → Phase 1.5:
 - **阻断**：无代码变更（git 无未提交更改）或 `specs/` 不存在 → 拒绝执行，输出具体缺失项和修复建议
 - **警告**：spec 场景总数少于 tasks 数量 → 提示"spec 场景数（N）少于 tasks 数量（M），可能存在未覆盖的功能点"
 
+### 0.3 角色加载
+
+**默认角色**: `staff-engineer`
+**可选角色**: `cso`, `qa-lead`
+
+注：切换为 `cso` 角色可执行安全审计；切换为 `qa-lead` 角色可执行测试覆盖审查。
+
 ### 1. 定位 Change 目录
 
 - 扫描 `openspec/changes/` 找到活跃变更

@@ -37,6 +37,11 @@ description: "全面验证 — 逐条验证 spec 场景覆盖，运行所有测�
 
 - **阻断**：`specs/` 不存在或无代码文件 → 拒绝执行，输出"缺少 spec 或代码，请先执行 /sdd-code 完成实现"
 
+### 0.3 角色加载
+
+**默认角色**: `qa-lead`
+**可选角色**: `cso`, `sre`
+
 ### 1. 定位 Change 目录
 
 - 扫描 `openspec/changes/` 找到活跃变更

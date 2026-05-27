@@ -38,6 +38,13 @@ description: "TDD 实施 — 按 plan.md 中的批次执行 TDD 循环，产出�
 - **阻断**：`tasks.md` 不存在 → 拒绝执行，输出"缺少 tasks.md，请先执行 /sdd-ff 生成 tasks"
 - **警告**：tasks 数量 >15 且 `plan.md` 不存在 → 提示"tasks.md 包含 N 项任务但缺少 plan.md，建议先执行 /sdd-plan。跳过 plan 时建议每个任务完成后运行全量测试以确保不引入回归"，用户确认后可强制继续
 
+### 0.3 角色加载
+
+**默认角色**: `developer`
+**可选角色**: 无
+
+注：sdd-code 执行阶段角色固定为 developer，确保 TDD 纪律执行。
+
 ### 1. 定位 Change 目录
 
 - 扫描 `openspec/changes/` 找到活跃变更

@@ -43,6 +43,11 @@ description: "细化实施计划 — 基于 tasks.md 生成 TDD 级别的实施�
 - **tasks 中部分任务缺少 `[spec:domain#scenario]` 链接** → 警告：输出缺少链接的任务列表，建议补充
 - 阻断级缺失时拒绝执行，输出具体缺失项和修复建议
 
+### 0.3 角色加载
+
+**默认角色**: `eng-manager`
+**可选角色**: `ceo`
+
 ### 1. 定位 Change 目录
 
 - 扫描 `openspec/changes/` 找到活跃变更

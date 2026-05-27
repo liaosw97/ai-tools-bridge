@@ -36,6 +36,11 @@ description: "Spec 审查 — 独立审查 spec 质量，检查场景完整性�
 
 - **阻断**：`specs/` 不存在或无 spec 文件 → 拒绝执行，输出"缺少 spec 文件，请先执行 /sdd-ff 生成规格"
 
+### 0.3 角色加载
+
+**默认角色**: `eng-manager`
+**可选角色**: `ceo`, `designer`
+
 ### 1. 定位 Change 目录
 
 - 扫描 `openspec/changes/` 找到活跃变更
