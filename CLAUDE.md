@@ -160,3 +160,43 @@ plan.md 任务会带有 `[unit:模块/单元/功能点]` 标注。
 
 - 相似度阈值：>60%（名称关键词 Jaccard 相似度）
 - 发现冲突时暂停，询问用户是扩展还是新建
+
+## 角色系统
+
+SDD action 支持角色视角切换，为不同阶段提供专业视角。
+
+### 目录结构
+
+```
+ai-tools-bridge/roles/
+  planning/
+    yc-office-hours.md
+    ceo.md
+    eng-manager.md
+    designer.md
+  execution/
+    developer.md
+  review/
+    staff-engineer.md
+    qa-lead.md
+    cso.md
+  release/
+    release-engineer.md
+    sre.md
+```
+
+### 角色定义格式
+
+每个 role 文件包含 5 要素：
+- 身份（Who）
+- 专业视角（Perspective）
+- 强制问题（Forcing Questions）
+- 输出格式（Output Format）
+- 触发条件（Trigger）— YAML frontmatter
+
+### 加载流程
+
+1. 检查 `--role` 参数
+2. 检查会话级角色 (`/sdd-role` 设置)
+3. 使用 action 默认角色
+4. 按优先级合并：用户级 > 项目级 > 内置
