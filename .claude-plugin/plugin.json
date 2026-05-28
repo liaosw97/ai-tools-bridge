@@ -1,7 +1,7 @@
 {
   "name": "ai-tools-bridge",
   "description": "SDD 工作流编排器 — Action-based 架构，串联 OpenSpec（规格层）与 Superpowers（纪律层），提供 13 个独立 action、review 机制、决策追溯、上下文卫生",
-  "version": "0.3.0",
+  "version": "0.3.1",
   "author": {
     "name": "AiTools"
   },
