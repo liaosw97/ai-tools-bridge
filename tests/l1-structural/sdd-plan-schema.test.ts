@@ -1,28 +1,40 @@
 import { describe, test, expect } from 'vitest';
 import { resolveRoot, parseSkillFrontmatter } from '../setup.js';
+import { readFileSync, existsSync } from 'fs';
+import { join } from 'path';
 
 const skillPath = resolveRoot('skills', 'sdd-plan', 'SKILL.md');
+const batchModePath = resolveRoot('skills', 'sdd-plan', 'modules', 'batch-mode.md');
 
 function getBody(): string {
   return parseSkillFrontmatter(skillPath).body;
+}
+
+function getBatchModeContent(): string {
+  if (!existsSync(batchModePath)) return '';
+  return readFileSync(batchModePath, 'utf-8');
+}
+
+function getAllContent(): string {
+  return getBody() + '\n' + getBatchModeContent();
 }
 
 // ── Task 3.1: 前置逻辑增加任务规模检测（≤10/11-25/>25） ──
 
 describe('sdd-plan SKILL.md: task scale detection', () => {
   test('contains scale tiers: 小型(≤10), 中型(11-25), 大型(>25)', () => {
-    const body = getBody();
-    expect(body).toContain('小型');
-    expect(body).toContain('中型');
-    expect(body).toContain('大型');
-    expect(body).toContain('≤10');
-    expect(body).toContain('11-25');
-    expect(body).toContain('>25');
+    const content = getAllContent();
+    expect(content).toContain('小型');
+    expect(content).toContain('中型');
+    expect(content).toContain('大型');
+    expect(content).toContain('≤10');
+    expect(content).toContain('11-25');
+    expect(content).toContain('>25');
   });
 
   test('small scale maps to normal generation', () => {
-    const body = getBody();
-    expect(body).toContain('正常生成');
+    const content = getAllContent();
+    expect(content).toContain('正常生成');
   });
 });
 
@@ -30,9 +42,9 @@ describe('sdd-plan SKILL.md: task scale detection', () => {
 
 describe('sdd-plan SKILL.md: medium task prompt', () => {
   test('contains one-shot and batch generation options', () => {
-    const body = getBody();
-    expect(body).toContain('一次性生成');
-    expect(body).toContain('分批生成');
+    const content = getAllContent();
+    expect(content).toContain('一次性生成');
+    expect(content).toContain('分批生成');
   });
 });
 
@@ -40,13 +52,13 @@ describe('sdd-plan SKILL.md: medium task prompt', () => {
 
 describe('sdd-plan SKILL.md: large task recommendation', () => {
   test('contains split change option', () => {
-    const body = getBody();
-    expect(body).toContain('拆分为多个 change');
+    const content = getAllContent();
+    expect(content).toContain('拆分为多个 change');
   });
 
   test('contains batch generation option for large tasks', () => {
-    const body = getBody();
-    expect(body).toContain('分批生成');
+    const content = getAllContent();
+    expect(content).toContain('分批生成');
   });
 });
 
@@ -54,23 +66,23 @@ describe('sdd-plan SKILL.md: large task recommendation', () => {
 
 describe('sdd-plan SKILL.md: batch generation logic', () => {
   test('contains batch size guidance (5-10 tasks per batch)', () => {
-    const body = getBody();
-    expect(body).toContain('5-10 个任务');
+    const content = getAllContent();
+    expect(content).toContain('5-10 个任务');
   });
 
   test('contains dependency-based grouping', () => {
-    const body = getBody();
-    expect(body).toContain('依赖关系');
+    const content = getAllContent();
+    expect(content).toContain('依赖关系');
   });
 
   test('contains checkpoint format', () => {
-    const body = getBody();
-    expect(body).toContain('checkpoint');
+    const content = getAllContent();
+    expect(content).toContain('checkpoint');
   });
 
   test('contains sequential batch generation flow', () => {
-    const body = getBody();
-    expect(body).toContain('逐批生成');
+    const content = getAllContent();
+    expect(content).toContain('逐批生成');
   });
 });
 
@@ -78,8 +90,8 @@ describe('sdd-plan SKILL.md: batch generation logic', () => {
 
 describe('sdd-plan SKILL.md: split change prompt', () => {
   test('contains /sdd-propose fallback suggestion', () => {
-    const body = getBody();
-    expect(body).toContain('/sdd-propose');
+    const content = getAllContent();
+    expect(content).toContain('/sdd-propose');
   });
 });
 

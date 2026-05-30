@@ -1,6 +1,7 @@
 import { describe, test, expect } from 'vitest';
 import { getSkillDirs, parseSkillFrontmatter } from '../setup.js';
 import path from 'node:path';
+import fs from 'node:fs';
 
 // CLAUDE.md 中记录的委托表
 const expectedDelegations: Record<string, string[]> = {
@@ -33,6 +34,23 @@ const expectedDelegations: Record<string, string[]> = {
   ],
 };
 
+function getAllContent(dir: string): string {
+  const skillPath = path.join(dir, 'SKILL.md');
+  const result = parseSkillFrontmatter(skillPath);
+  let content = result.body;
+
+  // 检查 modules 目录
+  const modulesDir = path.join(dir, 'modules');
+  if (fs.existsSync(modulesDir)) {
+    const moduleFiles = fs.readdirSync(modulesDir).filter(f => f.endsWith('.md'));
+    for (const file of moduleFiles) {
+      content += '\n' + fs.readFileSync(path.join(modulesDir, file), 'utf-8');
+    }
+  }
+
+  return content;
+}
+
 describe('skill delegation targets', () => {
   const skillDirs = getSkillDirs();
 
@@ -42,14 +60,13 @@ describe('skill delegation targets', () => {
       const expected = expectedDelegations[name];
       if (!expected || expected.length === 0) continue;
 
-      const result = parseSkillFrontmatter(path.join(dir, 'SKILL.md'));
-      const body = result.body;
+      const content = getAllContent(dir);
 
       for (const target of expected) {
         // 搜索委托目标名称（可能以 `skill-name` 或 `skill: name` 形式出现）
         expect(
-          body.includes(target),
-          `${name} should delegate to "${target}" but not found in SKILL.md`,
+          content.includes(target),
+          `${name} should delegate to "${target}" but not found in SKILL.md or modules/`,
         ).toBe(true);
       }
     }

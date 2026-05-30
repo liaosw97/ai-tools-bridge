@@ -61,6 +61,10 @@ description: "固化提案 — 基于需求或 brainstorm.md 生成 proposal.md�
 - proposal.md 不依赖 brainstorm.md（可直接跳过 brainstorm 创建 proposal）
 - 如果已存在 proposal.md，询问用户是覆盖还是在现有基础上修改
 
+### 3.5 Guidelines 按需加载
+
+> 按需加载规则见 `guidelines/token-optimization.md` §按需加载 Guidelines。
+
 ---
 
 ## 核心执行（委托底层 skill）

@@ -60,6 +60,11 @@ description: "代码审查 — Phase 1: 场景-代码映射验证 → Phase 1.5:
 
 ## Phase 1: Spec 合规审查（SDD 自有）
 
+**Reviewer Prompt 延迟加载**：仅在进入对应 phase 时加载对应的 reviewer prompt（不在前置逻辑中预加载）。
+- Phase 1：加载 `spec-compliance-reviewer-prompt.md`
+- Phase 1.5：加载 `scan-reviewer-prompt.md`
+- Phase 2：加载 `code-quality-reviewer-prompt.md`
+
 **dispatch spec-compliance-reviewer subagent**
 
 读取 `spec-compliance-reviewer-prompt.md`，dispatch subagent 审查：

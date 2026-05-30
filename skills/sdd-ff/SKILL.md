@@ -63,6 +63,10 @@ description: "快进生成所有文档 — 批量生成所有缺失 artifact 至
 
 向用户展示将要生成的 artifact 列表，确认后执行。
 
+### 3.5 Guidelines 按需加载
+
+> 按需加载规则见 `guidelines/token-optimization.md` §按需加载 Guidelines。
+
 ---
 
 ## 核心执行（委托底层 skill）

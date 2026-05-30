@@ -52,6 +52,10 @@ description: "全面验证 — 逐条验证 spec 场景覆盖，运行所有测�
 - 读取 `tasks.md` — 任务完成状态
 - 读取 `plan.md`（如有）— 实施范围
 
+### 2.5 Guidelines 按需加载
+
+> 按需加载规则见 `guidelines/token-optimization.md` §按需加载 Guidelines。
+
 ---
 
 ## 核心执行（委托底层 skill）

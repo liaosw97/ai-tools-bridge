@@ -73,6 +73,49 @@
 
 ---
 
+## 懒加载策略
+
+### 模块化拆分
+
+大型 skill 文件（>200 行）拆分为独立模块，按需加载：
+
+| Skill | 模块 | 加载时机 |
+|-------|------|----------|
+| sdd-brainstorm | `modules/role-system.md` | 需要角色视角切换时 |
+| sdd-brainstorm | `modules/split-patterns.md` | 触发拆分模式时 |
+| sdd-plan | `modules/batch-mode.md` | 任务规模较大或用户选择分批时 |
+| sdd-code | `modules/worktree.md` | 需要隔离工作环境或使用拆分模式时 |
+| sdd-code | `modules/debugging.md` | 测试意外失败时 |
+
+### 按需加载 Guidelines
+
+| Guideline | 加载时机 |
+|-----------|----------|
+| `token-optimization.md` | 仅在首个 SDD action 初始化时加载 |
+| `quality-checkpoints.md` | 在质量门检查步骤加载对应 action 的检查点部分 |
+| `decision-strategy.md` | 在方案选择步骤加载 |
+
+### 延迟加载 Reviewer Prompt
+
+Reviewer prompt 仅在进入对应 review 循环时加载，不在前置逻辑中预加载：
+
+| Action | Reviewer Prompt | 加载时机 |
+|--------|-----------------|----------|
+| sdd-brainstorm | `brainstorm-reviewer-prompt.md` | 进入 brainstorm review 循环时 |
+| sdd-plan | `plan-reviewer-prompt.md` | 进入 plan review 循环时 |
+| sdd-review-code | `spec-compliance-reviewer-prompt.md` | 进入 Phase 1 时 |
+| sdd-review-code | `scan-reviewer-prompt.md` | 进入 Phase 1.5 时 |
+| sdd-review-code | `code-quality-reviewer-prompt.md` | 进入 Phase 2 时 |
+
+### 异常降级处理
+
+当模块文件不存在或加载失败时：
+1. 降级到完整加载（使用原始 skill 文件）
+2. 记录错误日志
+3. 继续执行，不阻断流程
+
+---
+
 ## 检查清单
 
 每次调用 subagent 或加载文件前：
