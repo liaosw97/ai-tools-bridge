@@ -90,8 +90,7 @@ sdd-brainstorm 无前置依赖，校验直接通过。无需检查任何前置�
 - 如果 `brainstorm.md` 已存在，告知用户将在此基础上继续探索
 
 ### 3.3 状态文件读取
-
-> 读取 `openspec/changes/<name>/state.yaml` 获取前序决策。不存在时从 artifact 重建。
+> `node ai-tools-bridge/scripts/state-file.mjs read <change-dir>` — 不存在时从 artifact 重建。
 
 ### 3.5 Guidelines 按需加载
 
@@ -162,30 +161,13 @@ SDD Override 指令（必须遵循，优先于 brainstorming skill 的默认行�
 
 **Review 流程（最多 3 轮）：**
 
-读取 `openspec/config.yaml` 的 `limits.review-rounds` 配置值（默认 3），作为 review 循环上限。
+读取 `openspec/config.yaml` 的 `limits.review-rounds`（默认 3）作为上限。
 
-**配置值验证**：
-- 配置项不存在 → 使用默认值 3
-- 配置项值为非数字类型 → 使用默认值 3
-- 配置项值为 0 或负数 → 使用默认值 3
+1. Dispatch reviewer subagent，产出 `reviews/brainstorm-r<N>.md`
+2. 有 issues → 展示给用户 → 修复后重新 review
+3. 达限后提供选项：`① 继续修复`（取消轮次限制）/ `② 接受当前状态并继续`（终止 review）
 
-Review 流程：
-1. Dispatch reviewer subagent，产出 `reviews/brainstorm-r1.md`
-2. 如果有 issues：
-   - 展示 issues 给用户
-   - 用户确认修复方向
-   - 修复后重新 review（`reviews/brainstorm-r2.md`）
-3. 最多 N 轮（N = limits.review-rounds），通过或用户接受后停止
-
-**Review 达限处理**：
-
-当 review 循环达到 `limits.review-rounds`（默认 3）轮次时：
-1. 输出已达 review 上限的提示
-2. 列出剩余未解决的 issues
-3. 提供选项：
-   - `① 继续修复` — 进入下一轮 review，不再有轮次限制
-   - `② 接受当前状态并继续` — 终止 review 循环，在 review 文件中标注"用户接受，剩余 issues 未修复"
-4. 提示消息包含可发现性信息："可在 openspec/config.yaml 的 limits 节中调整上限"
+提示：可在 openspec/config.yaml 的 limits 节中调整上限。
 
 ### 2. 产物校验
 
@@ -195,8 +177,7 @@ Review 流程：
 - 关键决策节
 
 ### 2.5 状态文件更新
-
-> 更新 `openspec/changes/<name>/state.yaml`，记录当前 phase 和关键决策（≤500 字符）。
+> `node ai-tools-bridge/scripts/state-file.mjs update <change-dir> --phase brainstorm`
 
 ### 3. 完成引导
 

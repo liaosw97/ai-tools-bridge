@@ -129,6 +129,12 @@ SDD Override 指令（必须遵循）：
    - 用户拒绝 → 在决策追溯中记录"已评估跨模块影响，不需要同步"的理由
    - AI 无法确定模块相关性 → 列出所有模块，由用户逐一确认
 
+### 1.9 状态文件更新
+
+```bash
+node ai-tools-bridge/scripts/state-file.mjs update <change-dir> --phase propose
+```
+
 ### 2. 产物校验
 
 确认 `proposal.md` 存在且包含：

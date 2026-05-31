@@ -51,7 +51,14 @@ description: "代码审查 — Phase 1: 场景-代码映射验证 → Phase 1.5:
 
 ### 2. 收集审查材料
 
-- 读取 `specs/` — 作为 Phase 1 的审查基准
+- **摘要收集**（推荐，节省 token）：
+  ```bash
+  # 获取 spec 场景摘要（场景列表 + GIVEN/WHEN/THEN 三元组）
+  node ai-tools-bridge/scripts/summarize-spec.mjs <change-dir>/specs/<domain>/spec.md
+
+  # 获取 tasks 摘要（任务编号 + 描述 + spec 链接）
+  node ai-tools-bridge/scripts/summarize-tasks.mjs <change-dir>/tasks.md
+  ```
 - 读取 `plan.md`（如有）— 了解实施范围
 - 获取自上次 review 以来的代码变更（git diff）
 - 确定当前批次编号（用于 review 文件命名）
@@ -128,10 +135,15 @@ description: "代码审查 — Phase 1: 场景-代码映射验证 → Phase 1.5:
 
 **仅在 Phase 1 通过后执行。**
 
+**压缩 review 上下文**（推荐，节省 token）：
+```bash
+node ai-tools-bridge/scripts/compress-review.mjs <diff-file> <spec-file>
+```
+
 **invoke `superpowers:requesting-code-review`**
 
 传递信息：
-- 代码变更的 diff
+- 代码变更的 diff（或压缩后的 review 上下文）
 - 相关的 spec 场景（作为审查上下文）
 - 项目的代码风格约定
 

@@ -48,8 +48,14 @@ description: "全面验证 — 逐条验证 spec 场景覆盖，运行所有测�
 
 ### 2. 收集验证材料
 
-- 读取 `specs/` — 所有需要验证的场景
-- 读取 `tasks.md` — 任务完成状态
+- **摘要收集**（推荐，节省 token）：
+  ```bash
+  # 获取 spec 场景摘要
+  node ai-tools-bridge/scripts/summarize-spec.mjs <change-dir>/specs/<domain>/spec.md
+
+  # 获取 tasks 完成状态
+  node ai-tools-bridge/scripts/summarize-tasks.mjs <change-dir>/tasks.md
+  ```
 - 读取 `plan.md`（如有）— 实施范围
 
 ### 2.5 Guidelines 按需加载

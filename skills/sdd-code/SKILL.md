@@ -106,6 +106,12 @@ Override 指令：
 - [x] 1.1 实现主题切换 API [spec:ui-theme#toggle-theme]
 ```
 
+### 1.9 状态文件更新
+
+```bash
+node ai-tools-bridge/scripts/state-file.mjs update <change-dir> --phase code
+```
+
 ### 2. 产物校验
 
 - 确认 commit 已创建

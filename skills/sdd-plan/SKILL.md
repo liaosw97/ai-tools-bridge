@@ -174,6 +174,12 @@ Review 流程：
    - `② 接受当前状态并继续` — 终止 review 循环，在 review 文件中标注"用户接受，剩余 issues 未修复"
 4. 提示消息包含可发现性信息："可在 openspec/config.yaml 的 limits 节中调整上限"
 
+### 1.9 状态文件更新
+
+```bash
+node ai-tools-bridge/scripts/state-file.mjs update <change-dir> --phase plan
+```
+
 ### 2. 产物校验
 
 确认 `plan.md` 存在且：
