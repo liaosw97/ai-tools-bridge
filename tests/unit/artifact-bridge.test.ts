@@ -80,3 +80,19 @@ describe('passTasksToSubagent', () => {
     expect(result).toContain('拆分 sdd-plan');
   });
 });
+
+describe('error handling', () => {
+  it('should return error message for non-existent spec file', () => {
+    const result = passSpecToSubagent('/non/existent/spec.md');
+
+    expect(result).toContain('错误');
+    expect(result).toContain('/non/existent/spec.md');
+  });
+
+  it('should return error message for non-existent tasks file', () => {
+    const result = passTasksToSubagent('/non/existent/tasks.md');
+
+    expect(result).toContain('错误');
+    expect(result).toContain('/non/existent/tasks.md');
+  });
+});

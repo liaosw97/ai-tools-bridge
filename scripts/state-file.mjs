@@ -12,6 +12,7 @@
 
 import { readFileSync, writeFileSync, existsSync, mkdirSync } from 'fs';
 import { resolve, join } from 'path';
+import { stringify, parse } from 'yaml';
 
 const args = process.argv.slice(2);
 
@@ -32,45 +33,20 @@ function parseArgs(args) {
 }
 
 function toYaml(state) {
-  const lines = [];
-  lines.push(`change: ${state.change}`);
-  lines.push(`phase: ${state.phase}`);
-  lines.push(`updated: ${state.updated}`);
-  lines.push('decisions:');
-  if (!state.decisions || state.decisions.length === 0) {
-    lines.push('  []');
-  } else {
-    for (const d of state.decisions) {
-      lines.push(`  - ${d}`);
-    }
-  }
-  return lines.join('\n') + '\n';
+  return stringify(state);
 }
 
 function fromYaml(content) {
-  const lines = content.split('\n');
-  const state = { change: '', phase: '', updated: '', decisions: [] };
-  let inDecisions = false;
-  for (const line of lines) {
-    const trimmed = line.trim();
-    if (!trimmed || trimmed.startsWith('#')) continue;
-    if (trimmed.startsWith('change:')) {
-      state.change = trimmed.slice(7).trim();
-    } else if (trimmed.startsWith('phase:')) {
-      state.phase = trimmed.slice(6).trim();
-    } else if (trimmed.startsWith('updated:')) {
-      state.updated = trimmed.slice(8).trim();
-    } else if (trimmed === 'decisions:') {
-      inDecisions = true;
-    } else if (inDecisions && trimmed.startsWith('- ')) {
-      state.decisions.push(trimmed.slice(2).trim());
-    } else if (inDecisions && trimmed === '[]') {
-      // empty
-    } else if (!trimmed.startsWith('-') && trimmed.includes(':')) {
-      inDecisions = false;
-    }
+  const state = parse(content);
+  if (!state || typeof state !== 'object') {
+    return { change: '', phase: '', updated: '', decisions: [] };
   }
-  return state;
+  return {
+    change: state.change || '',
+    phase: state.phase || '',
+    updated: state.updated || '',
+    decisions: Array.isArray(state.decisions) ? state.decisions : [],
+  };
 }
 
 const parsed = parseArgs(args);

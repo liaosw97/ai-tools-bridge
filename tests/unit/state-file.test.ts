@@ -23,21 +23,24 @@ describe('createStateFile', () => {
 });
 
 describe('updateStateFile', () => {
-  it('should update state with new action and decisions', () => {
+  it('should return new state with updated action and decisions', () => {
     const state = createStateFile('test-change');
-    updateStateFile(state, 'sdd-brainstorm', ['决策1', '决策2']);
+    const updated = updateStateFile(state, 'sdd-brainstorm', ['决策1', '决策2']);
 
-    expect(state.phase).toBe('sdd-brainstorm');
-    expect(state.decisions).toContain('决策1');
-    expect(state.decisions).toContain('决策2');
+    expect(updated.phase).toBe('sdd-brainstorm');
+    expect(updated.decisions).toContain('决策1');
+    expect(updated.decisions).toContain('决策2');
+    // 原对象不应被修改
+    expect(state.phase).toBe('init');
+    expect(state.decisions).toHaveLength(0);
   });
 });
 
 describe('readStateFile', () => {
   it('should read valid YAML state file', () => {
     const state = createStateFile('test-change');
-    updateStateFile(state, 'sdd-brainstorm', ['决策1']);
-    saveStateFile(state, testPath);
+    const updated = updateStateFile(state, 'sdd-brainstorm', ['决策1']);
+    saveStateFile(updated, testPath);
 
     const read = readStateFile(testPath);
 
@@ -66,8 +69,8 @@ describe('cross-action state passing', () => {
   it('should pass state between actions', () => {
     // Action A: sdd-brainstorm
     const stateA = createStateFile('test-change');
-    updateStateFile(stateA, 'sdd-brainstorm', ['选择方案D', '先懒加载后压缩']);
-    saveStateFile(stateA, testPath);
+    const updatedA = updateStateFile(stateA, 'sdd-brainstorm', ['选择方案D', '先懒加载后压缩']);
+    saveStateFile(updatedA, testPath);
 
     // Action B: sdd-propose
     const stateB = readStateFile(testPath);
@@ -79,8 +82,8 @@ describe('cross-action state passing', () => {
 
     // Update for Action B
     if (stateB) {
-      updateStateFile(stateB, 'sdd-propose', ['范围已定义']);
-      saveStateFile(stateB, testPath);
+      const updatedB = updateStateFile(stateB, 'sdd-propose', ['范围已定义']);
+      saveStateFile(updatedB, testPath);
     }
 
     // Verify

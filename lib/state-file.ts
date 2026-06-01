@@ -7,7 +7,7 @@ export interface StateFile {
   decisions: string[];
 }
 
-const MAX_SIZE = 500; // 字符
+const MAX_SIZE = 2048; // 字符（Token 优化：确保状态文件在 AI 上下文中占用最小空间）
 
 /**
  * 创建初始状态文件
@@ -23,14 +23,18 @@ export function createStateFile(changeName: string): StateFile {
 }
 
 /**
- * 更新状态文件
+ * 更新状态文件（返回新对象，不修改原对象）
  */
-export function updateStateFile(state: StateFile, action: string, decisions: string[]): void {
-  state.phase = action;
-  state.decisions = [...state.decisions, ...decisions];
+export function updateStateFile(state: StateFile, action: string, decisions: string[]): StateFile {
+  const newState: StateFile = {
+    ...state,
+    phase: action,
+    decisions: [...state.decisions, ...decisions],
+  };
 
   // 保持大小限制
-  trimState(state);
+  trimState(newState);
+  return newState;
 }
 
 /**
@@ -61,31 +65,20 @@ export function readStateFile(path: string): StateFile | null {
  * 保存状态文件到磁盘
  */
 export function saveStateFile(state: StateFile, path: string): void {
-  const content = stringify(state);
-
-  // 验证大小
-  if (content.length > MAX_SIZE) {
-    trimState(state);
-  }
-
+  trimState(state);
   writeFileSync(path, stringify(state), 'utf-8');
 }
 
 /**
- * 裁剪状态以保持大小限制
+ * 裁剪状态以保持大小限制（就地修改）
  */
 function trimState(state: StateFile): void {
-  while (true) {
-    const content = stringify(state);
-    if (content.length <= MAX_SIZE) {
-      break;
-    }
-
-    // 移除最早的决策
-    if (state.decisions.length > 0) {
-      state.decisions.shift();
-    } else {
-      break;
-    }
+  let content = stringify(state);
+  while (content.length > MAX_SIZE && state.decisions.length > 0) {
+    state.decisions.shift();
+    content = stringify(state);
+  }
+  if (content.length > MAX_SIZE) {
+    console.warn(`警告: 状态文件超过 ${MAX_SIZE} 字符限制，已裁剪所有 decisions`);
   }
 }

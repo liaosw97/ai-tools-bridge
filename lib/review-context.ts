@@ -3,7 +3,7 @@ export interface ReviewContext {
   'spec-context': string;
   'quality-metrics': {
     testCoverage: number;
-    scenarioPassRate: number;
+    scenarioPassRate: number | null;
     totalScenarios: number;
   };
 }
@@ -23,7 +23,7 @@ export function compressReviewContext(diff: string, specScenarios: string[]): Re
   const relevantCount = relevantScenarios.length;
   const qualityMetrics = {
     testCoverage: totalScenarios > 0 ? Math.round((relevantCount / totalScenarios) * 100) : 0,
-    scenarioPassRate: 0, // 需要在实际测试运行后填充
+    scenarioPassRate: null, // 需要在实际测试运行后填充
     totalScenarios,
   };
 
@@ -68,29 +68,17 @@ function filterRelevantScenarios(diff: string, specScenarios: string[]): string[
 function extractKeywords(diff: string): string[] {
   const keywords: string[] = [];
 
-  // 提取文件名
-  const fileNameMatch = diff.match(/diff --git a\/(.+?) b\//);
-  if (fileNameMatch) {
-    keywords.push(fileNameMatch[1]);
-  }
+  // 提取所有文件名（支持多文件 diff）
+  const fileNameMatches = [...diff.matchAll(/diff --git a\/(.+?) b\//g)];
+  fileNameMatches.forEach(m => keywords.push(m[1]));
 
   // 提取函数名
-  const funcMatch = diff.match(/\+function\s+(\w+)/g);
-  if (funcMatch) {
-    funcMatch.forEach(m => {
-      const name = m.replace('+function ', '');
-      keywords.push(name);
-    });
-  }
+  const funcMatches = [...diff.matchAll(/\+function\s+(\w+)/g)];
+  funcMatches.forEach(m => keywords.push(m[1]));
 
   // 提取类名
-  const classMatch = diff.match(/\+class\s+(\w+)/g);
-  if (classMatch) {
-    classMatch.forEach(m => {
-      const name = m.replace('+class ', '');
-      keywords.push(name);
-    });
-  }
+  const classMatches = [...diff.matchAll(/\+class\s+(\w+)/g)];
+  classMatches.forEach(m => keywords.push(m[1]));
 
   return keywords;
 }
