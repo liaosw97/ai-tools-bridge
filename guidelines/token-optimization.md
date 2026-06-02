@@ -64,6 +64,18 @@
 - 编排层（SDD skill）描述了每个 action 的概要
 - 不需要再加载底层 skill 的完整引导
 
+### 共享模块机制
+为减少 token 消耗，SKILL.md 使用共享模块引用机制：
+- **共享模块位置**：`skills/_shared/` 目录
+- **引用语法**：`<!-- include: ../_shared/<module>.md -->`
+- **包含的模块**：
+  - `base-triggers.md` — 通用触发条件模板
+  - `output-constraints.md` — 输出约束和零结果防护
+  - `role-loading.md` — 角色加载逻辑
+  - `breakdown-mode.md` — 拆分模式检测
+  - `review-loop.md` — Review 循环模式
+- **优势**：公共逻辑改一处即可，减少重复内容，降低 token 消耗
+
 ### 精简指南加载
 四个指南文件不一次性全部加载：
 - `quality-checkpoints.md` — 只在 action 质量门检查时加载对应部分
