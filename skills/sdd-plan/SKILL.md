@@ -9,25 +9,13 @@ description: "细化实施计划 — 基于 tasks.md 生成 TDD 级别的实施�
 
 ---
 
-## 触发条件
+<!-- include: ../_shared/base-triggers.md -->
 
 **触发**：用户执行 `/sdd-plan`，或说"生成计划""细化任务""TDD 计划""实施计划"。
 **不触发**：要直接编码（→ `/sdd-code`）；要审查 spec（→ `/sdd-review-spec`）。
 **歧义处理**：多个活跃变更时让用户选择；plan.md 已存在时确认覆盖或追加批次。
 
-## 输出约束
-
-禁止输出:
-- 开场白（"让我来生成计划..."）
-- 工具调用前后的重复描述
-- 未引用 tasks 或 spec 条文的计划步骤
-- 已知信息的复述
-
-## 零结果与幻觉防护
-
-- 所有计划步骤必须引用来源（tasks.md + spec 文件路径）
-- tasks.md 为空时输出"tasks.md 无任务项"而非编造计划
-- 无法定位 spec 时标注"⚠️ 无法找到对应 spec"
+<!-- include: ../_shared/output-constraints.md -->
 
 ---
 
@@ -43,7 +31,7 @@ description: "细化实施计划 — 基于 tasks.md 生成 TDD 级别的实施�
 - **tasks 中部分任务缺少 `[spec:domain#scenario]` 链接** → 警告：输出缺少链接的任务列表，建议补充
 - 阻断级缺失时拒绝执行，输出具体缺失项和修复建议
 
-### 0.3 角色加载
+<!-- include: ../_shared/role-loading.md -->
 
 **默认角色**: `eng-manager`
 **可选角色**: `ceo`
@@ -211,56 +199,7 @@ SDD Override 指令（必须遵循，优先于 writing-plans skill 的默认行�
 
 ## 后置逻辑（SDD 自有）
 
-### 1. Plan Review 循环
-
-读取 `plan-reviewer-prompt.md`，dispatch subagent 进行审查：
-
-**审查维度：**
-- 任务粒度（每个步骤是否在 2-5 分钟内可完成）
-- TDD 步骤完整性（每个任务是否有 RED/GREEN）
-- Spec 对齐（plan 中的任务是否覆盖了 tasks.md 的所有任务）
-- 运行命令的正确性（测试命令是否合理）
-
-**分批模式审查：**
-- 按批次独立审查，每批检查 TDD 步骤完整性、Spec 对齐、依赖顺序
-- 跨批次依赖关系的一致性在最后一批审查时检查
-
-**Review 流程（最多 3 轮）：**
-
-读取 `openspec/config.yaml` 的 `limits.review-rounds` 配置值（默认 3），作为 review 循环上限。
-
-**配置值验证**：
-- 配置项不存在 → 使用默认值 3
-- 配置项值为非数字类型 → 使用默认值 3
-- 配置项值为 0 或负数 → 使用默认值 3
-
-Review 流程：
-1. Dispatch reviewer subagent，产出 `reviews/plan-r1.md`
-2. 有 issues 时展示给用户
-3. 用户确认修复方向
-4. 修复后重新 review（`reviews/plan-r2.md`）
-5. 最多 N 轮（N = limits.review-rounds），通过或用户接受后停止
-
-**Review 达限处理**：
-
-当 review 循环达到 `limits.review-rounds`（默认 3）轮次时：
-1. 输出已达 review 上限的提示
-2. 列出剩余未解决的 issues
-3. 提供选项：
-   - `① 继续修复` — 进入下一轮 review，不再有轮次限制
-   - `② 接受当前状态并继续` — 终止 review 循环，在 review 文件中标注"用户接受，剩余 issues 未修复"，进入后置逻辑
-4. 提示消息包含可发现性信息："可在 openspec/config.yaml 的 limits 节中调整上限"
-
-**用户选择"继续修复"后**：
-- 取消轮次限制
-- 进入下一轮 review，直到所有 issues 解决或用户主动选择接受
-- 每轮修复结束时再次提供"继续修复"或"接受并继续"选项
-- 如果 AI 无法解决某些 issues（技术限制/需求冲突），用户可通过"接受并继续"选项退出
-
-**用户选择"接受并继续"后**：
-- review 循环终止
-- 在 review 文件中标注"用户接受，剩余 issues 未修复"
-- 进入后置逻辑的产物校验和完成引导
+<!-- include: ../_shared/review-loop.md -->
 
 ### 2. 产物校验
 
