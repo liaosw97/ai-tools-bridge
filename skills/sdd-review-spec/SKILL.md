@@ -9,24 +9,13 @@ description: "Spec 审查 — 独立审查 spec 质量，检查场景完整性�
 
 ---
 
-## 触发条件
+<!-- include: ../_shared/base-triggers.md -->
 
 **触发**：用户执行 `/sdd-review-spec`，或说"审查 spec""检查规格质量""验证场景完整性"。
 **不触发**：要审查代码质量（→ `/sdd-review-code`）；要修改 spec（→ `/sdd-ff`）。
 **歧义处理**：无 spec 文件时建议先生成（→ `/sdd-ff`）。
 
-## 输出约束
-
-禁止输出:
-- 开场白（"让我来审查..."）
-- 工具调用前后的重复描述
-- 未引用 spec 条文的审查意见
-- 已知信息的复述
-
-## 零结果与幻觉防护
-
-- 所有审查发现必须引用来源（spec 文件路径 + 场景编号）
-- spec 文件为空时输出"spec 文件为空，无法审查"而非编造意见
+<!-- include: ../_shared/output-constraints.md -->
 
 ---
 
@@ -36,7 +25,7 @@ description: "Spec 审查 — 独立审查 spec 质量，检查场景完整性�
 
 - **阻断**：`specs/` 不存在或无 spec 文件 → 拒绝执行，输出"缺少 spec 文件，请先执行 /sdd-ff 生成规格"
 
-### 0.3 角色加载
+<!-- include: ../_shared/role-loading.md -->
 
 **默认角色**: `eng-manager`
 **可选角色**: `ceo`, `designer`
