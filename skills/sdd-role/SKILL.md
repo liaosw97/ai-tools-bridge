@@ -151,18 +151,4 @@ Release: release-engineer, sre
 使用方式: /sdd-role <name>
 ```
 
-## 角色优先级规则
-
-优先级顺序（从高到低）：
-
-1. `--role` 参数（一次性，仅当前 action）
-2. `/sdd-role` 设置的会话级角色（会话级，持续到切换或会话结束）
-3. action 默认角色
-
-示例：
-
-```
-/sdd-role ceo                 # 会话级切换为 ceo
-/sdd-review-code --role cso   # 本次 action 使用 cso，下次仍为 ceo
-/sdd-review-code              # 使用会话级角色 ceo
-```
+<!-- include: ../_shared/role-loading.md -->
