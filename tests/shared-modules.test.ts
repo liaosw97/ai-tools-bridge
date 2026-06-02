@@ -99,3 +99,29 @@ describe('shared-modules', () => {
     expect(content).toContain('取消');
   });
 });
+
+describe('sdd-brainstorm', () => {
+  it('should have include references', () => {
+    const content = readFileSync(resolve(__dirname, '../skills/sdd-brainstorm/SKILL.md'), 'utf-8');
+    expect(content).toContain('<!-- include: ../_shared/base-triggers.md -->');
+    expect(content).toContain('<!-- include: ../_shared/output-constraints.md -->');
+    expect(content).toContain('<!-- include: ../_shared/role-loading.md -->');
+    expect(content).toContain('<!-- include: ../_shared/breakdown-mode.md -->');
+    expect(content).toContain('<!-- include: ../_shared/review-loop.md -->');
+  });
+
+  it('should preserve differential content', () => {
+    const content = readFileSync(resolve(__dirname, '../skills/sdd-brainstorm/SKILL.md'), 'utf-8');
+    expect(content).toContain('sdd-brainstorm');
+    expect(content).toContain('yc-office-hours');
+    expect(content).toContain('superpowers:brainstorming');
+    expect(content).toContain('探索需求');
+  });
+
+  it('should have differential content after include references', () => {
+    const content = readFileSync(resolve(__dirname, '../skills/sdd-brainstorm/SKILL.md'), 'utf-8');
+    const includeIndex = content.indexOf('<!-- include:');
+    const diffIndex = content.indexOf('superpowers:brainstorming');
+    expect(diffIndex).toBeGreaterThan(includeIndex);
+  });
+});
