@@ -7,6 +7,10 @@ description: 角色显示与切换 — 显示当前角色、切换会话级角�
 
 显示当前角色或切换会话级角色。
 
+<!-- include: ../_shared/base-triggers.md -->
+
+<!-- include: ../_shared/output-constraints.md -->
+
 ## 使用方式
 
 - `/sdd-role` — 显示当前角色信息
