@@ -34,6 +34,21 @@
 3. 完成后停止——不自动链式调用其他技能
 4. SDD 自行处理审查（跳过内置审查器）
 
+### 共享模块机制
+
+为减少 token 消耗和提高可维护性，SKILL.md 使用共享模块引用机制：
+
+- **共享模块位置**：`skills/_shared/` 目录
+- **引用语法**：`<!-- include: ../_shared/<module>.md -->`
+- **包含的模块**：
+  - `base-triggers.md` — 通用触发条件模板
+  - `output-constraints.md` — 输出约束和零结果防护
+  - `role-loading.md` — 角色加载逻辑
+  - `breakdown-mode.md` — 拆分模式检测
+  - `review-loop.md` — Review 循环模式
+
+每个 SKILL.md 通过 include 引用共享模块，只保留差异内容，实现"公共逻辑改一处即可"的维护优势。
+
 ### 13 个行动及其委托
 
 | 行动 | 委托给 |
