@@ -9,25 +9,13 @@ description: "代码审查 — Phase 1: 场景-代码映射验证 → Phase 1.5:
 
 ---
 
-## 触发条件
+<!-- include: ../_shared/base-triggers.md -->
 
 **触发**：用户执行 `/sdd-review-code`，或说"审查代码""代码 review""检查代码质量"。
 **不触发**：要审查 spec 质量（→ `/sdd-review-spec`）；要补全测试（→ `/sdd-test-code`）。
 **歧义处理**：无代码变更时建议先编码（→ `/sdd-code`）。
 
-## 输出约束
-
-禁止输出:
-- 开场白（"让我来审查..."）
-- 工具调用前后的重复描述
-- 未引用代码位置或 spec 条文的审查意见
-- 已知信息的复述
-
-## 零结果与幻觉防护
-
-- 所有审查发现必须引用 evidence 来源（spec 文件路径 + 代码文件路径）
-- 无法定位代码时标注"⚠️ 无法验证"而非跳过
-- 无代码变更时输出"无代码变更可审查"而非编造意见
+<!-- include: ../_shared/output-constraints.md -->
 
 ---
 
@@ -38,7 +26,7 @@ description: "代码审查 — Phase 1: 场景-代码映射验证 → Phase 1.5:
 - **阻断**：无代码变更（git 无未提交更改）或 `specs/` 不存在 → 拒绝执行，输出具体缺失项和修复建议
 - **警告**：spec 场景总数少于 tasks 数量 → 提示"spec 场景数（N）少于 tasks 数量（M），可能存在未覆盖的功能点"
 
-### 0.3 角色加载
+<!-- include: ../_shared/role-loading.md -->
 
 **默认角色**: `staff-engineer`
 **可选角色**: `cso`, `qa-lead`
