@@ -57,7 +57,7 @@ description: "快进生成所有文档 — 批量生成所有缺失 artifact 至
 
 ## 核心执行（委托底层 skill）
 
-**invoke `openspec-ff-change`**
+**invoke `/opsx:ff`**
 
 传递信息：
 - change 目录路径

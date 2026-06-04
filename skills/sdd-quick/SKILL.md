@@ -104,7 +104,7 @@ sdd-quick 无前置依赖，校验直接通过。
 
 ### 4b. 文档生成
 
-**invoke `openspec-continue-change`**
+**invoke `/opsx:continue`**
 
 Override 指令：
 ```
