@@ -116,6 +116,11 @@ description: "TDD 实施 — 按 plan.md 中的批次执行 TDD 循环，产出�
 Override：
 ```
 分支命名: sdd/<change-name>
+
+安全约束（必须遵循）：
+1. 禁止 force-push（git push --force）
+2. 禁止删除远程分支
+3. worktree 清理前必须确认变更已合并或用户确认放弃
 ```
 
 保留：安全验证、基线测试
@@ -124,7 +129,7 @@ Override：
 
 **invoke `superpowers:test-driven-development`**
 
-Override 指令：
+SDD Override 指令（必须遵循）：
 ```
 完成后停止 — 不要自动调用其他 skill 或继续下一个 action
 ```

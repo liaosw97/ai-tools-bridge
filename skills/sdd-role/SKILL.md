@@ -1,6 +1,6 @@
 ---
 name: sdd-role
-description: 角色显示与切换 — 显示当前角色、切换会话级角色、列出所有可用角色
+description: "角色显示与切换 — 显示当前角色、切换会话级角色、列出所有可用角色"
 ---
 
 # sdd-role — 角色显示与切换
@@ -8,6 +8,10 @@ description: 角色显示与切换 — 显示当前角色、切换会话级角�
 显示当前角色或切换会话级角色。
 
 <!-- include: ../_shared/base-triggers.md -->
+
+**触发**：用户执行 `/sdd-role`，或说"切换角色""查看角色""角色列表"。
+**不触发**：要执行具体业务操作（→ 对应 action）。
+**歧义处理**：无歧义，角色管理为独立工具操作。
 
 <!-- include: ../_shared/output-constraints.md -->
 
@@ -23,7 +27,12 @@ description: 角色显示与切换 — 显示当前角色、切换会话级角�
 
 1. 获取当前会话角色（默认为上次切换的角色或系统默认）
 2. 加载角色定义
-3. 输出：
+3. 验证角色定义完整性：
+   - 检查角色文件是否存在且可读
+   - 检查 YAML frontmatter 中 `name` 字段是否存在
+   - 检查 `# 角色` 节是否存在
+   - 验证失败 → 输出警告，降级到默认角色
+4. 输出：
    ```
    当前角色: <name>
    来源: <builtin|project|user>
@@ -156,3 +165,35 @@ Release: release-engineer, sre
 ```
 
 <!-- include: ../_shared/role-loading.md -->
+
+---
+
+## 完成引导
+
+### 显示角色后
+
+```
+当前角色: <name>（来源: <source>）
+
+可用 action: <trigger 列表>
+```
+
+### 切换角色后
+
+```
+sdd-role 完成。
+
+角色已切换为 <name>（来源: <source>）
+
+可用 action: <trigger 列表>
+
+如需释放上下文，可安全 /clear。
+```
+
+### 列出角色后
+
+```
+共 N 个可用角色（内置 M 个，项目级 K 个，用户级 J 个）。
+
+如需释放上下文，可安全 /clear。
+```

@@ -25,6 +25,8 @@ description: "快速模式 — 一条命令完成简单需求的 propose → spe
 
 sdd-quick 无前置依赖，校验直接通过。
 
+注：sdd-quick 为复合流程（文档+编码），不适用统一角色视角。编码阶段由 TDD skill 自行处理角色。
+
 ### 0.5 读取 Limits 配置
 
 读取 `openspec/config.yaml` 的 `limits` 节，获取以下配置值（未配置时使用默认值）：

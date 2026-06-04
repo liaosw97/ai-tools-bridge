@@ -121,7 +121,7 @@ description: "代码审查 — Phase 1: 场景-代码映射验证 → Phase 1.5:
 ### Override 指令
 
 ```
-SDD Override 指令：
+SDD Override 指令（必须遵循）：
 1. 输出位置：审查结果写入 openspec/changes/<name>/reviews/code-quality-r<N>.md
 2. 审查焦点：可读性、设计模式、潜在问题、性能
 3. 已通过 spec 合规审查，不需要再检查功能正确性

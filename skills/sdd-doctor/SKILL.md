@@ -25,6 +25,8 @@ description: "环境诊断 — 检查 OpenSpec、Superpowers 安装状态和 cha
 
 sdd-doctor 无前置依赖，校验直接通过。
 
+注：sdd-doctor 为诊断工具，不适用角色视角。
+
 ### 1. 定位 Change 目录
 
 - 扫描 `openspec/changes/` 找到活跃变更

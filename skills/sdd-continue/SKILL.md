@@ -25,6 +25,8 @@ description: "逐步补充 artifact — 识别并生成依赖链中下一个缺�
 
 sdd-continue 无前置阻断，依赖链中任何位置均可触发。
 
+注：sdd-continue 为文档生成任务，不适用角色视角。
+
 ### 1. 定位 Change 目录
 
 - 扫描 `openspec/changes/` 找到活跃变更
