@@ -55,17 +55,33 @@
 |------|--------|
 | `sdd-doctor` | 无（独立诊断） |
 | `sdd-brainstorm` | `superpowers:brainstorming` |
-| `sdd-propose` | `openspec-continue-change` / `openspec-propose` |
-| `sdd-continue` | `openspec-continue-change` |
-| `sdd-ff` | `openspec-ff-change` |
+| `sdd-propose` | `/opsx:propose` / `/opsx:continue` |
+| `sdd-continue` | `/opsx:continue` |
+| `sdd-ff` | `/opsx:ff` |
 | `sdd-plan` | `superpowers:writing-plans` |
 | `sdd-code` | `superpowers:test-driven-development`、`using-git-worktrees`、`systematic-debugging` |
-| `sdd-quick` | `openspec-continue-change`、`superpowers:test-driven-development` |
+| `sdd-quick` | `/opsx:continue`、`superpowers:test-driven-development` |
 | `sdd-review-spec` | SDD 自有子代理 |
 | `sdd-review-code` | 阶段 1：SDD 子代理；阶段 2：`superpowers:requesting-code-review` |
 | `sdd-test-code` | `superpowers:test-driven-development` |
-| `sdd-verify` | `superpowers:verification-before-completion`、`openspec-verify-change` |
-| `sdd-ship` | `openspec-sync-specs`、`openspec-archive-change`、`superpowers:finishing-a-development-branch` |
+| `sdd-verify` | `superpowers:verification-before-completion`、`/opsx:verify` |
+| `sdd-ship` | `/opsx:sync`、`/opsx:archive`、`superpowers:finishing-a-development-branch` |
+
+### OPSX 命令体系
+
+ai-tools-bridge 的 OpenSpec 委托通过 OPSX 命令实现。OPSX 是 OpenSpec 的斜杠命令接口。
+
+**核心命令**（默认可用）：`/opsx:propose`、`/opsx:explore`、`/opsx:apply`、`/opsx:archive`
+
+**扩展命令**（需 `openspec config profile` 启用 workflows profile）：`/opsx:new`、`/opsx:continue`、`/opsx:ff`、`/opsx:verify`、`/opsx:sync`、`/opsx:bulk-archive`、`/opsx:onboard`
+
+**启用方式**：
+```bash
+openspec config profile    # 选择 workflows
+openspec update            # 生成命令文件 + skill 定义
+```
+
+执行后 `.claude/commands/opsx/` 下生成 11 个命令文件，`.claude/skills/` 下生成 OpenSpec skill 定义。
 
 ## 制品系统
 

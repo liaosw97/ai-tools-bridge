@@ -106,19 +106,62 @@ brainstorm.md → proposal.md → specs/ → tasks.md → plan.md
 
 | SDD Action | 委托给 |
 |------------|--------|
-| sdd-brainstorm | superpowers:brainstorming |
-| sdd-propose | openspec-continue-change / openspec-propose |
-| sdd-continue | openspec-continue-change |
-| sdd-ff | openspec-ff-change |
-| sdd-plan | superpowers:writing-plans |
-| sdd-code | superpowers:TDD + worktrees + debugging |
-| sdd-quick | openspec-continue-change + superpowers:TDD |
+| sdd-brainstorm | `superpowers:brainstorming` |
+| sdd-propose | `/opsx:propose` / `/opsx:continue` |
+| sdd-continue | `/opsx:continue` |
+| sdd-ff | `/opsx:ff` |
+| sdd-plan | `superpowers:writing-plans` |
+| sdd-code | `superpowers:test-driven-development` + `using-git-worktrees` + `systematic-debugging` |
+| sdd-quick | `/opsx:continue` + `superpowers:test-driven-development` |
 | sdd-review-spec | SDD 自有 subagent |
 | sdd-review-code (Phase 1) | SDD 自有 subagent |
-| sdd-review-code (Phase 2) | superpowers:requesting-code-review |
-| sdd-test-code | superpowers:TDD |
-| sdd-verify | superpowers:verification + openspec-verify |
-| sdd-ship | openspec-sync-specs + archive + superpowers:finishing-branch |
+| sdd-review-code (Phase 2) | `superpowers:requesting-code-review` |
+| sdd-test-code | `superpowers:test-driven-development` |
+| sdd-verify | `superpowers:verification-before-completion` + `/opsx:verify` |
+| sdd-ship | `/opsx:sync` + `/opsx:archive` + `superpowers:finishing-a-development-branch` |
+
+## OPSX 命令体系
+
+ai-tools-bridge 的 OpenSpec 委托通过 OPSX 命令实现。OPSX 是 OpenSpec 的斜杠命令接口，共 11 个命令。
+
+### 核心命令（默认可用）
+
+| 命令 | 功能 |
+|------|------|
+| `/opsx:propose` | 创建变更 + 一步生成所有规划 artifact |
+| `/opsx:explore` | 苏格拉底式探索，不创建 artifact |
+| `/opsx:apply` | 按 tasks.md 实施代码 |
+| `/opsx:archive` | 归档完成的变更 |
+
+### 扩展命令（需 `openspec config profile` 启用）
+
+| 命令 | 功能 |
+|------|------|
+| `/opsx:new` | 仅创建变更骨架 |
+| `/opsx:continue` | 按依赖链逐个生成 artifact |
+| `/opsx:ff` | 快进生成所有规划 artifact |
+| `/opsx:verify` | 验证实现与 artifact 一致性 |
+| `/opsx:sync` | 合并 delta specs 到主 specs |
+| `/opsx:bulk-archive` | 批量归档多个变更 |
+| `/opsx:onboard` | 引导式教程 |
+
+### 启用方式
+
+```bash
+openspec config profile    # 选择 workflows
+openspec update            # 生成命令文件 + skill 定义
+```
+
+### SDD Action → OPSX 映射
+
+| SDD Action | OPSX 命令 |
+|------------|----------|
+| sdd-propose | `/opsx:propose` 或 `/opsx:continue` |
+| sdd-continue | `/opsx:continue` |
+| sdd-ff | `/opsx:ff` |
+| sdd-verify | `/opsx:verify` |
+| sdd-ship | `/opsx:sync` + `/opsx:archive` |
+| sdd-quick | `/opsx:continue` |
 
 ## Review 机制
 
@@ -164,6 +207,23 @@ sdd-quick 和 sdd-test-code 使用从外部 skills 项目提取的精简参考�
 | [Superpowers](https://github.com/obra/superpowers) | 推荐 | 执行纪律 |
 
 两者都未安装时，sdd-doctor 会报告，部分 action 会降级。
+
+### OpenSpec 配置
+
+安装 OpenSpec 后，需要启用 OPSX 命令和生成 skill 定义：
+
+```bash
+cd <your-project>
+openspec init                    # 初始化 OpenSpec
+openspec config profile          # 选择 workflows（启用全部 11 个 OPSX 命令）
+openspec update                  # 生成 OPSX 命令文件 + OpenSpec skill 定义
+```
+
+执行后：
+- `.claude/commands/opsx/` 下生成 11 个 OPSX 命令文件
+- `.claude/skills/` 下生成 OpenSpec skill 定义
+
+详见下方 [OPSX 命令体系](#opsx-命令体系) 节。
 
 ## 安装
 
