@@ -111,6 +111,7 @@ sdd-ff 完成。
 
 如需释放上下文，可安全 /clear。
 
-★ 推荐下一步: /sdd-plan — 生成实施计划
-  ○ /sdd-review-spec — 先审查 spec 质量
+推荐下一步:
+  1. ★ /sdd-plan — 生成实施计划
+  2. ○ /sdd-review-spec — 先审查 spec 质量
 ```

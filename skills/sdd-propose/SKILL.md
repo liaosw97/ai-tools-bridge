@@ -129,7 +129,8 @@ sdd-propose 完成。
 
 如需释放上下文，可安全 /clear。
 
-★ 推荐下一步: /sdd-ff — 快进生成所有文档
-  ○ /sdd-continue — 逐步确认细节
-  △ /sdd-brainstorm — 回退补充探索
+推荐下一步:
+  1. ★ /sdd-ff — 快进生成所有文档
+  2. ○ /sdd-continue — 逐步确认细节
+  3. △ /sdd-brainstorm — 回退补充探索
 ```

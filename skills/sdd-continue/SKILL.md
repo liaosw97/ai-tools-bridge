@@ -106,6 +106,7 @@ sdd-continue 完成。
 当前进度:
   ✅/❌ proposal.md  ✅/❌ specs/  ✅/❌ design.md  ✅/❌ tasks.md
 
-★ 推荐下一步: /sdd-continue — 继续下一个 artifact
-  ○ /sdd-ff — 快进生成所有剩余
+推荐下一步:
+  1. ★ /sdd-continue — 继续下一个 artifact
+  2. ○ /sdd-ff — 快进生成所有剩余
 ```

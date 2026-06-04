@@ -197,6 +197,7 @@ sdd-quick 完成。
   ✅ proposal.md    ✅ specs/    ✅ tasks.md
   ✅ 代码实现 + 测试
 
-★ 推荐下一步: /sdd-review-code — 审查代码质量和 Spec 合规
-  △ /sdd-ship — 快速变更可直接归档
+推荐下一步:
+  1. ★ /sdd-review-code — 审查代码质量和 Spec 合规
+  2. △ /sdd-ship — 快速变更可直接归档
 ```

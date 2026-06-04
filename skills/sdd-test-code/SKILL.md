@@ -117,6 +117,7 @@ sdd-test-code 完成。
 ### 2. 推荐操作
 
 ```
-★ 推荐下一步: /sdd-verify — 全面验证 Spec 场景覆盖
-  △ /sdd-ship — 归档合并（sdd-ship 会提示 verify 检查）
+推荐下一步:
+  1. ★ /sdd-verify — 全面验证 Spec 场景覆盖
+  2. △ /sdd-ship — 归档合并（sdd-ship 会提示 verify 检查）
 ```

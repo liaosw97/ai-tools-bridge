@@ -122,8 +122,8 @@ sdd-verify 完成。
 
 如需释放上下文，可安全 /clear。
 
-★ 推荐下一步（按审查结果）:
-  /sdd-ship — PASSED，归档合并
-  /sdd-test-code — FAILED，测试未覆盖场景
-  /sdd-code — FAILED，实现缺失
+推荐下一步（按审查结果）:
+  1. ★ /sdd-ship — PASSED，归档合并
+  2. ○ /sdd-test-code — FAILED，测试未覆盖场景
+  3. ○ /sdd-code — FAILED，实现缺失
 ```

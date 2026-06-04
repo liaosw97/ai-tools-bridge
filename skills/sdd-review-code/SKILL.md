@@ -164,9 +164,9 @@ Phase 2 (代码质量):
 
 如需释放上下文，可安全 /clear。
 
-★ 推荐下一步（按审查结果）:
-  /sdd-verify — 全部 PASSED，进入验证阶段
-  /sdd-test-code — 有 PARTIAL 场景，补全缺失测试
-  /sdd-code — 有 MISSING 场景或 critical issues，补充实现
-  △ /sdd-code — 继续下一批次实施
+推荐下一步（按审查结果）:
+  1. ★ /sdd-verify — 全部 PASSED，进入验证阶段
+  2. ○ /sdd-test-code — 有 PARTIAL 场景，补全缺失测试
+  3. ○ /sdd-code — 有 MISSING 场景或 critical issues，补充实现
+  4. △ /sdd-code — 继续下一批次实施
 ```

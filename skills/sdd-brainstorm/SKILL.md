@@ -137,6 +137,7 @@ sdd-brainstorm 完成。
 
 如需释放上下文，可安全 /clear。
 
-★ 推荐下一步: /sdd-propose — 固化提案
-  ○ /sdd-ff — 需求已充分明确时跳过 propose 直接快进
+推荐下一步:
+  1. ★ /sdd-propose — 固化提案
+  2. ○ /sdd-ff — 需求已充分明确时跳过 propose 直接快进
 ```
