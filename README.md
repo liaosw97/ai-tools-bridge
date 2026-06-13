@@ -92,6 +92,13 @@ brainstorm.md → proposal.md → specs/ → tasks.md → plan.md
 /sdd-propose → /clear → /sdd-ff → /clear → /sdd-plan → /clear → /sdd-code → /clear → /sdd-ship
 ```
 
+### SDD 流程 vs OPSX 命令
+
+- **SDD 流程**：适合完整的开发周期，提供端到端的编排和质量保障
+- **OPSX 命令**：适合独立使用 OpenSpec，不依赖 SDD 编排
+
+使用 SDD 流程时，请忽略 OPSX 命令输出的"下一步建议"，遵循 SDD 的流程指引。每个调用 OPSX 的 SDD action 会在输出末尾显示 SDD 流程指引，请遵循该指引继续。
+
 ## 三段式架构
 
 每个 action skill 遵循统一结构：

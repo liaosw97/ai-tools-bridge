@@ -2,13 +2,13 @@ import { describe, test, expect } from 'vitest';
 import { getSkillDirs, parseSkillFrontmatter } from '../setup.js';
 import path from 'node:path';
 
-// CLAUDE.md 中记录的委托表
+// CLAUDE.md 中记录的委托表（OPSX 命令格式）
 const expectedDelegations: Record<string, string[]> = {
   'sdd-doctor': [],
   'sdd-brainstorm': ['superpowers:brainstorming'],
-  'sdd-propose': ['openspec-continue-change', 'openspec-propose'],
-  'sdd-continue': ['openspec-continue-change'],
-  'sdd-ff': ['openspec-ff-change'],
+  'sdd-propose': ['/opsx:propose', '/opsx:continue'],
+  'sdd-continue': ['/opsx:continue'],
+  'sdd-ff': ['/opsx:ff'],
   'sdd-plan': ['superpowers:writing-plans'],
   'sdd-code': [
     'superpowers:using-git-worktrees',
@@ -16,7 +16,7 @@ const expectedDelegations: Record<string, string[]> = {
     'superpowers:systematic-debugging',
   ],
   'sdd-quick': [
-    'openspec-continue-change',
+    '/opsx:continue',
     'superpowers:test-driven-development',
   ],
   'sdd-review-spec': [],
@@ -24,11 +24,11 @@ const expectedDelegations: Record<string, string[]> = {
   'sdd-test-code': ['superpowers:test-driven-development'],
   'sdd-verify': [
     'superpowers:verification-before-completion',
-    'openspec-verify-change',
+    '/opsx:verify',
   ],
   'sdd-ship': [
-    'openspec-sync-specs',
-    'openspec-archive-change',
+    '/opsx:sync',
+    '/opsx:archive',
     'superpowers:finishing-a-development-branch',
   ],
 };

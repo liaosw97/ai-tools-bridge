@@ -34,8 +34,8 @@ describe('override instructions completeness', () => {
 
   test('sdd-review-code Phase 2 Override covers 3 elements', () => {
     const body = readSkillBody('sdd-review-code');
-    // 查找阶段 2 或 Phase 2 的 Override 部分
-    const phase2Match = body.match(/阶段\s*2[\s\S]*?(?=\n##[^#]|\n---\n|$)/);
+    // 查找 ## 阶段 2 或 ## Phase 2 标题开始的 Override 部分
+    const phase2Match = body.match(/## (?:阶段|Phase)\s*2[\s\S]*?(?=\n##[^#]|\n---\n|$)/);
     const section = phase2Match ? phase2Match[0] : body;
     expect(section, 'Missing output location').toContain('openspec/changes');
     expect(section, 'Missing review focus').toContain('审查焦点');

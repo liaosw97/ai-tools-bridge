@@ -59,7 +59,7 @@
 | `sdd-continue` | `/opsx:continue` |
 | `sdd-ff` | `/opsx:ff` |
 | `sdd-plan` | `superpowers:writing-plans` |
-| `sdd-code` | `superpowers:test-driven-development`、`using-git-worktrees`、`systematic-debugging` |
+| `sdd-code` | `superpowers:test-driven-development`、`superpowers:using-git-worktrees`、`superpowers:systematic-debugging` |
 | `sdd-quick` | `/opsx:continue`、`superpowers:test-driven-development` |
 | `sdd-review-spec` | SDD 自有子代理 |
 | `sdd-review-code` | 阶段 1：SDD 子代理；阶段 2：`superpowers:requesting-code-review` |
@@ -103,6 +103,19 @@ brainstorm.md（可选）→ proposal.md（必需）→ spec（必需，位于 s
 - **规格链接**：任务通过 `[spec:domain#scenario]` 引用场景
 - **审查循环**：最多 3 轮，按严重程度分级（critical/major/minor）
 - **渐进采用**：从 5 个核心行动开始，逐步添加 review/brainstorm/verify 行动
+
+### SDD 流程独立性
+
+SDD 流程是独立的编排层，使用 SDD 时应忽略 OPSX 的建议。OPSX 命令是独立的工具，其"下一步建议"仅在直接使用 OPSX 时有效。
+
+当使用 SDD 流程时，每个调用 OPSX 的 action（sdd-propose、sdd-continue、sdd-ff、sdd-verify、sdd-ship、sdd-quick）会在输出末尾显示 SDD 流程指引，请遵循该指引而非 OPSX 的建议。
+
+### 误操作恢复
+
+如果用户误执行了 OPSX 命令（如 `/opsx:apply`），可以通过以下方式回到 SDD 流程：
+1. 执行 `/sdd-doctor` 检查当前状态
+2. 执行 `/sdd-continue` 或 `/sdd-ff` 继续 SDD 流程
+3. OPSX 生成的 artifact 与 SDD 兼容（都使用 `openspec/changes/<name>/` 目录）
 
 ## 文件映射
 
