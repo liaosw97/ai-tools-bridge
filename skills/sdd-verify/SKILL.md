@@ -127,3 +127,13 @@ sdd-verify 完成。
   2. ○ /sdd-test-code — FAILED，测试未覆盖场景
   3. ○ /sdd-code — FAILED，实现缺失
 ```
+
+<!-- SDD 流程指引：覆盖 OPSX 建议 -->
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+SDD 流程指引（请忽略上方可能显示的 OPSX 建议）
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+推荐下一步:
+  1. ★ /sdd-ship — PASSED，归档合并
+  2. ○ /sdd-test-code — FAILED，测试未覆盖场景
+  3. ○ /sdd-code — FAILED，实现缺失
