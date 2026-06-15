@@ -112,3 +112,42 @@ sdd-review-spec 完成。
   2. ○ /sdd-ff — Issues，重新生成 spec
   3. △ /sdd-propose — 回退修改提案
 ```
+
+### 4. 交互式修复（条件执行）
+
+**仅在 spec 审查发现 Important 或 Minor issues 时执行。**
+
+> **跨 spec 引用**: 交互式修复阶段的详细行为定义见 `specs/interactive-fix/spec.md`。
+
+#### 修复流程
+
+```
+spec 审查完成，发现 N 个问题：
+  - [Important] 问题标题 1
+  - [Minor] 问题标题 2
+
+是否进入交互式修复？(y/n)
+```
+
+**用户回答 "y"** → 进入交互式修复流程
+**用户回答 "n"** → 跳过，输出完成引导
+
+#### 逐个问题交互
+
+从 `reviews/spec-r<N>.md` 提取问题列表，按 severity 排序（Important > Minor），逐个问题询问。复用 sdd-review-code 的交互循环和修复执行逻辑，提供相同的 4 个选项：
+
+1. 自动修复（按建议修改）
+2. 手动修复（我来修改）
+3. 跳过（不修复）
+4. 标记为已修复（稍后处理）
+
+#### 修复完成汇总
+
+所有问题处理完成后输出汇总（格式同 sdd-review-code Phase 3）。
+
+#### 交互式修复跳过条件
+
+- spec 审查未发现问题
+- 用户选择跳过修复
+
+跳过时输出完成引导。
