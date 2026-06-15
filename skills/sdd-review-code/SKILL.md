@@ -173,16 +173,16 @@ Phase 2 (代码质量):
 
 ### 2. 交互式修复（条件执行）
 
-**仅在 Phase 2 发现 Important 或 Minor issues 时执行。**
+**仅在 Phase 2 发现 major 或 minor issues 时执行。**
 
-读取 `interactive-fix-prompt.md`，dispatch subagent 进行交互式修复：
+如果存在 critical issues，跳过交互式修复，直接建议 `/sdd-code` 补充实现。
 
 #### 修复流程
 
 ```
 Phase 2 完成，发现 N 个问题：
-  - [Important] 问题标题 1
-  - [Minor] 问题标题 2
+  - [major] 问题标题 1
+  - [minor] 问题标题 2
 
 是否进入交互式修复？(y/n)
 ```
@@ -192,7 +192,7 @@ Phase 2 完成，发现 N 个问题：
 
 #### 逐个问题交互
 
-从 `reviews/code-quality-r<N>.md` 提取问题列表，按 severity 排序（Important > Minor），逐个问题询问：
+从 `reviews/code-quality-r<N>.md` 提取问题列表，按 severity 排序（major > minor），逐个问题询问：
 
 ```
 修复问题 1/N: <问题标题>
@@ -237,7 +237,7 @@ Phase 2 完成，发现 N 个问题：
   请稍后处理已标记的问题。
 ```
 
-#### Phase 3 跳过条件
+#### 跳过条件
 
 - Phase 2 未发现问题
 - 用户选择跳过修复

@@ -115,7 +115,7 @@ sdd-review-spec 完成。
 
 ### 4. 交互式修复（条件执行）
 
-**仅在 spec 审查发现 Important 或 Minor issues 时执行。**
+**仅在 spec 审查发现 major 或 minor issues 时执行。**
 
 > **跨 spec 引用**: 交互式修复阶段的详细行为定义见 `specs/interactive-fix/spec.md`。
 
@@ -123,8 +123,8 @@ sdd-review-spec 完成。
 
 ```
 spec 审查完成，发现 N 个问题：
-  - [Important] 问题标题 1
-  - [Minor] 问题标题 2
+  - [major] 问题标题 1
+  - [minor] 问题标题 2
 
 是否进入交互式修复？(y/n)
 ```
@@ -134,7 +134,7 @@ spec 审查完成，发现 N 个问题：
 
 #### 逐个问题交互
 
-从 `reviews/spec-r<N>.md` 提取问题列表，按 severity 排序（Important > Minor），逐个问题询问。复用 sdd-review-code 的交互循环和修复执行逻辑，提供相同的 4 个选项：
+从 `reviews/spec-r<N>.md` 提取问题列表，按 severity 排序（major > minor），逐个问题询问。复用 sdd-review-code 的交互循环和修复执行逻辑，提供相同的 4 个选项：
 
 1. 自动修复（按建议修改）
 2. 手动修复（我来修改）
