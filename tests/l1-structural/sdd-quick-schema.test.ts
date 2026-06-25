@@ -87,10 +87,10 @@ describe('sdd-quick SKILL.md: three-layer structure', () => {
     expect(body).toContain('前置逻辑');
   });
 
-  test('核心执行 delegates to /opsx:continue and superpowers:test-driven-development', () => {
+  test('核心执行 delegates to openspec-continue-change and superpowers:test-driven-development', () => {
     const body = parseSkillFrontmatter(skillPath).body;
     expect(body).toContain('核心执行');
-    expect(body).toContain('/opsx:continue');
+    expect(body).toContain('openspec-continue-change');
     expect(body).toContain('superpowers:test-driven-development');
   });
 

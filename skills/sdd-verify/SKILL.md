@@ -62,7 +62,7 @@ Override 指令：
 
 ### 2b. Spec 验证
 
-**invoke `/opsx:verify`**
+**invoke `openspec-verify-change`**
 
 Override 指令：
 ```

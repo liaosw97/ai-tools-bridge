@@ -55,7 +55,7 @@ brainstorm.md → proposal.md → specs/ → design.md → tasks.md
 
 ## 核心执行（委托底层 skill）
 
-**invoke `/opsx:continue`**
+**invoke `openspec-continue-change`**
 
 传递信息：
 - 当前 change 目录路径

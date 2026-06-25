@@ -114,18 +114,18 @@ brainstorm.md → proposal.md → specs/ → tasks.md → plan.md
 | SDD Action | 委托给 |
 |------------|--------|
 | sdd-brainstorm | `superpowers:brainstorming` |
-| sdd-propose | `/opsx:propose` / `/opsx:continue` |
-| sdd-continue | `/opsx:continue` |
-| sdd-ff | `/opsx:ff` |
+| sdd-propose | `openspec-continue-change` |
+| sdd-continue | `openspec-continue-change` |
+| sdd-ff | `openspec-ff-change` |
 | sdd-plan | `superpowers:writing-plans` |
 | sdd-code | `superpowers:test-driven-development` + `using-git-worktrees` + `systematic-debugging` |
-| sdd-quick | `/opsx:continue` + `superpowers:test-driven-development` |
+| sdd-quick | `openspec-continue-change` + `superpowers:test-driven-development` |
 | sdd-review-spec | SDD 自有 subagent |
 | sdd-review-code (Phase 1) | SDD 自有 subagent |
 | sdd-review-code (Phase 2) | `superpowers:requesting-code-review` |
 | sdd-test-code | `superpowers:test-driven-development` |
-| sdd-verify | `superpowers:verification-before-completion` + `/opsx:verify` |
-| sdd-ship | `/opsx:sync` + `/opsx:archive` + `superpowers:finishing-a-development-branch` |
+| sdd-verify | `superpowers:verification-before-completion` + `openspec-verify-change` |
+| sdd-ship | `openspec-sync-specs` + `openspec-archive-change` + `superpowers:finishing-a-development-branch` |
 
 ## OPSX 命令体系
 
@@ -161,14 +161,14 @@ openspec update            # 生成命令文件 + skill 定义
 
 ### SDD Action → OPSX 映射
 
-| SDD Action | OPSX 命令 |
+| SDD Action | OpenSpec 技能 |
 |------------|----------|
-| sdd-propose | `/opsx:propose` 或 `/opsx:continue` |
-| sdd-continue | `/opsx:continue` |
-| sdd-ff | `/opsx:ff` |
-| sdd-verify | `/opsx:verify` |
-| sdd-ship | `/opsx:sync` + `/opsx:archive` |
-| sdd-quick | `/opsx:continue` |
+| sdd-propose | `openspec-continue-change` |
+| sdd-continue | `openspec-continue-change` |
+| sdd-ff | `openspec-ff-change` |
+| sdd-verify | `openspec-verify-change` |
+| sdd-ship | `openspec-sync-specs` + `openspec-archive-change` |
+| sdd-quick | `openspec-continue-change` |
 
 ## Review 机制
 

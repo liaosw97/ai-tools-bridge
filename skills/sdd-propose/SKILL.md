@@ -53,11 +53,7 @@ description: "固化提案 — 基于需求或 brainstorm.md 生成 proposal.md�
 
 ## 核心执行（委托底层 skill）
 
-**invoke `/opsx:continue` 或 `/opsx:propose`**
-
-根据当前状态选择：
-- 如果 change 目录已存在且有其他 artifact → invoke `/opsx:continue`
-- 如果是全新变更 → invoke `/opsx:propose`
+**invoke `openspec-continue-change`**
 
 传递上下文信息：
 - brainstorm.md 的关键决策（如有）

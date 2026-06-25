@@ -86,7 +86,7 @@ description: "归档合并 — 同步 specs、归档变更、合并分支，完�
 ### Step 1: Sync Specs
 
 <!-- OpenSpec 插件提供的 skill -->
-**invoke `/opsx:sync`**
+**invoke `openspec-sync-specs`**
 
 Override 指令：
 ```
@@ -103,7 +103,7 @@ Override 指令：
 ### Step 2: Archive Change
 
 <!-- OpenSpec 插件提供的 skill -->
-**invoke `/opsx:archive`**
+**invoke `openspec-archive-change`**
 
 Override 指令：
 ```

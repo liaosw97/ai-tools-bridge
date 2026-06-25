@@ -55,17 +55,17 @@
 |------|--------|
 | `sdd-doctor` | 无（独立诊断） |
 | `sdd-brainstorm` | `superpowers:brainstorming` |
-| `sdd-propose` | `/opsx:propose` / `/opsx:continue` |
-| `sdd-continue` | `/opsx:continue` |
-| `sdd-ff` | `/opsx:ff` |
+| `sdd-propose` | `openspec-continue-change` |
+| `sdd-continue` | `openspec-continue-change` |
+| `sdd-ff` | `openspec-ff-change` |
 | `sdd-plan` | `superpowers:writing-plans` |
 | `sdd-code` | `superpowers:test-driven-development`、`superpowers:using-git-worktrees`、`superpowers:systematic-debugging` |
-| `sdd-quick` | `/opsx:continue`、`superpowers:test-driven-development` |
+| `sdd-quick` | `openspec-continue-change`、`superpowers:test-driven-development` |
 | `sdd-review-spec` | SDD 自有子代理 |
 | `sdd-review-code` | 阶段 1：SDD 子代理；阶段 2：`superpowers:requesting-code-review` |
 | `sdd-test-code` | `superpowers:test-driven-development` |
-| `sdd-verify` | `superpowers:verification-before-completion`、`/opsx:verify` |
-| `sdd-ship` | `/opsx:sync`、`/opsx:archive`、`superpowers:finishing-a-development-branch` |
+| `sdd-verify` | `superpowers:verification-before-completion`、`openspec-verify-change` |
+| `sdd-ship` | `openspec-sync-specs`、`openspec-archive-change`、`superpowers:finishing-a-development-branch` |
 
 ### OPSX 命令体系
 
