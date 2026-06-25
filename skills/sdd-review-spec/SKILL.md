@@ -108,9 +108,14 @@ sdd-review-spec 完成。
 如需释放上下文，可安全 /clear。
 
 推荐下一步（按审查结果）:
-  1. ★ /sdd-plan — Approved，生成实施计划
-  2. ○ /sdd-ff — Issues，重新生成 spec
-  3. △ /sdd-propose — 回退修改提案
+  如果 plan.md 已存在:
+    1. ★ /sdd-code — Approved 且 plan 已就绪，直接开始实施
+    2. ○ /sdd-ff — Issues，重新生成 spec
+    3. △ /sdd-propose — 回退修改提案
+  如果 plan.md 不存在:
+    1. ★ /sdd-plan — Approved，生成实施计划
+    2. ○ /sdd-ff — Issues，重新生成 spec
+    3. △ /sdd-propose — 回退修改提案
 ```
 
 ### 4. 交互式修复（条件执行）
