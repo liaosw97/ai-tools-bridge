@@ -73,6 +73,12 @@ description: "TDD 实施 — 按 plan.md 中的批次执行 TDD 循环，产出�
    - 用户可手动选择其他单元
    - 选择后定位到对应任务范围
 
+### 3.6 读取函数蓝图（可选）
+
+- 检查 `openspec/changes/<name>/functions.md` 是否存在
+- 存在 → 读取函数签名和调用关系，作为 TDD 批次的实现参考
+- 不存在 → 跳过，按原有流程实施
+
 ### 4. Worktree 准备（推荐）
 
 - 如果当前不在 worktree 中，建议创建
