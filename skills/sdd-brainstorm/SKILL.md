@@ -127,6 +127,13 @@ SDD Override 指令（必须遵循，优先于 brainstorming skill 的默认行�
 
 ### 3. 完成引导
 
+在完成引导输出后，额外询问用户：
+
+"是否进入 sdd-analyze 深度分析？（将需求解析为模块→功能→函数三层结构）"
+
+- 用户选择"是" → 输出"正在进入 sdd-analyze 深度分析..."，读取当前 change 的 brainstorm.md 和 proposal.md（如有）作为输入，执行 sdd-analyze 的核心执行逻辑（需求分析 → 三层解析 → 冲突检测 → 人工审核 → 产出 functions.md），完成后输出"sdd-analyze 完成。functions.md 已产出。"
+- 用户选择"否" → 输出标准完成引导，用户后续可手动调用 /sdd-analyze
+
 输出：
 ```
 sdd-brainstorm 完成。
