@@ -25,7 +25,9 @@ description: "需求结构化解析 — 将需求解析为 模块→功能→函
 
 - **阻断**：无 active change → 拒绝执行
 - **阻断**：已有未提交的 code 变更 → 提示先 git commit
-- **警告**：在 code 阶段调用（plan → code 及之后）→ 提示"已在 code 阶段，需要重新生成 plan 并确认是否覆盖已有代码"
+- **警告**：在 code 阶段调用（plan → code 及之后）→ 提示"已在 code 阶段，需要重新生成 plan 并确认是否覆盖已有代码"，询问用户"是否确认重新生成？(y/n)"
+  - 用户确认（y）→ 触发从 propose → ff → plan 的重新生成流程，更新所有关联 artifacts（specs、tasks、plan），完成后提示"重新生成完成，请重新执行 /sdd-code"
+  - 用户拒绝（n）→ 保持当前所有 artifacts 不变，继续执行 sdd-analyze 核心逻辑（仅分析，不覆盖已有代码）
 - **functions.md 已存在时**：询问用户"已有 functions.md，是否覆盖重新生成？(y/n)"，用户选择覆盖则全量替换，选择追加则在已有基础上追加
 
 ### 1. 定位 Change 目录
