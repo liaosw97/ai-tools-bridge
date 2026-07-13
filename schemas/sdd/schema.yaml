@@ -76,6 +76,22 @@ artifacts:
         required: false
         description: "如果 brainstorm.md 存在，引用相关决策"
 
+  functions:
+    description: "函数蓝图，记录模块→功能→函数三层结构定义，含函数签名和调用关系图"
+    required: false
+    dependencies: ["proposal"]
+    file: "functions.md"
+    content_constraints:
+      - field: "模块结构"
+        required: true
+        description: "模块→功能→函数的树形结构"
+      - field: "函数签名"
+        required: true
+        description: "每个函数的函数名、参数列表、返回值类型、描述"
+      - field: "调用关系"
+        required: true
+        description: "函数间的调用链"
+
   tasks:
     description: "任务清单，将 spec 拆解为可执行的任务"
     required: true
@@ -148,6 +164,11 @@ actions:
     description: "深度探索设计 — 苏格拉底式探索需求，生成 brainstorm.md"
     requires: []
     produces: ["brainstorm.md"]
+
+  sdd-analyze:
+    description: "需求结构化解析 — 将需求解析为模块→功能→函数三层结构，产出函数签名和调用关系图"
+    requires: []
+    produces: ["functions.md"]
 
   sdd-propose:
     description: "固化提案 — 基于需求或 brainstorm.md 生成 proposal.md"
