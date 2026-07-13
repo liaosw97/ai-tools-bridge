@@ -12,7 +12,7 @@
 - **OpenSpec** — 规格/规范层（变更提案、规格、制品）
 - **Superpowers** — 纪律层（头脑风暴、TDD、代码审查、调试等）
 
-核心理念：**"行动而非阶段"** — 13 个行动各自独立。大型功能运行完整流程；小修复可跳过不必要的步骤。
+核心理念：**"行动而非阶段"** — 14 个行动各自独立。大型功能运行完整流程；小修复可跳过不必要的步骤。
 
 ## 架构
 
@@ -49,12 +49,13 @@
 
 每个 SKILL.md 通过 include 引用共享模块，只保留差异内容，实现"公共逻辑改一处即可"的维护优势。
 
-### 13 个行动及其委托
+### 14 个行动及其委托
 
 | 行动 | 委托给 |
 |------|--------|
 | `sdd-doctor` | 无（独立诊断） |
 | `sdd-brainstorm` | `superpowers:brainstorming` |
+| `sdd-analyze` | SDD 自有（独立分析） |
 | `sdd-propose` | `openspec-continue-change` |
 | `sdd-continue` | `openspec-continue-change` |
 | `sdd-ff` | `openspec-ff-change` |
@@ -90,6 +91,7 @@ openspec update            # 生成命令文件 + skill 定义
 ```
 brainstorm.md（可选）→ proposal.md（必需）→ spec（必需，位于 specs/<domain>/）
                                               → design.md（可选）
+                                              → functions.md（可选，sdd-analyze 产出）
                                                   → tasks.md（必需）→ plan.md（可选）
 ```
 

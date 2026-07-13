@@ -22,6 +22,13 @@
 - [ ] 无 TBD/TODO 占位符
 - [ ] Review 已通过（或用户接受）
 
+### sdd-analyze 质量门
+
+- [ ] functions.md 存在且非空
+- [ ] 每个功能函数有明确的输入/输出签名和用途说明
+- [ ] 函数拆分粒度合理（可独立测试、可独立实现）
+- [ ] 无 TBD/TODO 占位符
+
 ### sdd-propose 质量门
 
 - [ ] proposal.md 存在且非空

@@ -28,6 +28,10 @@
 - 起点可以是已有的需求描述，不需要从零探索
 - Reviewer subagent 只传 brainstorm.md，不传整个项目上下文
 
+### sdd-analyze
+- 只传 proposal.md 和相关 spec 文件，不传整个 change 上下文
+- 输出 functions.md 时只保留函数签名，不包含实现细节
+
 ### sdd-propose / sdd-continue / sdd-ff
 - 不重复加载底层 skill 的引导指令
 - 只传当前 change 的已有 artifact，不传其他 change 的内容
@@ -81,7 +85,7 @@
 - `quality-checkpoints.md` — 只在 action 质量门检查时加载对应部分
 - `decision-strategy.md` — 只在遇到决策点时加载
 - `token-optimization.md` — 编排器启动时加载一次，后续隐式遵循
-- `team-standards.md` — 只在 sdd-brainstorm、sdd-code、sdd-review-* 时加载
+- `team-standards.md` — 只在 sdd-brainstorm、sdd-analyze、sdd-code、sdd-review-* 时加载
 
 ---
 
