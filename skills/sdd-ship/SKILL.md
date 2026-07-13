@@ -79,6 +79,56 @@ description: "归档合并 — 同步 specs、归档变更、合并分支，完�
      f. 展示提取结果，用户确认后继续
    - 如果无延后项 → 输出"proposal 中无延后项，跳过 backlog 更新"，继续归档
 
+### 2.6 提交整理（可选）
+
+在 Sync Specs 之前执行提交整理，操作 git 提交历史：
+
+1. **扫描 commit 列表**：`git log <base-branch>..HEAD --oneline`，列出当前变更的所有 commit
+2. **判断跳过条件**：如果 commit 数量 <= 1，自动跳过整理流程
+3. **询问用户**："是否整理提交历史？(y/n)"
+   - y → 进入 AI 分析合并建议（见 Task 4.2）
+   - n → 跳过，继续后续流程
+
+#### AI 分析合并建议
+
+用户选择整理后，AI 自动执行：
+
+1. **分析 commit**：对每个 commit，分析其 diff 内容
+2. **模块归类**：
+   - 如有 functions.md → 按 functions.md 的模块定义归类
+   - 无 functions.md 但有 proposal.md → 按 proposal 模块定义归类
+   - 均无 → 按 commit message 关键词和 diff 语义推断，标注"仅供参考"
+3. **生成建议**：展示归类结果和合并方案，例如：
+   ```
+   ├── 模块 A（3 commits）
+   ├── 模块 B（2 commits）
+   └── 杂项（1 commit）
+   建议合并为 3 个 commit
+   ```
+4. **用户确认**：展示建议方案，等待用户确认
+   - 确认 → 执行合并
+   - 不满意 → 用户可手动指定合并策略，AI 按指令执行
+
+#### 执行 squash merge
+
+1. **按方案执行**：对每个模块组执行 `git rebase -i` 或 `git merge --squash`
+2. **保留 commit 信息**：合并后的 commit message 包含模块名和原始 commit 摘要
+
+#### 冲突处理
+
+- 如果 squash merge 出现冲突：
+  1. 提示用户："合并出现冲突，请手动解决后继续"
+  2. 用户解决冲突并 `git add` 后，AI 检测到冲突已解决
+  3. 继续执行后续归档流程
+
+#### 完成确认
+
+合并完成后输出：
+```
+提交整理完成。
+  原始: N commits → 合并后: M commits
+```
+
 ---
 
 ## 核心执行（三步顺序执行）
