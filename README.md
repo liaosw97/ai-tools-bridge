@@ -1,6 +1,6 @@
 # AI Tools Bridge — SDD 工作流编排器
 
-**v0.3.2** — 通过 skill-audit 系统审计，无阻断问题。
+**v0.3.3** — 通过 skill-audit 系统审计，无阻断问题。
 
 基于 Action-based 架构，串联 OpenSpec（规格层）与 Superpowers（纪律层），实现 Spec-Driven Development。
 
@@ -14,7 +14,7 @@
 
 ## 13 个 Action
 
-**v0.3.2** — 通过 skill-audit 系统审计（50/50），新增角色系统、拆分模式、达限处理机制。
+**v0.3.3** — 通过 skill-audit 系统审计（50/50），新增角色系统、拆分模式、达限处理机制。
 
 ```
 sdd-doctor       — 环境诊断 + 复杂度评估

@@ -199,7 +199,7 @@ describe('README: action list and version', () => {
     expect(readme).toContain('13');
   });
 
-  test('contains version v0.3.2', () => {
-    expect(readme).toContain('v0.3.2');
+  test('contains version v0.3.3', () => {
+    expect(readme).toContain('v0.3.3');
   });
 });

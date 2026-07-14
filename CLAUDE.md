@@ -6,7 +6,7 @@
 
 ## 项目概述
 
-这是一个 **Claude Code 插件** (`ai-tools-bridge` v0.3.2)，实现了 **SDD（规格驱动开发）工作流编排器**。项目由 Markdown 技能定义和 Vitest 结构验证测试组成。它定义了 Claude Code 作为斜杠命令加载的技能提示词。
+这是一个 **Claude Code 插件** (`ai-tools-bridge` v0.3.3)，实现了 **SDD（规格驱动开发）工作流编排器**。项目由 Markdown 技能定义和 Vitest 结构验证测试组成。它定义了 Claude Code 作为斜杠命令加载的技能提示词。
 
 该插件编排两个外部插件生态系统：
 - **OpenSpec** — 规格/规范层（变更提案、规格、制品）
