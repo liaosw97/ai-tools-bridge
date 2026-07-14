@@ -64,8 +64,12 @@ description: "代码审查 — Phase 1: 场景-代码映射验证 → Phase 1.5:
 - 如果有未实现的场景 → 停止，报告问题：
   ```
   ⚠️ Phase 1 发现 spec 合规问题：
-    - [spec:auth#login] 未找到登录失败场景的实现
-    - [spec:auth#token-refresh] 部分实现：缺少过期处理
+    - [spec:auth#login] ❌ 未找到登录失败场景的实现
+      修复建议: 在 src/auth/login.ts 中添加登录失败处理分支，捕获认证异常后返回错误响应
+
+    - [spec:auth#token-refresh] ⚠️ 部分实现：缺少过期处理
+      修复建议: 在 src/auth/token.ts:refreshToken() 中添加 token 过期判断逻辑，
+               过期时返回 401 并引导重新登录
 
   建议: 运行 /sdd-code 补充缺失的实现，而非继续代码质量审查。
   ```
