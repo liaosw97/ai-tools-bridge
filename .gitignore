@@ -1,6 +1,8 @@
 .DS_Store
 .claude/
 node_modules/
+openspec/
+log/
 
 # 临时文件
 *.stackdump
