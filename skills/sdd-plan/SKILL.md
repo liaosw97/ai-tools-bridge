@@ -17,7 +17,7 @@ description: "细化实施计划 — 基于 tasks.md 生成 TDD 级别的实施�
 
 <!-- include: ../_shared/output-constraints.md -->
 
----
+<!-- include: ../_shared/change-registry.md -->
 
 ## 前置逻辑（SDD 自有）
 
@@ -94,10 +94,95 @@ description: "细化实施计划 — 基于 tasks.md 生成 TDD 级别的实施�
 #### 大型（>25）
 
 输出强建议提示："当前 tasks 包含 N 项任务，属于大型变更"，提供两个选项：
-- **拆分为多个 change** — 建议回到 /sdd-propose 重新规划范围，将当前需求拆分为多个独立 change。当前 plan 生成终止。
+- **拆分为多个 change** — 建议回到 /sdd-propose 重新规划范围，将当前需求拆分为多个独立 change。当前 plan 生成终止。或进入拆分流程（详见下方"拆分流程"）
 - **分批生成** — 在当前 change 内分批生成 plan
 
-### 4. 识别批次
+### 拆分流程（大型变更选择"拆分为多个 change"时触发）
+
+1. 询问用户输入子 change 名称，输出命名规范建议：`<original-name>-part<N>`
+2. 用户确认名称后进入文件复制等后续步骤
+3. 用户取消则输出"已取消拆分"，当前状态不变
+
+### 创建子 change 目录并复制文件
+
+1. 创建 `openspec/changes/<child-name>/` 目录
+2. 复制制品（选择性复制）：
+   - 复制父 change 的 `brainstorm.md` → 子 change 目录
+   - 复制父 change 的 `proposal.md` → 子 change 目录
+   - 复制父 change 的 `specs/` 目录（递归）→ 子 change 目录
+   - 复制父 change 的 `design.md`（如有）→ 子 change 目录
+   - 不复制 `plan.md`、`reviews/` 目录
+3. 不覆盖子 change 已有文件
+
+### tasks.md 过滤分配（A+C 混合模式）
+
+1. AI 按以下优先级分配任务：
+   a. 优先按 `[unit:...]` 标注自动分配——标注匹配的子 change 功能单元的任务归入该子 change
+   b. 无标注的任务按功能语义推荐分配
+   c. 一次性展示推荐分配结果，用户整体确认或逐条调整
+   d. 每个任务条目只分配到一个子 change
+2. 用户确认：
+   - 确认 → 继续注册表更新
+   - 取消 → 输出"已取消拆分"，当前状态不变
+3. 分配完成后：
+   - 子 change 生成过滤后的 tasks.md
+   - 父 change 的 tasks.md 中将已分配任务标记为 `[delegated:<child-name>]`
+
+### 更新注册表
+
+1. 在 `change-registry.yaml` 中记录：
+   - 父 change 记录（如不存在则创建）
+   - 子 change 记录（name/status/parent/description/tags/depends_on/created）
+   - 父 change 的 `children` 字段列出所有子 change 名称
+2. 提示用户可设置子 change 的 `description`、`tags`、`depends_on` 字段
+
+### 生成 inherited-specs.md
+
+在子 change 目录创建 `inherited-specs.md`，结构如下：
+
+```markdown
+## 来源 Change
+- 名称: <parent-change-name>
+- 拆分日期: <YYYY-MM-DD>
+
+## 继承的 Spec 场景
+<列出从父 change 继承的 spec 场景列表>
+
+## 未继承的依赖项
+<列出有间接依赖但未包含的场景（如有）>
+
+## 刷新记录
+- 创建时快照：<YYYY-MM-DD>
+- 最后同步：同上（静态快照，不自动同步）
+```
+
+父 change 无 specs/ 目录时，"继承的 Spec 场景"标记为"无"。
+文件已存在时跳过生成。
+
+### 拆分后输出引导（拆分流程完成后）
+
+输出以下信息：
+```
+已拆分为多个 change。
+
+子 change: <child-name>
+路径: openspec/changes/<child-name>/
+继承文档:
+  - brainstorm.md
+  - proposal.md
+  - specs/
+  - tasks.md
+
+推荐下一步:
+  ① /sdd-plan <child-name> — 进入子 change 的 plan 生成
+  ② /sdd-code — 继续当前 change 的剩余任务
+```
+
+注意：所有命令使用 `/sdd-` 前缀（方案 C 吸收，禁止输出 `/opsx:` 命令）。
+
+### 3. 完成引导（命令输出格式规范）
+
+完成引导中的所有命令**必须使用 `/sdd-` 前缀**，禁止输出 `/opsx:` 命令。
 
 如果 plan.md 已存在且有批次记录，确定当前应规划的批次编号。
 
