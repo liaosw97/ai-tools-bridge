@@ -99,9 +99,11 @@ description: "细化实施计划 — 基于 tasks.md 生成 TDD 级别的实施�
 
 ### 拆分流程（大型变更选择"拆分为多个 change"时触发）
 
-1. 询问用户输入子 change 名称，输出命名规范建议：`<original-name>-part<N>`
-2. 用户确认名称后进入文件复制等后续步骤
-3. 用户取消则输出"已取消拆分"，当前状态不变
+1. 扫描 `openspec/changes/` 目录中所有匹配 `<original-name>-part*` 的目录，确定下一个可用编号 N（从 2 开始，跳过已存在的编号）
+2. 输出命名规范建议：`<original-name>-part<N>`，用户可自定义后缀名
+3. 用户输入名称后，检查注册表（如有）和 `openspec/changes/` 目录中是否存在同名 change，如冲突则提示重新输入
+4. 用户确认名称后进入文件复制等后续步骤
+5. 用户取消则输出"已取消拆分"，当前状态不变
 
 ### 创建子 change 目录并复制文件
 
@@ -168,10 +170,10 @@ description: "细化实施计划 — 基于 tasks.md 生成 TDD 级别的实施�
 子 change: <child-name>
 路径: openspec/changes/<child-name>/
 继承文档:
-  - brainstorm.md
-  - proposal.md
-  - specs/
-  - tasks.md
+  - brainstorm.md (已复制)
+  - proposal.md (已复制)
+  - specs/ (已复制)
+  - tasks.md (已过滤分配)
 
 推荐下一步:
   ① /sdd-plan <child-name> — 进入子 change 的 plan 生成
@@ -179,10 +181,6 @@ description: "细化实施计划 — 基于 tasks.md 生成 TDD 级别的实施�
 ```
 
 注意：所有命令使用 `/sdd-` 前缀（方案 C 吸收，禁止输出 `/opsx:` 命令）。
-
-### 3. 完成引导（命令输出格式规范）
-
-完成引导中的所有命令**必须使用 `/sdd-` 前缀**，禁止输出 `/opsx:` 命令。
 
 如果 plan.md 已存在且有批次记录，确定当前应规划的批次编号。
 

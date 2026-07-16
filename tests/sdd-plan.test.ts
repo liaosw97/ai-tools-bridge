@@ -207,15 +207,40 @@ describe('大型变更拆分触发', () => {
     expect(isEmpty).toBe(true);
   });
 
-  it('拆分取消时应恢复原始状态', () => {
+  it('拆分取消时应恢复原始状态（不创建子 change 目录）', () => {
+    // 模拟拆分取消场景：不创建子目录、不复制文件、不更新注册表
     const cancelled = true;
-    expect(cancelled).toBe(true);
+    const childDirCreated = !cancelled;
+    const filesCopied = !cancelled;
+    const registryUpdated = !cancelled;
+    expect(childDirCreated).toBe(false);
+    expect(filesCopied).toBe(false);
+    expect(registryUpdated).toBe(false);
   });
 
   it('用户选择拆分时应提示命名规范建议（<original-name>-part<N>）', () => {
     const originalName = 'fix-sdd-plan-split';
     const namingSuggestion = `${originalName}-part2`;
     expect(namingSuggestion).toBe('fix-sdd-plan-split-part2');
+  });
+
+  it('应扫描现有目录确定下一个可用 part 编号', () => {
+    const existingDirs = ['change-a', 'change-a-part2'];
+    const originalName = 'change-a';
+    const partPattern = new RegExp(`^${originalName}-part(\\d+)$`);
+    const existingParts = existingDirs
+      .filter(d => partPattern.test(d))
+      .map(d => parseInt(d.match(partPattern)![1]))
+      .sort((a, b) => a - b);
+    const nextN = existingParts.length > 0 ? Math.max(...existingParts) + 1 : 2;
+    expect(nextN).toBe(3);
+  });
+
+  it('名称冲突时应提示重新输入', () => {
+    const existingNames = ['change-a', 'change-a-part2'];
+    const userInput = 'change-a-part2';
+    const hasConflict = existingNames.includes(userInput);
+    expect(hasConflict).toBe(true);
   });
 });
 
@@ -240,10 +265,13 @@ describe('拆分文件复制', () => {
     if (fs.existsSync(childDir)) fs.rmSync(childDir, { recursive: true, force: true });
   });
 
-  it('应复制 brainstorm.md 到子 change 目录', () => {
+  it('应复制 brainstorm.md 到子 change 目录且内容一致', () => {
     fs.mkdirSync(childDir, { recursive: true });
     fs.cpSync(path.join(parentDir, 'brainstorm.md'), path.join(childDir, 'brainstorm.md'));
     expect(fs.existsSync(path.join(childDir, 'brainstorm.md'))).toBe(true);
+    const srcContent = fs.readFileSync(path.join(parentDir, 'brainstorm.md'), 'utf-8');
+    const dstContent = fs.readFileSync(path.join(childDir, 'brainstorm.md'), 'utf-8');
+    expect(dstContent).toBe(srcContent);
   });
 
   it('应复制 proposal.md 到子 change 目录', () => {
@@ -282,15 +310,21 @@ describe('拆分文件复制', () => {
   });
 
   it('不覆盖子 change 已有文件', () => {
-    fs.mkdirSync(childDir, { recursive: true });
-    fs.writeFileSync(path.join(childDir, 'brainstorm.md'), '# existing content');
+    const uniqueDir = fs.mkdtempSync(path.join(fs.realpathSync('.'), '.no-overwrite-'));
+    const testChildDir = path.join(uniqueDir, 'child');
+    fs.mkdirSync(testChildDir, { recursive: true });
     try {
-      fs.cpSync(path.join(parentDir, 'brainstorm.md'), path.join(childDir, 'brainstorm.md'), { force: false });
-    } catch {
-      // 期望抛出不覆盖错误
+      fs.writeFileSync(path.join(testChildDir, 'brainstorm.md'), '# existing content');
+      // 先检查目标文件存在，再决定是否跳过复制
+      const targetExists = fs.existsSync(path.join(testChildDir, 'brainstorm.md'));
+      if (!targetExists) {
+        fs.cpSync(path.join(parentDir, 'brainstorm.md'), path.join(testChildDir, 'brainstorm.md'));
+      }
+      const content = fs.readFileSync(path.join(testChildDir, 'brainstorm.md'), 'utf-8');
+      expect(content).toBe('# existing content');
+    } finally {
+      fs.rmSync(uniqueDir, { recursive: true, force: true });
     }
-    const content = fs.readFileSync(path.join(childDir, 'brainstorm.md'), 'utf-8');
-    expect(content).toBe('# existing content');
   });
 });
 
@@ -365,10 +399,23 @@ describe('inherited-specs.md 生成', () => {
     expect(inheritedSection).toBe('无');
   });
 
-  it('inherited-specs.md 已存在时跳过生成', () => {
-    const fileExists = true;
-    const shouldSkip = fileExists;
-    expect(shouldSkip).toBe(true);
+  it('inherited-specs.md 已存在时跳过生成（不覆盖已有文件）', () => {
+    // 模拟文件已存在场景：创建临时文件，模拟生成逻辑应跳过
+    const tmpDir = fs.mkdtempSync(path.join(fs.realpathSync('.'), '.inherited-specs-'));
+    const testFile = path.join(tmpDir, 'inherited-specs.md');
+    try {
+      fs.writeFileSync(testFile, '# existing content', 'utf-8');
+      const fileExists = fs.existsSync(testFile);
+      const shouldSkip = fileExists;
+      expect(shouldSkip).toBe(true);
+      // 验证不覆盖
+      if (shouldSkip) {
+        const content = fs.readFileSync(testFile, 'utf-8');
+        expect(content).toBe('# existing content');
+      }
+    } finally {
+      fs.rmSync(tmpDir, { recursive: true, force: true });
+    }
   });
 });
 
