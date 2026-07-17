@@ -333,7 +333,16 @@ SDD Override 指令（必须遵循，优先于 writing-plans skill 的默认行�
 - 包含 TDD 的 RED/GREEN 结构
 - 保留了 spec 链接
 
-### 3. 完成引导
+### 3. 完成引导（命令输出格式规范）
+
+完成引导中的所有命令**必须使用 `/sdd-` 前缀**，禁止输出 `/opsx:` 命令。
+
+**规则**：
+1. 捕获底层 skill 的输出
+2. 将所有 `/opsx:` 前缀替换为 `/sdd-`
+3. 替换后检查结果是否有效（如 `/opsx:apply` → `/sdd-apply` 无效，需修正为 `/sdd-code`；`/opsx:archive` → `/sdd-ship`），无效命令修正为对应 SDD action
+4. 硬编码推荐下一步命令为 sdd 格式
+5. 拆分完成引导也遵循此规则
 
 ```
 sdd-plan 完成。

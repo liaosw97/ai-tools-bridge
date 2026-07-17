@@ -49,6 +49,23 @@ description: "固化提案 — 基于需求或 brainstorm.md 生成 proposal.md�
 - proposal.md 不依赖 brainstorm.md（可直接跳过 brainstorm 创建 proposal）
 - 如果已存在 proposal.md，询问用户是覆盖还是在现有基础上修改
 
+### 3.5 子 change 引导检测
+
+- 读取 `change-registry.yaml`（如不存在则跳过）
+- 检查当前 change 在注册表中是否有活跃子 change
+- 如果有活跃子 change，输出引导提示（非阻断）：
+  ```
+  ⚠️ 检测到当前 change 存在未归档的子 change：
+    - <child-name-1> (active)
+    - <child-name-2> (active)
+
+  后续迭代应在子 change 上进行，而非父 change。
+  建议：
+    ① 进入子 change 继续迭代 → /sdd-code <child-name>
+    ② 如确需修改父 change，请确认不涉及子 change 范围
+    ③ 查看所有子 change 状态 → /sdd-doctor
+  ```
+
 ---
 
 ## 核心执行（委托底层 skill）

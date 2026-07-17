@@ -88,6 +88,25 @@ description: "TDD 实施 — 按 plan.md 中的批次执行 TDD 循环，产出�
 
 在创建文件前执行以下扫描：
 
+### 1.5 子 change 引导检测
+
+- 读取 `change-registry.yaml`（如不存在则跳过）
+- 检查当前 change 在注册表中是否有 `children` 且未全部 `archived`
+- 如果有活跃子 change：
+  ```
+  ⚠️ 检测到当前 change 存在未归档的子 change：
+    - <child-name-1> (active)
+    - <child-name-2> (active)
+
+  后续迭代应在子 change 上进行，而非父 change。
+  建议：
+    ① 进入子 change 继续迭代 → /sdd-code <child-name>
+    ② 如确需修改父 change，请确认不涉及子 change 范围
+    ③ 查看所有子 change 状态 → /sdd-doctor
+  ```
+- 引导为非阻断（用户确认后可继续修改父 change）
+- sdd-doctor 和 sdd-ship 不输出此引导（sdd-doctor 在诊断页面显示，sdd-ship 有独立的归档检查逻辑）
+
 1. **扫描项目目录**：
    - 获取当前功能单元的目标路径
    - 扫描项目中已存在的目录结构

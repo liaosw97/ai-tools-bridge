@@ -62,6 +62,35 @@ sdd-doctor 无前置依赖，校验直接通过。
   - plan.md
   - reviews/
 
+**父子关系拓扑**（当 `change-registry.yaml` 存在时显示）：
+
+```
+父子关系拓扑:
+  parent-change (active)
+    ├─ child-change-1 (active) — 进度: 63%
+    │   └─ 依赖: child-change-2
+    └─ child-change-2 (archived)
+```
+
+- 层级关系：父 change → 子 change 的缩进结构
+- 每个 change 标注 `status`（active/archived）
+- 子 change 显示进度（扫描 tasks.md 的 `- [x]` 标记数 / 总任务数 × 100%，总任务数 = `- [ ]` 和 `- [x]` 行数之和）
+- 无 tasks.md 时进度显示 "N/A"
+- 子 change 显示 `depends_on` 依赖关系
+- 无注册表时跳过此节
+
+**注册表与文件系统一致性检查**（当 `change-registry.yaml` 存在时执行）：
+
+1. 遍历注册表中所有 `status: active` 的 change
+2. 检查每个 change 的目录 `openspec/changes/<name>/` 是否存在
+3. 目录不存在 → 标记为孤项，输出：
+   ```
+   ⚠️ 检测到注册表与文件系统不一致：
+     - <change-name> — 注册表中为 active，但目录不存在
+     建议：确认后手动删除注册表项
+   ```
+4. 仅检查 active 状态的 change（archived 的 change 目录已移至 archive/）
+
 ### 3. 复杂度评估
 
 根据活跃变更的制品内容评估复杂度。

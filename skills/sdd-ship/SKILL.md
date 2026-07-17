@@ -59,7 +59,47 @@ description: "归档合并 — 同步 specs、归档变更、合并分支，完�
 是否仍要归档？(y/n)
 ```
 
-### 2.5 延后项提取
+### 2.5 子 change 归档前检查
+
+- 读取 `change-registry.yaml`（如不存在则跳过）
+- 检查当前 change 在注册表中是否有 `depends_on` 字段
+- 如果 `depends_on` 非空：
+  - 遍历 `depends_on` 列表中每个 change 的 `status`
+  - 全部为 `archived` → 允许归档
+  - 存在 `active` → 阻断，输出：
+    ```
+    ❌ 无法归档：存在未完成的依赖 change
+
+    本 change 依赖以下子 change 先归档：
+    - <dep-name-1> — 未完成（status: active）
+
+    请先完成并归档依赖的 change：
+    ① 查看依赖 change 状态 → /sdd-doctor <dep-name>
+    ② 继续依赖 change 实施 → /sdd-code <dep-name>
+    ```
+
+### 2.6 父 change 归档前检查
+
+- 读取 `change-registry.yaml`
+- 检查当前 change 在注册表中是否有 `children`
+- 如果有子 change：
+  - 遍历 `children` 列表中每个 change 的 `status`
+  - 全部为 `archived` → 允许归档
+  - 存在 `active` → 阻断，输出：
+    ```
+    ❌ 无法归档：存在未完成的子 change
+
+    子 change 状态：
+    - <child-name-1> — 已完成（可归档）
+    - <child-name-2> — 未完成（tasks: 3/8 未完成）
+
+    请先完成并归档所有子 change：
+    ① 继续子 change 实施 → /sdd-code <child-name>
+    ② 归档已完成子 change → /sdd-ship <child-name>
+    ```
+- 无子 change 时跳过检查
+
+### 2.7 延后项提取
 
 归档前从 proposal.md 中提取延后项，写入 `openspec/backlog.md`：
 
@@ -79,7 +119,7 @@ description: "归档合并 — 同步 specs、归档变更、合并分支，完�
      f. 展示提取结果，用户确认后继续
    - 如果无延后项 → 输出"proposal 中无延后项，跳过 backlog 更新"，继续归档
 
-### 2.6 提交整理（可选）
+### 2.7 提交整理（可选）
 
 在 Sync Specs 之前执行提交整理，操作 git 提交历史：
 
@@ -166,6 +206,25 @@ Override 指令：
 **失败处理**：archive 失败 → 停止，报告错误，不进入 Step 3。注意 Step 1 已完成（specs 已同步），需标注"部分完成"状态。
 
 ✅ Checkpoint: "Step 2 完成: 变更已归档至 archive/"
+
+**归档后处理 — 父 change tasks.md 更新**：
+
+1. 读取 `change-registry.yaml`，获取当前子 change 的 `parent`
+2. 如果 `parent` 存在：
+   a. 读取父 change 目录下的 `tasks.md`
+   b. 扫描所有 `[delegated:<child-name>]` 标记
+   c. 将匹配标记替换为 `[x]`
+   d. 写回父 change 的 `tasks.md`
+   e. 输出更新摘要："父 change tasks.md 已更新：N 个 [delegated:<child-name>] → [x]"
+
+**归档后处理 — 注册表状态更新**：
+
+1. 读取 `change-registry.yaml`
+2. 查找当前 change 的记录
+3. 将 `status` 更新为 `archived`
+4. 设置 `archived` 字段为当天日期（YYYY-MM-DD）
+5. 序列化并写回文件
+6. 注意：父 change 归档不影响子 change 的注册表记录
 
 ### Step 3: Finish Branch
 
