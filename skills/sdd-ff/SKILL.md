@@ -90,6 +90,20 @@ SDD Override 指令（必须遵循）：
 | design.md | 技术方案可行、决策追溯完整（如生成） |
 | tasks.md | 每个任务有 spec 链接 `[spec:domain#scenario]` |
 
+### 1.5 design.md 缺失询问
+
+如果 `design.md` 未生成（底层批量生成跳过了它），在格式校验阶段询问用户：
+
+```
+⚠️ design.md 未生成。design.md 是可选 artifact，用于记录技术方案和接口设计。
+是否需要生成 design.md？
+  ① 生成 — 基于 proposal.md 和 specs/ 生成技术设计文档
+  ② 跳过 — 确认不需要，继续完成流程
+```
+
+- 用户选择 `① 生成` → 读取 `proposal.md` 和 `specs/`，基于 `schemas/sdd/templates/design.md` 模板生成，写入 `openspec/changes/<name>/design.md`
+- 用户选择 `② 跳过` → 继续完成引导，flow 中标注 design.md 已跳过
+
 如果有校验不通过：
 ```
 ⚠️ 以下 artifact 格式有问题：
