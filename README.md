@@ -1,35 +1,47 @@
 # AI Tools Bridge — SDD 工作流编排器
 
-**v0.3.3** — 通过 skill-audit 系统审计，无阻断问题。
+**v0.4.0** — 双轨制（轻轨 hotfix/quick ≤15 分钟 + 重轨 analyze 三图/test-cases 完整规格驱动）。
 
 基于 Action-based 架构，串联 OpenSpec（规格层）与 Superpowers（纪律层），实现 Spec-Driven Development。
 
-## 核心理念
+## 双轨心智模型
 
-**Action Not Phases** — 每个操作是独立能力，不是必须按顺序完成的阶段。大特性走完整流程，小修复跳过不必要的步骤。
-
-**薄编排** — SDD skill 只做编排，核心工作委托给底层 skill。不修改 OpenSpec 或 Superpowers 的任何文件。
-
-**产物接力** — 每个 action 的输出是下一个 action 的输入，所有状态持久化为文件。任意步骤之间可以安全 `/clear`。
-
-## 13 个 Action
-
-**v0.3.3** — 通过 skill-audit 系统审计（50/50），新增角色系统、拆分模式、达限处理机制。
+按需求形态分流为两条轨道：
 
 ```
-sdd-doctor       — 环境诊断 + 复杂度评估
+                    ┌── 轻轨 (目标 ≤ 15 min)
+ 用户需求 ── 分流 ──┤      /sdd-hotfix  — bug 修复 / 细小改动（新增）
+                    │      /sdd-quick    — 小型新功能（轻量化）
+                    │
+                    └── 重轨 (完整详细)
+                         propose → analyze → plan → code → verify → ship
+                         (大需求: brainstorm + review 全流程)
+```
+
+- **轻轨**：调试/规格双轨分离。hotfix 只留 1 份 hotfix.md 卡片（不生成 proposal/spec/tasks）；quick 收敛为精简文档。时间保证靠**工作量盒**（文件数/场景数代理指标）+ 升轨保险丝，超盒自动暂停升轨。
+- **重轨**：analyze（M/L 级必需）产 functions.md 三图（架构图/声明图/调用图）+ test-cases.md 矩阵；functions.md 是代码合同、test-cases.md 是测试清单，sdd-code 按批次切片契约编码、sdd-verify 三向对齐（声明=实现=测试）通过才允许 ship。
+- **轨道×产物矩阵**：hotfix 轨禁 proposal/spec/tasks/functions/test-cases；quick 轨用精简 spec；M/L 重轨 functions/test-cases 全必需。
+
+## 15 个 Action
+
+**v0.4.0** — 双轨制：轻轨（hotfix/quick）+ 重轨（analyze 三图/test-cases）；analyze M/L 级必需；角色系统、拆分模式、达限处理、契约化编码。
+
+```
+sdd-doctor       — 环境诊断 + 复杂度评估 + 双轨路由
+sdd-hotfix       — 快速修复（bug/细小改动调试轨，≤15 min，产物 hotfix.md）【轻轨】
 sdd-brainstorm   — 深度探索设计
 sdd-propose      — 固化提案
-sdd-continue     — 逐步补充 artifact
-sdd-ff           — 快进生成所有文档
-sdd-plan         — 细化实施计划（支持分批生成）
-sdd-code         — TDD 实施
-sdd-quick        — 快速模式（简单需求一站式）
+sdd-continue     — 逐步补充 artifact（hotfix change 自动豁免）
+sdd-ff           — 快进生成所有文档（hotfix change 自动豁免）
+sdd-plan         — 细化实施计划 + test-cases.md 生成 + functions.md 批次回写
+sdd-code         — TDD 实施（契约切片编码 + 批次自检）
+sdd-analyze      — 独立分析（M/L 必需，产 functions.md 三图 + 批次元数据）
+sdd-quick        — 快速模式（小新功能一站式，轻量收敛版）【轻轨】
 sdd-review-spec  — Spec 审查
 sdd-review-code  — 代码审查（双阶段）
 sdd-test-code    — 测试补全（基于审查报告）
-sdd-verify       — 全面验证
-sdd-ship         — 归档合并
+sdd-verify       — 全面验证（三向对齐 + 全量回归；hotfix 降级卡片摘要）
+sdd-ship         — 归档合并（含 hotfix 轻量归档豁免）
 ```
 
 ### 依赖关系
@@ -37,12 +49,17 @@ sdd-ship         — 归档合并
 依赖是 enabler（前置 artifact 应存在），不是 gate（缺失则阻断）。
 
 ```
+hotfix.md（轻轨独立，不进依赖链，卡片即终态）
+
 brainstorm.md → proposal.md → specs/ → tasks.md → plan.md
   (可选)          (必需)    ↗  (必需)     (必需)
                            proposal.md
                               ↓
-                          design.md
-                           (可选)
+                          design.md (可选)
+                              ↓
+                          functions.md (重轨 M/L 必需)
+                              ↓
+                          test-cases.md (plan 生成, code 回填, verify 核验)
 ```
 
 ### Next Action 引导
@@ -51,8 +68,9 @@ brainstorm.md → proposal.md → specs/ → tasks.md → plan.md
 
 | 完成后 | ★ 推荐 | ○ 可选 | △ 跳跃 |
 |-------|--------|--------|--------|
+| sdd-hotfix | /sdd-ship（轻量归档） | /sdd-doctor | 升轨 /sdd-propose |
 | sdd-brainstorm | /sdd-propose | /sdd-continue, /sdd-ff | — |
-| sdd-propose | /sdd-ff | /sdd-continue, /sdd-plan | /sdd-brainstorm |
+| sdd-propose | /sdd-analyze（M/L）或 /sdd-ff | /sdd-continue, /sdd-plan | /sdd-brainstorm |
 | sdd-continue | /sdd-continue（下一个 artifact）或 /sdd-plan（已到 tasks） | /sdd-ff | — |
 | sdd-ff | /sdd-plan 或 /sdd-code（按复杂度） | /sdd-review-spec | — |
 | sdd-plan | /sdd-code | /sdd-review-spec | — |
@@ -65,13 +83,13 @@ brainstorm.md → proposal.md → specs/ → tasks.md → plan.md
 
 ### 路径推荐（sdd-doctor 自动推荐）
 
-运行 `/sdd-doctor` 自动评估变更复杂度并推荐路径：
+运行 `/sdd-doctor` 自动评估变更复杂度并推荐轨道：
 
-| 复杂度 | 推荐路径 | 说明 |
+| 复杂度 | 推荐轨道 | 说明 |
 |--------|---------|------|
-| 简单(S) | `/sdd-quick` | 一站式：propose → spec → tasks → code |
-| 中等(M) | `/sdd-propose` → `/sdd-ff` → `/sdd-plan` → `/sdd-code` | 可跳过 brainstorm |
-| 复杂(L) | brainstorm → propose → ff → plan → code → review → verify → ship | 完整流程，建议分批 plan |
+| 简单(S) | `/sdd-hotfix`（修复/小改）或 `/sdd-quick`（小新功能） | 轻轨 ≤15 min 闭环 |
+| 中等(M) | propose → analyze → plan → code → verify → ship | 重轨，analyze 必需 |
+| 复杂(L) | brainstorm → propose → analyze → plan → code → review → verify → ship | 重轨完整，analyze 必需 |
 
 ### 大特性（完整流程）
 
@@ -198,7 +216,7 @@ sdd-quick 和 sdd-test-code 使用从外部 skills 项目提取的精简参考�
 
 ## 渐进采用
 
-不需要一次性使用全部 13 个 action：
+不需要一次性使用全部 action：
 
 | 阶段 | Action | 建立的习惯 |
 |------|--------|-----------|

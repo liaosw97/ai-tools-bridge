@@ -142,10 +142,13 @@ describe('sdd-quick SKILL.md: proposal exists shortcut', () => {
 describe('sdd-quick SKILL.md: upper limit detection', () => {
   const skillPath = resolveRoot('skills', 'sdd-quick', 'SKILL.md');
 
-  test('contains scenario > 5 and task > 10 detection', () => {
+  test('contains scenario > default and task > default detection', () => {
     const body = parseSkillFrontmatter(skillPath).body;
-    expect(body).toContain('5');
-    expect(body).toContain('10');
+    // 上限键名存在（值由 limits 配置决定，默认 3 场景 / 6 任务，轻轨收敛）
+    expect(body).toContain('quick-scenarios');
+    expect(body).toContain('quick-tasks');
+    expect(body).toContain('停止生成新场景');
+    expect(body).toContain('停止生成新任务');
   });
 
   test('contains intermediate artifacts reusable hint', () => {

@@ -190,16 +190,19 @@ describe('README: action list and version', () => {
     readme = fs.readFileSync(readmePath, 'utf-8');
   });
 
-  test('action list contains sdd-quick and sdd-test-code', () => {
+  test('action list contains sdd-hotfix, sdd-quick and sdd-test-code', () => {
+    expect(readme).toContain('sdd-hotfix');
     expect(readme).toContain('sdd-quick');
     expect(readme).toContain('sdd-test-code');
   });
 
-  test('contains 13 actions count', () => {
-    expect(readme).toContain('13');
+  test('action list headers use consistent count', () => {
+    // schema.yaml actions 为准：15 个 action（sdd-role 为会话工具，不计入）
+    expect(readme).toContain('15 个 Action');
+    expect(readme).toContain('sdd-analyze');
   });
 
-  test('contains version v0.3.3', () => {
-    expect(readme).toContain('v0.3.3');
+  test('contains version v0.4.0', () => {
+    expect(readme).toContain('v0.4.0');
   });
 });

@@ -6,13 +6,13 @@
 
 ## 项目概述
 
-这是一个 **Claude Code 插件** (`ai-tools-bridge` v0.3.3)，实现了 **SDD（规格驱动开发）工作流编排器**。项目由 Markdown 技能定义和 Vitest 结构验证测试组成。它定义了 Claude Code 作为斜杠命令加载的技能提示词。
+这是一个 **Claude Code 插件** (`ai-tools-bridge` v0.4.0)，实现了 **SDD（规格驱动开发）工作流编排器**。项目由 Markdown 技能定义和 Vitest 结构验证测试组成。它定义了 Claude Code 作为斜杠命令加载的技能提示词。
 
 该插件编排两个外部插件生态系统：
 - **OpenSpec** — 规格/规范层（变更提案、规格、制品）
 - **Superpowers** — 纪律层（头脑风暴、TDD、代码审查、调试等）
 
-核心理念：**"行动而非阶段"** — 14 个行动各自独立。大型功能运行完整流程；小修复可跳过不必要的步骤。
+核心理念：**"行动而非阶段"** — 15 个行动各自独立。大型功能运行完整流程；小修复走轻轨（/sdd-hotfix）快速闭环，可跳过不必要的步骤。
 
 ## 架构
 
@@ -49,11 +49,14 @@
 
 每个 SKILL.md 通过 include 引用共享模块，只保留差异内容，实现"公共逻辑改一处即可"的维护优势。
 
-### 14 个行动及其委托
+### 15 个行动及其委托
+
+> 双轨制（v0.4）：轻轨 = sdd-hotfix（bug/小改调试轨，≤15 min，产物 hotfix.md 卡片）+ sdd-quick（小新功能轻量版）；重轨 = analyze（M/L 必需，functions.md 三图）→ plan（test-cases.md + 批次回写）→ code（契约切片编码）→ verify（三向对齐）→ ship（含 hotfix 轻量归档豁免）。hotfix 不进依赖链。
 
 | 行动 | 委托给 |
 |------|--------|
-| `sdd-doctor` | 无（独立诊断） |
+| `sdd-doctor` | 无（独立诊断 + 双轨路由） |
+| `sdd-hotfix` | SDD 自有（调试定位精简版） |
 | `sdd-brainstorm` | `superpowers:brainstorming` |
 | `sdd-analyze` | SDD 自有（独立分析） |
 | `sdd-propose` | `openspec-continue-change` |
@@ -61,7 +64,7 @@
 | `sdd-ff` | `openspec-ff-change` |
 | `sdd-plan` | `superpowers:writing-plans` |
 | `sdd-code` | `superpowers:test-driven-development`、`superpowers:using-git-worktrees`、`superpowers:systematic-debugging` |
-| `sdd-quick` | `openspec-continue-change`、`superpowers:test-driven-development` |
+| `sdd-quick` | `openspec-continue-change`、`superpowers:test-driven-development`（轻量收敛版） |
 | `sdd-review-spec` | SDD 自有子代理 |
 | `sdd-review-code` | 阶段 1：SDD 子代理；阶段 2：`superpowers:requesting-code-review` |
 | `sdd-test-code` | `superpowers:test-driven-development` |

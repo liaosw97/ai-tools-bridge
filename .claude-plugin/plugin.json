@@ -1,7 +1,7 @@
 {
   "name": "ai-tools-bridge",
-  "description": "SDD 工作流编排器 — Action-based 架构，串联 OpenSpec（规格层）与 Superpowers（纪律层），提供 13 个独立 action、review 机制、决策追溯、上下文卫生",
-  "version": "0.3.3",
+  "description": "SDD 工作流编排器 — 双轨制：轻轨（sdd-hotfix 快速修复 + sdd-quick 小新功能，≤15 分钟闭环）+ 重轨（analyze 三图 + test-cases 矩阵的完整规格驱动），提供 15 个独立 action、review 机制、决策追溯、上下文卫生",
+  "version": "0.4.0",
   "author": {
     "name": "AiTools"
   },
@@ -18,7 +18,10 @@
     "tdd",
     "review",
     "action-based",
-    "token-optimization"
+    "token-optimization",
+    "hotfix",
+    "dual-track",
+    "mermaid"
   ],
   "skills": [
     "./skills/sdd-brainstorm",
@@ -26,6 +29,7 @@
     "./skills/sdd-continue",
     "./skills/sdd-doctor",
     "./skills/sdd-ff",
+    "./skills/sdd-hotfix",
     "./skills/sdd-plan",
     "./skills/sdd-propose",
     "./skills/sdd-quick",

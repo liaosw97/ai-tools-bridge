@@ -1,6 +1,6 @@
 ---
 name: sdd-quick
-description: "快速模式 — 一条命令完成简单需求的 propose → spec → tasks → code 全流程，通过前置自检评估复杂度，超出范围时提示回退到标准路径"
+description: "快速模式 — 一条命令完成小型新功能的 propose → spec → tasks → code 全流程（轻轨），通过前置自检评估复杂度，超出范围时提示回退到标准路径。修复/改 bug 请用 /sdd-hotfix"
 ---
 
 # sdd-quick — 快速模式
@@ -11,11 +11,13 @@ description: "快速模式 — 一条命令完成简单需求的 propose → spe
 
 <!-- include: ../_shared/base-triggers.md -->
 
-**触发**：用户执行 `/sdd-quick`，或说"快速模式""简单需求""小修复""一站完成"。
-**不触发**：复杂需求涉及架构或跨模块重构（→ 标准路径 `/sdd-propose`）；要深度探索（→ `/sdd-brainstorm`）。
-**歧义处理**：复杂度不确定时执行前置自检评估。
+**触发**：用户执行 `/sdd-quick`，或说"快速模式""简单需求""小新功能""一站完成"。
+**不触发**：修复 bug / 细小改动（→ `/sdd-hotfix`）；复杂需求涉及架构或跨模块重构（→ 标准路径 `/sdd-propose`）；要深度探索（→ `/sdd-brainstorm`）。
+**歧义处理**：复杂度不确定时执行前置自检评估；"小修复""改 bug"等修复性表述引导至 /sdd-hotfix。
 
 <!-- include: ../_shared/output-constraints.md -->
+
+<!-- include: ../_shared/scope-box.md -->
 
 ---
 
@@ -34,8 +36,9 @@ sdd-quick 无前置依赖，校验直接通过。
 | 配置项 | 默认值 | 说明 |
 |--------|--------|------|
 | `quick-questions` | 5 | 需求收集提问上限 |
-| `quick-scenarios` | 5 | 场景数量上限 |
-| `quick-tasks` | 10 | 任务数量上限 |
+| `quick-scenarios` | 3 | 场景数量上限（轻轨收敛，建议 1 domain + 3-5 场景） |
+| `quick-tasks` | 6 | 任务数量上限（轻轨收敛） |
+| `quick-max-files` | 3 | 改动源文件工作量盒 |
 
 **配置值验证**：
 - 配置项不存在 → 使用默认值
@@ -114,13 +117,13 @@ Override 指令：
 ```
 
 依次生成：
-1. `proposal.md`（如果尚不存在）
-2. `specs/`（最多 `limits.quick-scenarios` 个场景，默认 5）
-3. `tasks.md`（最多 `limits.quick-tasks` 个任务，默认 10）
+1. `proposal.md`（如果尚不存在，头部含 `track: quick` 元数据）
+2. `specs/`（最多 `limits.quick-scenarios` 个场景，默认 3，建议收敛 1 domain + 3-5 场景；参考 `sdd-quick/spec-compact.md` 精简格式）
+3. `tasks.md`（最多 `limits.quick-tasks` 个任务，默认 6）
 
 **场景数量达限处理**：
 
-当生成的场景数量达到 `limits.quick-scenarios`（默认 5）时：
+当生成的场景数量达到 `limits.quick-scenarios`（默认 3）时：
 1. 立即停止生成新场景
 2. 输出超限提示：场景数量已达到上限 N
 3. 告知已生成的中间产物可复用于标准路径
@@ -132,7 +135,7 @@ Override 指令：
 
 **任务数量达限处理**：
 
-当生成的任务数量达到 `limits.quick-tasks`（默认 10）时：
+当生成的任务数量达到 `limits.quick-tasks`（默认 6）时：
 1. 立即停止生成新任务
 2. 输出超限提示：任务数量已达到上限 N
 3. 告知已生成的中间产物可复用于标准路径

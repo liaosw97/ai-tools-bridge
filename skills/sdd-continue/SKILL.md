@@ -27,6 +27,13 @@ sdd-continue 无前置阻断，依赖链中任何位置均可触发。
 
 注：sdd-continue 为文档生成任务，不适用角色视角。
 
+### 0.5 hotfix change 检测
+
+- 如果当前 change 仅含 hotfix.md（无 proposal.md/specs/tasks.md，track=hotfix）：
+  - **不强行生成** proposal/spec/tasks（hotfix 不进依赖链）
+  - 输出引导文案："该 change 为 hotfix（卡片即终态）。如需延续为正式功能，请新建 feature change（/sdd-propose）。"
+  - 终止执行，不生成任何 artifact
+
 ### 1. 定位 Change 目录
 
 - 扫描 `openspec/changes/` 找到活跃变更

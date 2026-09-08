@@ -60,7 +60,10 @@ sdd-doctor 无前置依赖，校验直接通过。
   - design.md
   - tasks.md
   - plan.md
+  - hotfix.md（轻轨）
+  - test-cases.md（重轨）
   - reviews/
+- **轨道标记判定**：读 proposal.md 或 hotfix.md 头部 `track:` 元数据 → 显示 `[hotfix]` / `[quick]` / `[feature]`（无元数据时按存在产物推断：仅 hotfix.md → hotfix；有 proposal 但无 functions/test-cases → quick/feature 按 proposal 声明）
 
 **父子关系拓扑**（当 `change-registry.yaml` 存在时显示）：
 
@@ -147,6 +150,10 @@ SDD 环境诊断
   quick-scenarios: 5 (默认值)
   quick-tasks: 10 (默认值)
   review-rounds: 3 (默认值)
+  hotfix-locate-rounds: 3 (默认值)
+  hotfix-max-files: 2 (默认值)
+  hotfix-max-scenarios: 3 (默认值)
+  quick-max-files: 3 (默认值)
 
 活跃变更:
   user-auth/ [中等(M)]
@@ -172,25 +179,42 @@ SDD 环境诊断
 
 ### 2. 路径推荐
 
-根据复杂度评级推荐工作流路径：
+根据复杂度评级推荐工作流路径（双轨制）：
 
-#### 简单(S) — 快速路径
+#### 简单(S) — 轻轨
 
-- ★ 推荐 /sdd-quick（快速模式）
+- 若是 bug 修复/细小改动：★ 推荐 /sdd-hotfix
+- 若是小型新功能：★ 推荐 /sdd-quick（轻量收敛版）
 - ○ 可选标准路径：/sdd-propose → /sdd-ff → /sdd-code
-- 提示：简单需求可跳过 brainstorm 和独立 review
+- 提示：轻轨目标 10-15 分钟闭环，超盒自动升轨
 
-#### 中等(M) — 标准路径
+#### 中等(M) — 重轨
 
-- ★ 推荐标准路径：/sdd-propose → /sdd-ff → /sdd-plan → /sdd-code
+- ★ 推荐重轨：/sdd-propose → /sdd-analyze → /sdd-plan → /sdd-code → /sdd-verify → /sdd-ship
+- **analyze 必需**（M/L 重轨级，产 functions.md 三图 + test-cases.md）
 - 标注可跳过 brainstorm
 - △ 可跳过 /sdd-review-spec、/sdd-review-code
 
-#### 复杂(L) — 完整流程
+#### 复杂(L) — 重轨完整
 
-- ★ 推荐完整流程：brainstorm → propose → ff → plan → code → review-spec → review-code → verify → ship
+- ★ 推荐重轨完整流程：brainstorm → propose → analyze → plan → code → review-spec → review-code → verify → ship
+- **analyze 必需**（产三图 + test-cases.md）
 - 提示复杂变更建议使用 /sdd-plan 分批生成
 - 所有步骤均为推荐，无跳过建议
+
+#### 活跃变更展示（含轨道标记）
+
+```
+活跃变更:
+  user-auth/ [feature]  中等(M)
+    ✅ proposal.md    ✅ specs/ (2 个)   ✅ functions.md
+    ✅ test-cases.md  ✅ tasks.md        ❌ plan.md
+    → 建议: 运行 /sdd-plan 生成实施计划
+
+  fix-login-redirect/ [hotfix] 简单(S)
+    ✅ hotfix.md
+    → 建议: 运行 /sdd-ship 轻量归档，或查看卡片详情
+```
 
 ### 3. 完成引导
 

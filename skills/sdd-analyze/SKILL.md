@@ -66,10 +66,24 @@ description: "需求结构化解析 — 将需求解析为 模块→功能→函
 - 展示完整三层结构给用户，等待用户确认
 - 用户可增删改模块/功能/函数，AI 相应调整调用关系
 
+### 4.5 三图生成规范（functions.md 五段结构）
+
+按 `schemas/sdd/templates/functions.md` 五段结构产出：
+
+1. **功能架构图**（mermaid flowchart）：模块→功能层级 + 模块间调用/数据流边，命名 `architecture-<module>`
+2. **模块结构**（ASCII 树，机器可读）
+3. **函数声明图**（mermaid classDiagram）：**只画本次变更新增/修改的函数**，含签名、归属模块；命名 `functions-<module>`
+4. **函数签名表**（结构化文本）：每个函数含批次占位 `批次: <plan 阶段回填>`（analyze 不预知批次，由 sdd-plan 回写）
+5. **调用关系图**（mermaid flowchart）：覆盖相关完整调用链，命名 `calls-<module>`；**存量节点用 classDef existing 灰虚线标注、不展开内部**（classDef existing fill:#eee,stroke:#999,stroke-dasharray:5 5）
+
+生成约束：
+- 只画新增/修改函数，不为存量代码补画声明
+- mermaid 代码块语法必须合法（可用 classDef 标注存量，不用 `::` 内联注解）
+
 ### 5. 产出 functions.md
 
 - 将确认后的结果写入 `openspec/changes/<name>/functions.md`
-- 格式见 functions-template.md
+- 格式见 schemas/sdd/templates/functions.md
 
 ---
 
@@ -79,6 +93,8 @@ description: "需求结构化解析 — 将需求解析为 模块→功能→函
 
 - 确认 `functions.md` 存在且结构完整
 - 每个函数至少包含函数名和所属模块
+- 五段齐备：功能架构图 + 模块结构 + 函数声明图 + 函数签名表 + 调用关系图
+- mermaid 三图代码块存在、命名约定（architecture-*/functions-*/calls-*）合规
 
 ### 2. 完成引导
 

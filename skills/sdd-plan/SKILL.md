@@ -261,6 +261,24 @@ SDD Override 指令（必须遵循，优先于 writing-plans skill 的默认行�
 
 如果 functions.md 不存在，按原有流程基于 tasks.md 描述编排，不阻塞。
 
+### 生成 test-cases.md（M/L 重轨）
+
+当变更为 M/L 级（重轨，analyze 必需）时，plan 阶段生成 `openspec/changes/<name>/test-cases.md`（模板 `schemas/sdd/templates/test-cases.md`）：
+
+1. **汇总去重**：从各任务 TDD 步骤中提取用例，汇总为矩阵（避免重复）；列含 Spec 场景链接、测试文件、用例名（代码标识符，可 grep）、描述（中文）、输入(GIVEN)、预期(THEN)、状态
+2. **锚定场景**：用例行主键是 `[spec:domain#scenario]`（与 tasks 链接同锚，天然对应批次）
+3. **禁止跨未完成批次**：用例不得引用尚未完成的批次的函数（批次按依赖拓扑排序，被依赖函数所在批次在前）
+4. **hotfix/quick 轨不生成**：轻轨产物受限，不生成 test-cases.md（在 plan 中不执行此节）
+
+### 回写 functions.md 批次归属
+
+批次划分完成后，**回写 functions.md**：
+
+1. 将函数签名表中每个函数的批次占位 `批次: <plan 阶段回填>` 填充为实际批次号
+2. 被多个批次改动的函数，后续修改批次标 `(M)`（含回归用例要求）
+3. 回写后的 functions.md 成为 sdd-code 切片三件套的唯一契约来源
+4. 回写仅发生在 functions.md 存在时（analyze 已执行）
+
 ### 依赖检测（拆分模式）
 
 当功能树解析完成后，执行以下依赖检测：

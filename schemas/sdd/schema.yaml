@@ -2,6 +2,25 @@
 # 只管内容约束（产物里应该有什么），不管流程编排（谁来做、怎么做）
 
 artifacts:
+  hotfix:
+    description: "hotfix 卡片 — bug 修复/细小改动的轻轨唯一产物，记录根因与验证"
+    required: false
+    dependencies: []
+    file: "hotfix.md"
+    content_constraints:
+      - field: "现象"
+        required: true
+        description: "用户报告的现象 / 失败场景"
+      - field: "根因"
+        required: true
+        description: "1-2 句根因定位，含文件:行"
+      - field: "修复"
+        required: true
+        description: "改了什么文件、为什么，影响范围"
+      - field: "验证"
+        required: true
+        description: "复现/测试命令与结果，明确未覆盖边界"
+
   brainstorm:
     description: "深度探索设计的产物，记录需求探索过程和关键决策"
     required: false
@@ -92,6 +111,20 @@ artifacts:
         required: true
         description: "函数间的调用链"
 
+  test-cases:
+    description: "测试用例矩阵 — spec 场景×用例覆盖证据，含用例名（标识符）、输入/预期、覆盖状态"
+    required: false
+    dependencies: ["proposal", "spec"]
+    file: "test-cases.md"
+    content_constraints:
+      - field: "矩阵表"
+        required: true
+        description: "列: # | Spec 场景 | 测试文件 | 用例名(标识符) | 描述 | 输入(GIVEN) | 预期(THEN) | 状态"
+      - field: "覆盖状态"
+        required: true
+        description: "✓/✗，由 sdd-code 回填、sdd-verify 核验"
+
+
   tasks:
     description: "任务清单，将 spec 拆解为可执行的任务"
     required: true
@@ -160,13 +193,18 @@ actions:
     requires: []
     produces: []
 
+  sdd-hotfix:
+    description: "hotfix 修复 — bug/细小改动的调试轨，10-15 分钟闭环，产物仅 hotfix.md（不进依赖链）"
+    requires: []
+    produces: ["hotfix.md"]
+
   sdd-brainstorm:
     description: "深度探索设计 — 苏格拉底式探索需求，生成 brainstorm.md"
     requires: []
     produces: ["brainstorm.md"]
 
   sdd-analyze:
-    description: "需求结构化解析 — 将需求解析为模块→功能→函数三层结构，产出函数签名和调用关系图"
+    description: "需求结构化解析 — 将需求解析为模块→功能→函数三层结构，产出函数签名和调用关系图；M/L 重轨级必需"
     requires: []
     produces: ["functions.md"]
 
@@ -238,3 +276,5 @@ dependency_chain:
     - "tasks 不硬依赖 design，简单变更可以从 specs 直接出 tasks"
     - "plan 由 sdd-plan 单独生成（sdd-ff 不生成 plan）"
     - "review 不在依赖链中，是独立的质量保证产物"
+    - "hotfix 不进依赖链 — 卡片即终态（轻轨唯一产物），生命周期由 ship 轻量归档豁免处理"
+    - "test-cases 由 sdd-plan 生成、sdd-code 回填、sdd-verify 核验（M/L 重轨必需，hotfix/quick 轨禁止）"

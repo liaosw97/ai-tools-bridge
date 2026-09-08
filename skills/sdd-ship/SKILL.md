@@ -31,6 +31,7 @@ description: "归档合并 — 同步 specs、归档变更、合并分支，完�
 
 ### 0. 前置校验
 
+- **hotfix 豁免检测**：如果当前 change 仅含 hotfix.md（无 proposal.md/specs//tasks.md，即 track=hotfix），走**轻量归档豁免路径**：跳过最终验证（tasks/verify 校验），直接进入核心执行的归档步骤（跳过 Sync Specs——hotfix 无 specs；保留卡片）。
 - **警告**：未执行 sdd-verify → 建议先运行 /sdd-verify 确认所有场景覆盖，用户确认后可强制继续（简单修复允许跳过 verify 直接归档）
 - **警告**：存在未通过的 review issues → 列出未通过项，建议修复后再归档，用户确认后可强制继续
 

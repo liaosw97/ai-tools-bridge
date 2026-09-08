@@ -124,4 +124,30 @@ describe('sdd-brainstorm', () => {
     const diffIndex = content.indexOf('superpowers:brainstorming');
     expect(diffIndex).toBeGreaterThan(includeIndex);
   });
+
+  // ── v0.4 双轨：新共享模块 ──
+
+  it('scope-box.md should contain workload box and escalation logic', () => {
+    const content = readFileSync(resolve(__dirname, '../skills/_shared/scope-box.md'), 'utf-8');
+    expect(content).toContain('工作量盒');
+    expect(content).toContain('升轨保险丝');
+    expect(content).toContain('代理指标');
+    expect(content).toContain('hotfix-locate-rounds');
+    expect(content).toContain('取严');
+  });
+
+  it('hotfix-mode.md should contain debugging cognitive model', () => {
+    const content = readFileSync(resolve(__dirname, '../skills/_shared/hotfix-mode.md'), 'utf-8');
+    expect(content).toContain('调试');
+    expect(content).toContain('根因');
+    expect(content).toContain('最小改动');
+    expect(content).toContain('卡片即终态');
+  });
+
+  it('sdd-hotfix SKILL should include scope-box and hotfix-mode', () => {
+    const content = readFileSync(resolve(__dirname, '../skills/sdd-hotfix/SKILL.md'), 'utf-8');
+    expect(content).toContain('<!-- include: ../_shared/scope-box.md -->');
+    expect(content).toContain('<!-- include: ../_shared/hotfix-mode.md -->');
+    expect(content).toContain('hotfix(<name>):');
+  });
 });
